@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["darwin","windows","linux-musl"]
+  output = "../src/generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id                    String         @id @default(uuid())
+  article_title         String         @unique
+  article_description   String
+  article_content       String         @db.LongText
+  article_bigCover      String?
+  article_cover         String?
+  category_list         Category[]
+  comment_list          Comment[]
+  author                User           @relation(fields:[author_id],references:[id])
+  author_id             String
+  browse_times          Int            @default(0)
+  like_times            Int            @default(0)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+}
+
+model Category {
+    id                  String         @id @default(uuid())
+    cate_name           String         @unique
+    background          String         @unique
+    cate_pic            String
+    article_list        Article[]
+}
+
+model User {
+    id                  String         @id @default(uuid())
+    user_name           String         @unique
+    avatar              String
+    article_list        Article[]
+    foller_list         Follower[]
+}
+
+model Follower {
+    id                  String         @id @default(uuid())
+    followers           User[]
+}
+
+model Comment {
+    id                  String         @id @default(uuid())
+    createdAt           DateTime       @default(now())
+    comment             String
+    article             Article        @relation(fields:[article_id],references:[id])
+    article_id          String
+}

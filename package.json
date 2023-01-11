@@ -2,15 +2,23 @@
   "name": "graduation-design-back-end",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": {
+    "email": "zhangjing1024798@gmail.com",
+    "name": "zhangjing"
+  },
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "start:dev": "nest start --watch",
+    "start-db:dev": "pnpx prisma generate && pnpx prisma db push --force-reset --accept-data-loss && ts-node-dev --respawn --transpile-only ./prisma/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --files ./prisma/index.ts",
+    "generate": "pnpx prisma generate",
+    "migrate": "pnpx prisma migrate dev --name \"uuid\"",
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "build-wp": "nest build --webpack --webpackPath=./webpack.config.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -23,7 +31,10 @@
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
+    "@prisma/client": "^4.8.1",
+    "prisma": "^4.8.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
@@ -41,6 +52,7 @@
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "fork-ts-checker-webpack-plugin": "^7.2.14",
     "jest": "28.1.3",
     "prettier": "^2.3.2",
     "source-map-support": "^0.5.20",
@@ -49,7 +61,9 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.1.0",
-    "typescript": "^4.7.4"
+    "tsconfig-paths-webpack-plugin": "^4.0.0",
+    "typescript": "^4.7.4",
+    "webpack": "^5.75.0"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -1,20 +1,23 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { resolve } = require('path');
 console.log('start build');
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: './src/main',
   target: 'node',
   module: {
     rules: [
       {
         test: /.ts?$/,
-        use: {
-          loader: 'ts-loader',
-          options: { transpileOnly: true },
-        },
+        use: [
+          {
+            loader: 'ts-loader',
+            options: { transpileOnly: true, happyPackMode: false },
+          },
+        ],
         exclude: /node_modules/,
       },
     ],
@@ -28,6 +31,20 @@ module.exports = {
       '@': path.resolve(__dirname, 'src/'),
     },
     extensions: ['.js', '.ts', '.json'],
+  },
+  optimization: {
+    minimizer: [
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: resolve(__dirname, './src/generated/client/schema.prisma'),
+            to: resolve(__dirname, './dist/src/generated/client/schema.prisma'),
+            toType: 'file',
+            noErrorOnMissing: true,
+          },
+        ],
+      }),
+    ],
   },
   plugins: [
     new webpack.IgnorePlugin({

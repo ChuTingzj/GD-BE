@@ -97,6 +97,7 @@ exports.Prisma.ArticleScalarFieldEnum = makeEnum({
   article_bigCover: 'article_bigCover',
   article_cover: 'article_cover',
   author_id: 'author_id',
+  isExist: 'isExist',
   browse_times: 'browse_times',
   like_times: 'like_times',
   createdAt: 'createdAt',
@@ -112,13 +113,23 @@ exports.Prisma.CategoryScalarFieldEnum = makeEnum({
 
 exports.Prisma.CommentScalarFieldEnum = makeEnum({
   id: 'id',
-  createdAt: 'createdAt',
+  parent_id: 'parent_id',
   comment: 'comment',
+  user_id: 'user_id',
+  like_times: 'like_times',
+  dislike_times: 'dislike_times',
+  createdAt: 'createdAt',
   article_id: 'article_id'
 });
 
-exports.Prisma.FollowerScalarFieldEnum = makeEnum({
-  id: 'id'
+exports.Prisma.FocuserMapScalarFieldEnum = makeEnum({
+  id: 'id',
+  follower_id: 'follower_id'
+});
+
+exports.Prisma.FollowerMapScalarFieldEnum = makeEnum({
+  id: 'id',
+  master_id: 'master_id'
 });
 
 exports.Prisma.SortOrder = makeEnum({
@@ -136,7 +147,8 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.UserScalarFieldEnum = makeEnum({
   id: 'id',
   user_name: 'user_name',
-  avatar: 'avatar'
+  avatar: 'avatar',
+  isExist: 'isExist'
 });
 
 
@@ -144,7 +156,8 @@ exports.Prisma.ModelName = makeEnum({
   Article: 'Article',
   Category: 'Category',
   User: 'User',
-  Follower: 'Follower',
+  FollowerMap: 'FollowerMap',
+  FocuserMap: 'FocuserMap',
   Comment: 'Comment'
 });
 

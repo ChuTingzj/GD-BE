@@ -9,8 +9,10 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://root:admin123@localhost:3306/gd-be"
 }
+
+
 
 model Article {
   id                    String         @id @default(uuid())
@@ -23,6 +25,7 @@ model Article {
   comment_list          Comment[]
   author                User           @relation(fields:[author_id],references:[id])
   author_id             String
+  isExist               Boolean        @default(true)
   browse_times          Int            @default(0)
   like_times            Int            @default(0)
   createdAt             DateTime       @default(now())
@@ -32,7 +35,7 @@ model Article {
 model Category {
     id                  String         @id @default(uuid())
     cate_name           String         @unique
-    background          String         @unique
+    background          String
     cate_pic            String
     article_list        Article[]
 }
@@ -42,18 +45,33 @@ model User {
     user_name           String         @unique
     avatar              String
     article_list        Article[]
-    foller_list         Follower[]
+    follower_list       FollowerMap[]
+    focuser_list        FocuserMap[]
+    comment_list        Comment[]
+    isExist             Boolean        @default(true)
 }
 
-model Follower {
+model FollowerMap {
     id                  String         @id @default(uuid())
-    followers           User[]
+    master              User           @relation(fields:[master_id],references:[id])
+    master_id           String
+}
+
+model FocuserMap {
+    id                  String         @id @default(uuid())
+    follower            User           @relation(fields:[follower_id],references:[id])
+    follower_id         String
 }
 
 model Comment {
     id                  String         @id @default(uuid())
-    createdAt           DateTime       @default(now())
+    parent_id           String         @default("")
     comment             String
+    commentBy           User           @relation(fields:[user_id],references:[id])
+    user_id             String
+    like_times          Int            @default(0)
+    dislike_times       Int            @default(0)
+    createdAt           DateTime       @default(now())
     article             Article        @relation(fields:[article_id],references:[id])
     article_id          String
 }

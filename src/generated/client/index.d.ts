@@ -24,6 +24,7 @@ export type Article = {
   article_bigCover: string | null
   article_cover: string | null
   author_id: string
+  isExist: boolean
   browse_times: number
   like_times: number
   createdAt: Date
@@ -49,14 +50,25 @@ export type User = {
   id: string
   user_name: string
   avatar: string
+  isExist: boolean
 }
 
 /**
- * Model Follower
+ * Model FollowerMap
  * 
  */
-export type Follower = {
+export type FollowerMap = {
   id: string
+  master_id: string
+}
+
+/**
+ * Model FocuserMap
+ * 
+ */
+export type FocuserMap = {
+  id: string
+  follower_id: string
 }
 
 /**
@@ -65,8 +77,12 @@ export type Follower = {
  */
 export type Comment = {
   id: string
-  createdAt: Date
+  parent_id: string
   comment: string
+  user_id: string
+  like_times: number
+  dislike_times: number
+  createdAt: Date
   article_id: string
 }
 
@@ -219,14 +235,24 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<GlobalReject>;
 
   /**
-   * `prisma.follower`: Exposes CRUD operations for the **Follower** model.
+   * `prisma.followerMap`: Exposes CRUD operations for the **FollowerMap** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Followers
-    * const followers = await prisma.follower.findMany()
+    * // Fetch zero or more FollowerMaps
+    * const followerMaps = await prisma.followerMap.findMany()
     * ```
     */
-  get follower(): Prisma.FollowerDelegate<GlobalReject>;
+  get followerMap(): Prisma.FollowerMapDelegate<GlobalReject>;
+
+  /**
+   * `prisma.focuserMap`: Exposes CRUD operations for the **FocuserMap** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FocuserMaps
+    * const focuserMaps = await prisma.focuserMap.findMany()
+    * ```
+    */
+  get focuserMap(): Prisma.FocuserMapDelegate<GlobalReject>;
 
   /**
    * `prisma.comment`: Exposes CRUD operations for the **Comment** model.
@@ -724,7 +750,8 @@ export namespace Prisma {
     Article: 'Article',
     Category: 'Category',
     User: 'User',
-    Follower: 'Follower',
+    FollowerMap: 'FollowerMap',
+    FocuserMap: 'FocuserMap',
     Comment: 'Comment'
   };
 
@@ -987,12 +1014,16 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     article_list: number
-    foller_list: number
+    follower_list: number
+    focuser_list: number
+    comment_list: number
   }
 
   export type UserCountOutputTypeSelect = {
     article_list?: boolean
-    foller_list?: boolean
+    follower_list?: boolean
+    focuser_list?: boolean
+    comment_list?: boolean
   }
 
   export type UserCountOutputTypeGetPayload<S extends boolean | null | undefined | UserCountOutputTypeArgs> =
@@ -1022,50 +1053,6 @@ export namespace Prisma {
      * 
     **/
     select?: UserCountOutputTypeSelect | null
-  }
-
-
-
-  /**
-   * Count Type FollowerCountOutputType
-   */
-
-
-  export type FollowerCountOutputType = {
-    followers: number
-  }
-
-  export type FollowerCountOutputTypeSelect = {
-    followers?: boolean
-  }
-
-  export type FollowerCountOutputTypeGetPayload<S extends boolean | null | undefined | FollowerCountOutputTypeArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? FollowerCountOutputType :
-    S extends undefined ? never :
-    S extends { include: any } & (FollowerCountOutputTypeArgs)
-    ? FollowerCountOutputType 
-    : S extends { select: any } & (FollowerCountOutputTypeArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof FollowerCountOutputType ? FollowerCountOutputType[P] : never
-  } 
-      : FollowerCountOutputType
-
-
-
-
-  // Custom InputTypes
-
-  /**
-   * FollowerCountOutputType without action
-   */
-  export type FollowerCountOutputTypeArgs = {
-    /**
-     * Select specific fields to fetch from the FollowerCountOutputType
-     * 
-    **/
-    select?: FollowerCountOutputTypeSelect | null
   }
 
 
@@ -1105,6 +1092,7 @@ export namespace Prisma {
     article_bigCover: string | null
     article_cover: string | null
     author_id: string | null
+    isExist: boolean | null
     browse_times: number | null
     like_times: number | null
     createdAt: Date | null
@@ -1119,6 +1107,7 @@ export namespace Prisma {
     article_bigCover: string | null
     article_cover: string | null
     author_id: string | null
+    isExist: boolean | null
     browse_times: number | null
     like_times: number | null
     createdAt: Date | null
@@ -1133,6 +1122,7 @@ export namespace Prisma {
     article_bigCover: number
     article_cover: number
     author_id: number
+    isExist: number
     browse_times: number
     like_times: number
     createdAt: number
@@ -1159,6 +1149,7 @@ export namespace Prisma {
     article_bigCover?: true
     article_cover?: true
     author_id?: true
+    isExist?: true
     browse_times?: true
     like_times?: true
     createdAt?: true
@@ -1173,6 +1164,7 @@ export namespace Prisma {
     article_bigCover?: true
     article_cover?: true
     author_id?: true
+    isExist?: true
     browse_times?: true
     like_times?: true
     createdAt?: true
@@ -1187,6 +1179,7 @@ export namespace Prisma {
     article_bigCover?: true
     article_cover?: true
     author_id?: true
+    isExist?: true
     browse_times?: true
     like_times?: true
     createdAt?: true
@@ -1294,6 +1287,7 @@ export namespace Prisma {
     article_bigCover: string | null
     article_cover: string | null
     author_id: string
+    isExist: boolean
     browse_times: number
     like_times: number
     createdAt: Date
@@ -1330,6 +1324,7 @@ export namespace Prisma {
     comment_list?: boolean | Article$comment_listArgs
     author?: boolean | UserArgs
     author_id?: boolean
+    isExist?: boolean
     browse_times?: boolean
     like_times?: boolean
     createdAt?: boolean
@@ -3232,18 +3227,21 @@ export namespace Prisma {
     id: string | null
     user_name: string | null
     avatar: string | null
+    isExist: boolean | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
     user_name: string | null
     avatar: string | null
+    isExist: boolean | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     user_name: number
     avatar: number
+    isExist: number
     _all: number
   }
 
@@ -3252,18 +3250,21 @@ export namespace Prisma {
     id?: true
     user_name?: true
     avatar?: true
+    isExist?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
     user_name?: true
     avatar?: true
+    isExist?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
     user_name?: true
     avatar?: true
+    isExist?: true
     _all?: true
   }
 
@@ -3349,6 +3350,7 @@ export namespace Prisma {
     id: string
     user_name: string
     avatar: string
+    isExist: boolean
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3373,14 +3375,19 @@ export namespace Prisma {
     user_name?: boolean
     avatar?: boolean
     article_list?: boolean | User$article_listArgs
-    foller_list?: boolean | User$foller_listArgs
+    follower_list?: boolean | User$follower_listArgs
+    focuser_list?: boolean | User$focuser_listArgs
+    comment_list?: boolean | User$comment_listArgs
+    isExist?: boolean
     _count?: boolean | UserCountOutputTypeArgs
   }
 
 
   export type UserInclude = {
     article_list?: boolean | User$article_listArgs
-    foller_list?: boolean | User$foller_listArgs
+    follower_list?: boolean | User$follower_listArgs
+    focuser_list?: boolean | User$focuser_listArgs
+    comment_list?: boolean | User$comment_listArgs
     _count?: boolean | UserCountOutputTypeArgs
   } 
 
@@ -3392,14 +3399,18 @@ export namespace Prisma {
     ? User  & {
     [P in TruthyKeys<S['include']>]:
         P extends 'article_list' ? Array < ArticleGetPayload<S['include'][P]>>  :
-        P extends 'foller_list' ? Array < FollowerGetPayload<S['include'][P]>>  :
+        P extends 'follower_list' ? Array < FollowerMapGetPayload<S['include'][P]>>  :
+        P extends 'focuser_list' ? Array < FocuserMapGetPayload<S['include'][P]>>  :
+        P extends 'comment_list' ? Array < CommentGetPayload<S['include'][P]>>  :
         P extends '_count' ? UserCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (UserArgs | UserFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
         P extends 'article_list' ? Array < ArticleGetPayload<S['select'][P]>>  :
-        P extends 'foller_list' ? Array < FollowerGetPayload<S['select'][P]>>  :
+        P extends 'follower_list' ? Array < FollowerMapGetPayload<S['select'][P]>>  :
+        P extends 'focuser_list' ? Array < FocuserMapGetPayload<S['select'][P]>>  :
+        P extends 'comment_list' ? Array < CommentGetPayload<S['select'][P]>>  :
         P extends '_count' ? UserCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof User ? User[P] : never
   } 
       : User
@@ -3776,7 +3787,11 @@ export namespace Prisma {
 
     article_list<T extends User$article_listArgs= {}>(args?: Subset<T, User$article_listArgs>): PrismaPromise<Array<ArticleGetPayload<T>>| Null>;
 
-    foller_list<T extends User$foller_listArgs= {}>(args?: Subset<T, User$foller_listArgs>): PrismaPromise<Array<FollowerGetPayload<T>>| Null>;
+    follower_list<T extends User$follower_listArgs= {}>(args?: Subset<T, User$follower_listArgs>): PrismaPromise<Array<FollowerMapGetPayload<T>>| Null>;
+
+    focuser_list<T extends User$focuser_listArgs= {}>(args?: Subset<T, User$focuser_listArgs>): PrismaPromise<Array<FocuserMapGetPayload<T>>| Null>;
+
+    comment_list<T extends User$comment_listArgs= {}>(args?: Subset<T, User$comment_listArgs>): PrismaPromise<Array<CommentGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -4205,25 +4220,71 @@ export namespace Prisma {
 
 
   /**
-   * User.foller_list
+   * User.follower_list
    */
-  export type User$foller_listArgs = {
+  export type User$follower_listArgs = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
-    where?: FollowerWhereInput
-    orderBy?: Enumerable<FollowerOrderByWithRelationInput>
-    cursor?: FollowerWhereUniqueInput
+    include?: FollowerMapInclude | null
+    where?: FollowerMapWhereInput
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
+    cursor?: FollowerMapWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: Enumerable<FollowerScalarFieldEnum>
+    distinct?: Enumerable<FollowerMapScalarFieldEnum>
+  }
+
+
+  /**
+   * User.focuser_list
+   */
+  export type User$focuser_listArgs = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
+    where?: FocuserMapWhereInput
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
+    cursor?: FocuserMapWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<FocuserMapScalarFieldEnum>
+  }
+
+
+  /**
+   * User.comment_list
+   */
+  export type User$comment_listArgs = {
+    /**
+     * Select specific fields to fetch from the Comment
+     * 
+    **/
+    select?: CommentSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: CommentInclude | null
+    where?: CommentWhereInput
+    orderBy?: Enumerable<CommentOrderByWithRelationInput>
+    cursor?: CommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<CommentScalarFieldEnum>
   }
 
 
@@ -4246,320 +4307,324 @@ export namespace Prisma {
 
 
   /**
-   * Model Follower
+   * Model FollowerMap
    */
 
 
-  export type AggregateFollower = {
-    _count: FollowerCountAggregateOutputType | null
-    _min: FollowerMinAggregateOutputType | null
-    _max: FollowerMaxAggregateOutputType | null
+  export type AggregateFollowerMap = {
+    _count: FollowerMapCountAggregateOutputType | null
+    _min: FollowerMapMinAggregateOutputType | null
+    _max: FollowerMapMaxAggregateOutputType | null
   }
 
-  export type FollowerMinAggregateOutputType = {
+  export type FollowerMapMinAggregateOutputType = {
     id: string | null
+    master_id: string | null
   }
 
-  export type FollowerMaxAggregateOutputType = {
+  export type FollowerMapMaxAggregateOutputType = {
     id: string | null
+    master_id: string | null
   }
 
-  export type FollowerCountAggregateOutputType = {
+  export type FollowerMapCountAggregateOutputType = {
     id: number
+    master_id: number
     _all: number
   }
 
 
-  export type FollowerMinAggregateInputType = {
+  export type FollowerMapMinAggregateInputType = {
     id?: true
+    master_id?: true
   }
 
-  export type FollowerMaxAggregateInputType = {
+  export type FollowerMapMaxAggregateInputType = {
     id?: true
+    master_id?: true
   }
 
-  export type FollowerCountAggregateInputType = {
+  export type FollowerMapCountAggregateInputType = {
     id?: true
+    master_id?: true
     _all?: true
   }
 
-  export type FollowerAggregateArgs = {
+  export type FollowerMapAggregateArgs = {
     /**
-     * Filter which Follower to aggregate.
+     * Filter which FollowerMap to aggregate.
      * 
     **/
-    where?: FollowerWhereInput
+    where?: FollowerMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Followers to fetch.
+     * Determine the order of FollowerMaps to fetch.
      * 
     **/
-    orderBy?: Enumerable<FollowerOrderByWithRelationInput>
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      * 
     **/
-    cursor?: FollowerWhereUniqueInput
+    cursor?: FollowerMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Followers from the position of the cursor.
+     * Take `±n` FollowerMaps from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Followers.
+     * Skip the first `n` FollowerMaps.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Followers
+     * Count returned FollowerMaps
     **/
-    _count?: true | FollowerCountAggregateInputType
+    _count?: true | FollowerMapCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: FollowerMinAggregateInputType
+    _min?: FollowerMapMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: FollowerMaxAggregateInputType
+    _max?: FollowerMapMaxAggregateInputType
   }
 
-  export type GetFollowerAggregateType<T extends FollowerAggregateArgs> = {
-        [P in keyof T & keyof AggregateFollower]: P extends '_count' | 'count'
+  export type GetFollowerMapAggregateType<T extends FollowerMapAggregateArgs> = {
+        [P in keyof T & keyof AggregateFollowerMap]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateFollower[P]>
-      : GetScalarType<T[P], AggregateFollower[P]>
+        : GetScalarType<T[P], AggregateFollowerMap[P]>
+      : GetScalarType<T[P], AggregateFollowerMap[P]>
   }
 
 
 
 
-  export type FollowerGroupByArgs = {
-    where?: FollowerWhereInput
-    orderBy?: Enumerable<FollowerOrderByWithAggregationInput>
-    by: Array<FollowerScalarFieldEnum>
-    having?: FollowerScalarWhereWithAggregatesInput
+  export type FollowerMapGroupByArgs = {
+    where?: FollowerMapWhereInput
+    orderBy?: Enumerable<FollowerMapOrderByWithAggregationInput>
+    by: Array<FollowerMapScalarFieldEnum>
+    having?: FollowerMapScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: FollowerCountAggregateInputType | true
-    _min?: FollowerMinAggregateInputType
-    _max?: FollowerMaxAggregateInputType
+    _count?: FollowerMapCountAggregateInputType | true
+    _min?: FollowerMapMinAggregateInputType
+    _max?: FollowerMapMaxAggregateInputType
   }
 
 
-  export type FollowerGroupByOutputType = {
+  export type FollowerMapGroupByOutputType = {
     id: string
-    _count: FollowerCountAggregateOutputType | null
-    _min: FollowerMinAggregateOutputType | null
-    _max: FollowerMaxAggregateOutputType | null
+    master_id: string
+    _count: FollowerMapCountAggregateOutputType | null
+    _min: FollowerMapMinAggregateOutputType | null
+    _max: FollowerMapMaxAggregateOutputType | null
   }
 
-  type GetFollowerGroupByPayload<T extends FollowerGroupByArgs> = PrismaPromise<
+  type GetFollowerMapGroupByPayload<T extends FollowerMapGroupByArgs> = PrismaPromise<
     Array<
-      PickArray<FollowerGroupByOutputType, T['by']> &
+      PickArray<FollowerMapGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof FollowerGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof FollowerMapGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], FollowerGroupByOutputType[P]>
-            : GetScalarType<T[P], FollowerGroupByOutputType[P]>
+              : GetScalarType<T[P], FollowerMapGroupByOutputType[P]>
+            : GetScalarType<T[P], FollowerMapGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type FollowerSelect = {
+  export type FollowerMapSelect = {
     id?: boolean
-    followers?: boolean | Follower$followersArgs
-    _count?: boolean | FollowerCountOutputTypeArgs
+    master?: boolean | UserArgs
+    master_id?: boolean
   }
 
 
-  export type FollowerInclude = {
-    followers?: boolean | Follower$followersArgs
-    _count?: boolean | FollowerCountOutputTypeArgs
+  export type FollowerMapInclude = {
+    master?: boolean | UserArgs
   } 
 
-  export type FollowerGetPayload<S extends boolean | null | undefined | FollowerArgs> =
+  export type FollowerMapGetPayload<S extends boolean | null | undefined | FollowerMapArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? Follower :
+    S extends true ? FollowerMap :
     S extends undefined ? never :
-    S extends { include: any } & (FollowerArgs | FollowerFindManyArgs)
-    ? Follower  & {
+    S extends { include: any } & (FollowerMapArgs | FollowerMapFindManyArgs)
+    ? FollowerMap  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'followers' ? Array < UserGetPayload<S['include'][P]>>  :
-        P extends '_count' ? FollowerCountOutputTypeGetPayload<S['include'][P]> :  never
+        P extends 'master' ? UserGetPayload<S['include'][P]> :  never
   } 
-    : S extends { select: any } & (FollowerArgs | FollowerFindManyArgs)
+    : S extends { select: any } & (FollowerMapArgs | FollowerMapFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'followers' ? Array < UserGetPayload<S['select'][P]>>  :
-        P extends '_count' ? FollowerCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Follower ? Follower[P] : never
+        P extends 'master' ? UserGetPayload<S['select'][P]> :  P extends keyof FollowerMap ? FollowerMap[P] : never
   } 
-      : Follower
+      : FollowerMap
 
 
-  type FollowerCountArgs = Merge<
-    Omit<FollowerFindManyArgs, 'select' | 'include'> & {
-      select?: FollowerCountAggregateInputType | true
+  type FollowerMapCountArgs = Merge<
+    Omit<FollowerMapFindManyArgs, 'select' | 'include'> & {
+      select?: FollowerMapCountAggregateInputType | true
     }
   >
 
-  export interface FollowerDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+  export interface FollowerMapDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
-     * Find zero or one Follower that matches the filter.
-     * @param {FollowerFindUniqueArgs} args - Arguments to find a Follower
+     * Find zero or one FollowerMap that matches the filter.
+     * @param {FollowerMapFindUniqueArgs} args - Arguments to find a FollowerMap
      * @example
-     * // Get one Follower
-     * const follower = await prisma.follower.findUnique({
+     * // Get one FollowerMap
+     * const followerMap = await prisma.followerMap.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends FollowerFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, FollowerFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Follower'> extends True ? Prisma__FollowerClient<FollowerGetPayload<T>> : Prisma__FollowerClient<FollowerGetPayload<T> | null, null>
+    findUnique<T extends FollowerMapFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, FollowerMapFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'FollowerMap'> extends True ? Prisma__FollowerMapClient<FollowerMapGetPayload<T>> : Prisma__FollowerMapClient<FollowerMapGetPayload<T> | null, null>
 
     /**
-     * Find one Follower that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one FollowerMap that matches the filter or throw an error  with `error.code='P2025'` 
      *     if no matches were found.
-     * @param {FollowerFindUniqueOrThrowArgs} args - Arguments to find a Follower
+     * @param {FollowerMapFindUniqueOrThrowArgs} args - Arguments to find a FollowerMap
      * @example
-     * // Get one Follower
-     * const follower = await prisma.follower.findUniqueOrThrow({
+     * // Get one FollowerMap
+     * const followerMap = await prisma.followerMap.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUniqueOrThrow<T extends FollowerFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, FollowerFindUniqueOrThrowArgs>
-    ): Prisma__FollowerClient<FollowerGetPayload<T>>
+    findUniqueOrThrow<T extends FollowerMapFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, FollowerMapFindUniqueOrThrowArgs>
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
 
     /**
-     * Find the first Follower that matches the filter.
+     * Find the first FollowerMap that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FollowerFindFirstArgs} args - Arguments to find a Follower
+     * @param {FollowerMapFindFirstArgs} args - Arguments to find a FollowerMap
      * @example
-     * // Get one Follower
-     * const follower = await prisma.follower.findFirst({
+     * // Get one FollowerMap
+     * const followerMap = await prisma.followerMap.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends FollowerFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, FollowerFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Follower'> extends True ? Prisma__FollowerClient<FollowerGetPayload<T>> : Prisma__FollowerClient<FollowerGetPayload<T> | null, null>
+    findFirst<T extends FollowerMapFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, FollowerMapFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'FollowerMap'> extends True ? Prisma__FollowerMapClient<FollowerMapGetPayload<T>> : Prisma__FollowerMapClient<FollowerMapGetPayload<T> | null, null>
 
     /**
-     * Find the first Follower that matches the filter or
+     * Find the first FollowerMap that matches the filter or
      * throw `NotFoundError` if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FollowerFindFirstOrThrowArgs} args - Arguments to find a Follower
+     * @param {FollowerMapFindFirstOrThrowArgs} args - Arguments to find a FollowerMap
      * @example
-     * // Get one Follower
-     * const follower = await prisma.follower.findFirstOrThrow({
+     * // Get one FollowerMap
+     * const followerMap = await prisma.followerMap.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirstOrThrow<T extends FollowerFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, FollowerFindFirstOrThrowArgs>
-    ): Prisma__FollowerClient<FollowerGetPayload<T>>
+    findFirstOrThrow<T extends FollowerMapFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, FollowerMapFindFirstOrThrowArgs>
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
 
     /**
-     * Find zero or more Followers that matches the filter.
+     * Find zero or more FollowerMaps that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FollowerFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {FollowerMapFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Followers
-     * const followers = await prisma.follower.findMany()
+     * // Get all FollowerMaps
+     * const followerMaps = await prisma.followerMap.findMany()
      * 
-     * // Get first 10 Followers
-     * const followers = await prisma.follower.findMany({ take: 10 })
+     * // Get first 10 FollowerMaps
+     * const followerMaps = await prisma.followerMap.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const followerWithIdOnly = await prisma.follower.findMany({ select: { id: true } })
+     * const followerMapWithIdOnly = await prisma.followerMap.findMany({ select: { id: true } })
      * 
     **/
-    findMany<T extends FollowerFindManyArgs>(
-      args?: SelectSubset<T, FollowerFindManyArgs>
-    ): PrismaPromise<Array<FollowerGetPayload<T>>>
+    findMany<T extends FollowerMapFindManyArgs>(
+      args?: SelectSubset<T, FollowerMapFindManyArgs>
+    ): PrismaPromise<Array<FollowerMapGetPayload<T>>>
 
     /**
-     * Create a Follower.
-     * @param {FollowerCreateArgs} args - Arguments to create a Follower.
+     * Create a FollowerMap.
+     * @param {FollowerMapCreateArgs} args - Arguments to create a FollowerMap.
      * @example
-     * // Create one Follower
-     * const Follower = await prisma.follower.create({
+     * // Create one FollowerMap
+     * const FollowerMap = await prisma.followerMap.create({
      *   data: {
-     *     // ... data to create a Follower
+     *     // ... data to create a FollowerMap
      *   }
      * })
      * 
     **/
-    create<T extends FollowerCreateArgs>(
-      args: SelectSubset<T, FollowerCreateArgs>
-    ): Prisma__FollowerClient<FollowerGetPayload<T>>
+    create<T extends FollowerMapCreateArgs>(
+      args: SelectSubset<T, FollowerMapCreateArgs>
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
 
     /**
-     * Create many Followers.
-     *     @param {FollowerCreateManyArgs} args - Arguments to create many Followers.
+     * Create many FollowerMaps.
+     *     @param {FollowerMapCreateManyArgs} args - Arguments to create many FollowerMaps.
      *     @example
-     *     // Create many Followers
-     *     const follower = await prisma.follower.createMany({
+     *     // Create many FollowerMaps
+     *     const followerMap = await prisma.followerMap.createMany({
      *       data: {
      *         // ... provide data here
      *       }
      *     })
      *     
     **/
-    createMany<T extends FollowerCreateManyArgs>(
-      args?: SelectSubset<T, FollowerCreateManyArgs>
+    createMany<T extends FollowerMapCreateManyArgs>(
+      args?: SelectSubset<T, FollowerMapCreateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Follower.
-     * @param {FollowerDeleteArgs} args - Arguments to delete one Follower.
+     * Delete a FollowerMap.
+     * @param {FollowerMapDeleteArgs} args - Arguments to delete one FollowerMap.
      * @example
-     * // Delete one Follower
-     * const Follower = await prisma.follower.delete({
+     * // Delete one FollowerMap
+     * const FollowerMap = await prisma.followerMap.delete({
      *   where: {
-     *     // ... filter to delete one Follower
+     *     // ... filter to delete one FollowerMap
      *   }
      * })
      * 
     **/
-    delete<T extends FollowerDeleteArgs>(
-      args: SelectSubset<T, FollowerDeleteArgs>
-    ): Prisma__FollowerClient<FollowerGetPayload<T>>
+    delete<T extends FollowerMapDeleteArgs>(
+      args: SelectSubset<T, FollowerMapDeleteArgs>
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
 
     /**
-     * Update one Follower.
-     * @param {FollowerUpdateArgs} args - Arguments to update one Follower.
+     * Update one FollowerMap.
+     * @param {FollowerMapUpdateArgs} args - Arguments to update one FollowerMap.
      * @example
-     * // Update one Follower
-     * const follower = await prisma.follower.update({
+     * // Update one FollowerMap
+     * const followerMap = await prisma.followerMap.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -4569,34 +4634,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends FollowerUpdateArgs>(
-      args: SelectSubset<T, FollowerUpdateArgs>
-    ): Prisma__FollowerClient<FollowerGetPayload<T>>
+    update<T extends FollowerMapUpdateArgs>(
+      args: SelectSubset<T, FollowerMapUpdateArgs>
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
 
     /**
-     * Delete zero or more Followers.
-     * @param {FollowerDeleteManyArgs} args - Arguments to filter Followers to delete.
+     * Delete zero or more FollowerMaps.
+     * @param {FollowerMapDeleteManyArgs} args - Arguments to filter FollowerMaps to delete.
      * @example
-     * // Delete a few Followers
-     * const { count } = await prisma.follower.deleteMany({
+     * // Delete a few FollowerMaps
+     * const { count } = await prisma.followerMap.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends FollowerDeleteManyArgs>(
-      args?: SelectSubset<T, FollowerDeleteManyArgs>
+    deleteMany<T extends FollowerMapDeleteManyArgs>(
+      args?: SelectSubset<T, FollowerMapDeleteManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Followers.
+     * Update zero or more FollowerMaps.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FollowerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {FollowerMapUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Followers
-     * const follower = await prisma.follower.updateMany({
+     * // Update many FollowerMaps
+     * const followerMap = await prisma.followerMap.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -4606,59 +4671,59 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends FollowerUpdateManyArgs>(
-      args: SelectSubset<T, FollowerUpdateManyArgs>
+    updateMany<T extends FollowerMapUpdateManyArgs>(
+      args: SelectSubset<T, FollowerMapUpdateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Follower.
-     * @param {FollowerUpsertArgs} args - Arguments to update or create a Follower.
+     * Create or update one FollowerMap.
+     * @param {FollowerMapUpsertArgs} args - Arguments to update or create a FollowerMap.
      * @example
-     * // Update or create a Follower
-     * const follower = await prisma.follower.upsert({
+     * // Update or create a FollowerMap
+     * const followerMap = await prisma.followerMap.upsert({
      *   create: {
-     *     // ... data to create a Follower
+     *     // ... data to create a FollowerMap
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Follower we want to update
+     *     // ... the filter for the FollowerMap we want to update
      *   }
      * })
     **/
-    upsert<T extends FollowerUpsertArgs>(
-      args: SelectSubset<T, FollowerUpsertArgs>
-    ): Prisma__FollowerClient<FollowerGetPayload<T>>
+    upsert<T extends FollowerMapUpsertArgs>(
+      args: SelectSubset<T, FollowerMapUpsertArgs>
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
 
     /**
-     * Count the number of Followers.
+     * Count the number of FollowerMaps.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FollowerCountArgs} args - Arguments to filter Followers to count.
+     * @param {FollowerMapCountArgs} args - Arguments to filter FollowerMaps to count.
      * @example
-     * // Count the number of Followers
-     * const count = await prisma.follower.count({
+     * // Count the number of FollowerMaps
+     * const count = await prisma.followerMap.count({
      *   where: {
-     *     // ... the filter for the Followers we want to count
+     *     // ... the filter for the FollowerMaps we want to count
      *   }
      * })
     **/
-    count<T extends FollowerCountArgs>(
-      args?: Subset<T, FollowerCountArgs>,
+    count<T extends FollowerMapCountArgs>(
+      args?: Subset<T, FollowerMapCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], FollowerCountAggregateOutputType>
+          : GetScalarType<T['select'], FollowerMapCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Follower.
+     * Allows you to perform aggregations operations on a FollowerMap.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FollowerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {FollowerMapAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -4678,13 +4743,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends FollowerAggregateArgs>(args: Subset<T, FollowerAggregateArgs>): PrismaPromise<GetFollowerAggregateType<T>>
+    aggregate<T extends FollowerMapAggregateArgs>(args: Subset<T, FollowerMapAggregateArgs>): PrismaPromise<GetFollowerMapAggregateType<T>>
 
     /**
-     * Group by Follower.
+     * Group by FollowerMap.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FollowerGroupByArgs} args - Group by arguments.
+     * @param {FollowerMapGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -4699,14 +4764,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends FollowerGroupByArgs,
+      T extends FollowerMapGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: FollowerGroupByArgs['orderBy'] }
-        : { orderBy?: FollowerGroupByArgs['orderBy'] },
+        ? { orderBy: FollowerMapGroupByArgs['orderBy'] }
+        : { orderBy?: FollowerMapGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -4755,17 +4820,17 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, FollowerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFollowerGroupByPayload<T> : PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, FollowerMapGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFollowerMapGroupByPayload<T> : PrismaPromise<InputErrors>
 
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Follower.
+   * The delegate class that acts as a "Promise-like" for FollowerMap.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__FollowerClient<T, Null = never> implements PrismaPromise<T> {
+  export class Prisma__FollowerMapClient<T, Null = never> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -4782,7 +4847,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    followers<T extends Follower$followersArgs= {}>(args?: Subset<T, Follower$followersArgs>): PrismaPromise<Array<UserGetPayload<T>>| Null>;
+    master<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -4812,30 +4877,30 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Follower base type for findUnique actions
+   * FollowerMap base type for findUnique actions
    */
-  export type FollowerFindUniqueArgsBase = {
+  export type FollowerMapFindUniqueArgsBase = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FollowerMapInclude | null
     /**
-     * Filter, which Follower to fetch.
+     * Filter, which FollowerMap to fetch.
      * 
     **/
-    where: FollowerWhereUniqueInput
+    where: FollowerMapWhereUniqueInput
   }
 
   /**
-   * Follower findUnique
+   * FollowerMap findUnique
    */
-  export interface FollowerFindUniqueArgs extends FollowerFindUniqueArgsBase {
+  export interface FollowerMapFindUniqueArgs extends FollowerMapFindUniqueArgsBase {
    /**
     * Throw an Error if query returns no results
     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
@@ -4845,87 +4910,87 @@ export namespace Prisma {
       
 
   /**
-   * Follower findUniqueOrThrow
+   * FollowerMap findUniqueOrThrow
    */
-  export type FollowerFindUniqueOrThrowArgs = {
+  export type FollowerMapFindUniqueOrThrowArgs = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FollowerMapInclude | null
     /**
-     * Filter, which Follower to fetch.
+     * Filter, which FollowerMap to fetch.
      * 
     **/
-    where: FollowerWhereUniqueInput
+    where: FollowerMapWhereUniqueInput
   }
 
 
   /**
-   * Follower base type for findFirst actions
+   * FollowerMap base type for findFirst actions
    */
-  export type FollowerFindFirstArgsBase = {
+  export type FollowerMapFindFirstArgsBase = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FollowerMapInclude | null
     /**
-     * Filter, which Follower to fetch.
+     * Filter, which FollowerMap to fetch.
      * 
     **/
-    where?: FollowerWhereInput
+    where?: FollowerMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Followers to fetch.
+     * Determine the order of FollowerMaps to fetch.
      * 
     **/
-    orderBy?: Enumerable<FollowerOrderByWithRelationInput>
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Followers.
+     * Sets the position for searching for FollowerMaps.
      * 
     **/
-    cursor?: FollowerWhereUniqueInput
+    cursor?: FollowerMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Followers from the position of the cursor.
+     * Take `±n` FollowerMaps from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Followers.
+     * Skip the first `n` FollowerMaps.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Followers.
+     * Filter by unique combinations of FollowerMaps.
      * 
     **/
-    distinct?: Enumerable<FollowerScalarFieldEnum>
+    distinct?: Enumerable<FollowerMapScalarFieldEnum>
   }
 
   /**
-   * Follower findFirst
+   * FollowerMap findFirst
    */
-  export interface FollowerFindFirstArgs extends FollowerFindFirstArgsBase {
+  export interface FollowerMapFindFirstArgs extends FollowerMapFindFirstArgsBase {
    /**
     * Throw an Error if query returns no results
     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
@@ -4935,295 +5000,1236 @@ export namespace Prisma {
       
 
   /**
-   * Follower findFirstOrThrow
+   * FollowerMap findFirstOrThrow
    */
-  export type FollowerFindFirstOrThrowArgs = {
+  export type FollowerMapFindFirstOrThrowArgs = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FollowerMapInclude | null
     /**
-     * Filter, which Follower to fetch.
+     * Filter, which FollowerMap to fetch.
      * 
     **/
-    where?: FollowerWhereInput
+    where?: FollowerMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Followers to fetch.
+     * Determine the order of FollowerMaps to fetch.
      * 
     **/
-    orderBy?: Enumerable<FollowerOrderByWithRelationInput>
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Followers.
+     * Sets the position for searching for FollowerMaps.
      * 
     **/
-    cursor?: FollowerWhereUniqueInput
+    cursor?: FollowerMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Followers from the position of the cursor.
+     * Take `±n` FollowerMaps from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Followers.
+     * Skip the first `n` FollowerMaps.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Followers.
+     * Filter by unique combinations of FollowerMaps.
      * 
     **/
-    distinct?: Enumerable<FollowerScalarFieldEnum>
+    distinct?: Enumerable<FollowerMapScalarFieldEnum>
   }
 
 
   /**
-   * Follower findMany
+   * FollowerMap findMany
    */
-  export type FollowerFindManyArgs = {
+  export type FollowerMapFindManyArgs = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FollowerMapInclude | null
     /**
-     * Filter, which Followers to fetch.
+     * Filter, which FollowerMaps to fetch.
      * 
     **/
-    where?: FollowerWhereInput
+    where?: FollowerMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Followers to fetch.
+     * Determine the order of FollowerMaps to fetch.
      * 
     **/
-    orderBy?: Enumerable<FollowerOrderByWithRelationInput>
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Followers.
+     * Sets the position for listing FollowerMaps.
      * 
     **/
-    cursor?: FollowerWhereUniqueInput
+    cursor?: FollowerMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Followers from the position of the cursor.
+     * Take `±n` FollowerMaps from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Followers.
+     * Skip the first `n` FollowerMaps.
      * 
     **/
     skip?: number
-    distinct?: Enumerable<FollowerScalarFieldEnum>
+    distinct?: Enumerable<FollowerMapScalarFieldEnum>
   }
 
 
   /**
-   * Follower create
+   * FollowerMap create
    */
-  export type FollowerCreateArgs = {
+  export type FollowerMapCreateArgs = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FollowerMapInclude | null
     /**
-     * The data needed to create a Follower.
+     * The data needed to create a FollowerMap.
      * 
     **/
-    data: XOR<FollowerCreateInput, FollowerUncheckedCreateInput>
+    data: XOR<FollowerMapCreateInput, FollowerMapUncheckedCreateInput>
   }
 
 
   /**
-   * Follower createMany
+   * FollowerMap createMany
    */
-  export type FollowerCreateManyArgs = {
+  export type FollowerMapCreateManyArgs = {
     /**
-     * The data used to create many Followers.
+     * The data used to create many FollowerMaps.
      * 
     **/
-    data: Enumerable<FollowerCreateManyInput>
+    data: Enumerable<FollowerMapCreateManyInput>
     skipDuplicates?: boolean
   }
 
 
   /**
-   * Follower update
+   * FollowerMap update
    */
-  export type FollowerUpdateArgs = {
+  export type FollowerMapUpdateArgs = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FollowerMapInclude | null
     /**
-     * The data needed to update a Follower.
+     * The data needed to update a FollowerMap.
      * 
     **/
-    data: XOR<FollowerUpdateInput, FollowerUncheckedUpdateInput>
+    data: XOR<FollowerMapUpdateInput, FollowerMapUncheckedUpdateInput>
     /**
-     * Choose, which Follower to update.
+     * Choose, which FollowerMap to update.
      * 
     **/
-    where: FollowerWhereUniqueInput
+    where: FollowerMapWhereUniqueInput
   }
 
 
   /**
-   * Follower updateMany
+   * FollowerMap updateMany
    */
-  export type FollowerUpdateManyArgs = {
+  export type FollowerMapUpdateManyArgs = {
     /**
-     * The data used to update Followers.
+     * The data used to update FollowerMaps.
      * 
     **/
-    data: XOR<FollowerUpdateManyMutationInput, FollowerUncheckedUpdateManyInput>
+    data: XOR<FollowerMapUpdateManyMutationInput, FollowerMapUncheckedUpdateManyInput>
     /**
-     * Filter which Followers to update
+     * Filter which FollowerMaps to update
      * 
     **/
-    where?: FollowerWhereInput
+    where?: FollowerMapWhereInput
   }
 
 
   /**
-   * Follower upsert
+   * FollowerMap upsert
    */
-  export type FollowerUpsertArgs = {
+  export type FollowerMapUpsertArgs = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FollowerMapInclude | null
     /**
-     * The filter to search for the Follower to update in case it exists.
+     * The filter to search for the FollowerMap to update in case it exists.
      * 
     **/
-    where: FollowerWhereUniqueInput
+    where: FollowerMapWhereUniqueInput
     /**
-     * In case the Follower found by the `where` argument doesn't exist, create a new Follower with this data.
+     * In case the FollowerMap found by the `where` argument doesn't exist, create a new FollowerMap with this data.
      * 
     **/
-    create: XOR<FollowerCreateInput, FollowerUncheckedCreateInput>
+    create: XOR<FollowerMapCreateInput, FollowerMapUncheckedCreateInput>
     /**
-     * In case the Follower was found with the provided `where` argument, update it with this data.
+     * In case the FollowerMap was found with the provided `where` argument, update it with this data.
      * 
     **/
-    update: XOR<FollowerUpdateInput, FollowerUncheckedUpdateInput>
+    update: XOR<FollowerMapUpdateInput, FollowerMapUncheckedUpdateInput>
   }
 
 
   /**
-   * Follower delete
+   * FollowerMap delete
    */
-  export type FollowerDeleteArgs = {
+  export type FollowerMapDeleteArgs = {
     /**
-     * Select specific fields to fetch from the Follower
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: FollowerSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FollowerMapInclude | null
     /**
-     * Filter which Follower to delete.
+     * Filter which FollowerMap to delete.
      * 
     **/
-    where: FollowerWhereUniqueInput
+    where: FollowerMapWhereUniqueInput
   }
 
 
   /**
-   * Follower deleteMany
+   * FollowerMap deleteMany
    */
-  export type FollowerDeleteManyArgs = {
+  export type FollowerMapDeleteManyArgs = {
     /**
-     * Filter which Followers to delete
+     * Filter which FollowerMaps to delete
      * 
     **/
-    where?: FollowerWhereInput
+    where?: FollowerMapWhereInput
   }
 
 
   /**
-   * Follower.followers
+   * FollowerMap without action
    */
-  export type Follower$followersArgs = {
+  export type FollowerMapArgs = {
     /**
-     * Select specific fields to fetch from the User
+     * Select specific fields to fetch from the FollowerMap
      * 
     **/
-    select?: UserSelect | null
+    select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: UserInclude | null
-    where?: UserWhereInput
-    orderBy?: Enumerable<UserOrderByWithRelationInput>
-    cursor?: UserWhereUniqueInput
+    include?: FollowerMapInclude | null
+  }
+
+
+
+  /**
+   * Model FocuserMap
+   */
+
+
+  export type AggregateFocuserMap = {
+    _count: FocuserMapCountAggregateOutputType | null
+    _min: FocuserMapMinAggregateOutputType | null
+    _max: FocuserMapMaxAggregateOutputType | null
+  }
+
+  export type FocuserMapMinAggregateOutputType = {
+    id: string | null
+    follower_id: string | null
+  }
+
+  export type FocuserMapMaxAggregateOutputType = {
+    id: string | null
+    follower_id: string | null
+  }
+
+  export type FocuserMapCountAggregateOutputType = {
+    id: number
+    follower_id: number
+    _all: number
+  }
+
+
+  export type FocuserMapMinAggregateInputType = {
+    id?: true
+    follower_id?: true
+  }
+
+  export type FocuserMapMaxAggregateInputType = {
+    id?: true
+    follower_id?: true
+  }
+
+  export type FocuserMapCountAggregateInputType = {
+    id?: true
+    follower_id?: true
+    _all?: true
+  }
+
+  export type FocuserMapAggregateArgs = {
+    /**
+     * Filter which FocuserMap to aggregate.
+     * 
+    **/
+    where?: FocuserMapWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FocuserMaps to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: FocuserMapWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FocuserMaps from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FocuserMaps.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FocuserMaps
+    **/
+    _count?: true | FocuserMapCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FocuserMapMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FocuserMapMaxAggregateInputType
+  }
+
+  export type GetFocuserMapAggregateType<T extends FocuserMapAggregateArgs> = {
+        [P in keyof T & keyof AggregateFocuserMap]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFocuserMap[P]>
+      : GetScalarType<T[P], AggregateFocuserMap[P]>
+  }
+
+
+
+
+  export type FocuserMapGroupByArgs = {
+    where?: FocuserMapWhereInput
+    orderBy?: Enumerable<FocuserMapOrderByWithAggregationInput>
+    by: Array<FocuserMapScalarFieldEnum>
+    having?: FocuserMapScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    distinct?: Enumerable<UserScalarFieldEnum>
+    _count?: FocuserMapCountAggregateInputType | true
+    _min?: FocuserMapMinAggregateInputType
+    _max?: FocuserMapMaxAggregateInputType
   }
 
 
-  /**
-   * Follower without action
-   */
-  export type FollowerArgs = {
+  export type FocuserMapGroupByOutputType = {
+    id: string
+    follower_id: string
+    _count: FocuserMapCountAggregateOutputType | null
+    _min: FocuserMapMinAggregateOutputType | null
+    _max: FocuserMapMaxAggregateOutputType | null
+  }
+
+  type GetFocuserMapGroupByPayload<T extends FocuserMapGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<FocuserMapGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FocuserMapGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FocuserMapGroupByOutputType[P]>
+            : GetScalarType<T[P], FocuserMapGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FocuserMapSelect = {
+    id?: boolean
+    follower?: boolean | UserArgs
+    follower_id?: boolean
+  }
+
+
+  export type FocuserMapInclude = {
+    follower?: boolean | UserArgs
+  } 
+
+  export type FocuserMapGetPayload<S extends boolean | null | undefined | FocuserMapArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? FocuserMap :
+    S extends undefined ? never :
+    S extends { include: any } & (FocuserMapArgs | FocuserMapFindManyArgs)
+    ? FocuserMap  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'follower' ? UserGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (FocuserMapArgs | FocuserMapFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'follower' ? UserGetPayload<S['select'][P]> :  P extends keyof FocuserMap ? FocuserMap[P] : never
+  } 
+      : FocuserMap
+
+
+  type FocuserMapCountArgs = Merge<
+    Omit<FocuserMapFindManyArgs, 'select' | 'include'> & {
+      select?: FocuserMapCountAggregateInputType | true
+    }
+  >
+
+  export interface FocuserMapDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
-     * Select specific fields to fetch from the Follower
+     * Find zero or one FocuserMap that matches the filter.
+     * @param {FocuserMapFindUniqueArgs} args - Arguments to find a FocuserMap
+     * @example
+     * // Get one FocuserMap
+     * const focuserMap = await prisma.focuserMap.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends FocuserMapFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, FocuserMapFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'FocuserMap'> extends True ? Prisma__FocuserMapClient<FocuserMapGetPayload<T>> : Prisma__FocuserMapClient<FocuserMapGetPayload<T> | null, null>
+
+    /**
+     * Find one FocuserMap that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {FocuserMapFindUniqueOrThrowArgs} args - Arguments to find a FocuserMap
+     * @example
+     * // Get one FocuserMap
+     * const focuserMap = await prisma.focuserMap.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends FocuserMapFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, FocuserMapFindUniqueOrThrowArgs>
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+
+    /**
+     * Find the first FocuserMap that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FocuserMapFindFirstArgs} args - Arguments to find a FocuserMap
+     * @example
+     * // Get one FocuserMap
+     * const focuserMap = await prisma.focuserMap.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends FocuserMapFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, FocuserMapFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'FocuserMap'> extends True ? Prisma__FocuserMapClient<FocuserMapGetPayload<T>> : Prisma__FocuserMapClient<FocuserMapGetPayload<T> | null, null>
+
+    /**
+     * Find the first FocuserMap that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FocuserMapFindFirstOrThrowArgs} args - Arguments to find a FocuserMap
+     * @example
+     * // Get one FocuserMap
+     * const focuserMap = await prisma.focuserMap.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends FocuserMapFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, FocuserMapFindFirstOrThrowArgs>
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+
+    /**
+     * Find zero or more FocuserMaps that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FocuserMapFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FocuserMaps
+     * const focuserMaps = await prisma.focuserMap.findMany()
+     * 
+     * // Get first 10 FocuserMaps
+     * const focuserMaps = await prisma.focuserMap.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const focuserMapWithIdOnly = await prisma.focuserMap.findMany({ select: { id: true } })
      * 
     **/
-    select?: FollowerSelect | null
+    findMany<T extends FocuserMapFindManyArgs>(
+      args?: SelectSubset<T, FocuserMapFindManyArgs>
+    ): PrismaPromise<Array<FocuserMapGetPayload<T>>>
+
+    /**
+     * Create a FocuserMap.
+     * @param {FocuserMapCreateArgs} args - Arguments to create a FocuserMap.
+     * @example
+     * // Create one FocuserMap
+     * const FocuserMap = await prisma.focuserMap.create({
+     *   data: {
+     *     // ... data to create a FocuserMap
+     *   }
+     * })
+     * 
+    **/
+    create<T extends FocuserMapCreateArgs>(
+      args: SelectSubset<T, FocuserMapCreateArgs>
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+
+    /**
+     * Create many FocuserMaps.
+     *     @param {FocuserMapCreateManyArgs} args - Arguments to create many FocuserMaps.
+     *     @example
+     *     // Create many FocuserMaps
+     *     const focuserMap = await prisma.focuserMap.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends FocuserMapCreateManyArgs>(
+      args?: SelectSubset<T, FocuserMapCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a FocuserMap.
+     * @param {FocuserMapDeleteArgs} args - Arguments to delete one FocuserMap.
+     * @example
+     * // Delete one FocuserMap
+     * const FocuserMap = await prisma.focuserMap.delete({
+     *   where: {
+     *     // ... filter to delete one FocuserMap
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends FocuserMapDeleteArgs>(
+      args: SelectSubset<T, FocuserMapDeleteArgs>
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+
+    /**
+     * Update one FocuserMap.
+     * @param {FocuserMapUpdateArgs} args - Arguments to update one FocuserMap.
+     * @example
+     * // Update one FocuserMap
+     * const focuserMap = await prisma.focuserMap.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends FocuserMapUpdateArgs>(
+      args: SelectSubset<T, FocuserMapUpdateArgs>
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+
+    /**
+     * Delete zero or more FocuserMaps.
+     * @param {FocuserMapDeleteManyArgs} args - Arguments to filter FocuserMaps to delete.
+     * @example
+     * // Delete a few FocuserMaps
+     * const { count } = await prisma.focuserMap.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends FocuserMapDeleteManyArgs>(
+      args?: SelectSubset<T, FocuserMapDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FocuserMaps.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FocuserMapUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FocuserMaps
+     * const focuserMap = await prisma.focuserMap.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends FocuserMapUpdateManyArgs>(
+      args: SelectSubset<T, FocuserMapUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one FocuserMap.
+     * @param {FocuserMapUpsertArgs} args - Arguments to update or create a FocuserMap.
+     * @example
+     * // Update or create a FocuserMap
+     * const focuserMap = await prisma.focuserMap.upsert({
+     *   create: {
+     *     // ... data to create a FocuserMap
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FocuserMap we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends FocuserMapUpsertArgs>(
+      args: SelectSubset<T, FocuserMapUpsertArgs>
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+
+    /**
+     * Count the number of FocuserMaps.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FocuserMapCountArgs} args - Arguments to filter FocuserMaps to count.
+     * @example
+     * // Count the number of FocuserMaps
+     * const count = await prisma.focuserMap.count({
+     *   where: {
+     *     // ... the filter for the FocuserMaps we want to count
+     *   }
+     * })
+    **/
+    count<T extends FocuserMapCountArgs>(
+      args?: Subset<T, FocuserMapCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FocuserMapCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FocuserMap.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FocuserMapAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FocuserMapAggregateArgs>(args: Subset<T, FocuserMapAggregateArgs>): PrismaPromise<GetFocuserMapAggregateType<T>>
+
+    /**
+     * Group by FocuserMap.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FocuserMapGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FocuserMapGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FocuserMapGroupByArgs['orderBy'] }
+        : { orderBy?: FocuserMapGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FocuserMapGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFocuserMapGroupByPayload<T> : PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FocuserMap.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__FocuserMapClient<T, Null = never> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    follower<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * FocuserMap base type for findUnique actions
+   */
+  export type FocuserMapFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: FollowerInclude | null
+    include?: FocuserMapInclude | null
+    /**
+     * Filter, which FocuserMap to fetch.
+     * 
+    **/
+    where: FocuserMapWhereUniqueInput
+  }
+
+  /**
+   * FocuserMap findUnique
+   */
+  export interface FocuserMapFindUniqueArgs extends FocuserMapFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * FocuserMap findUniqueOrThrow
+   */
+  export type FocuserMapFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
+    /**
+     * Filter, which FocuserMap to fetch.
+     * 
+    **/
+    where: FocuserMapWhereUniqueInput
+  }
+
+
+  /**
+   * FocuserMap base type for findFirst actions
+   */
+  export type FocuserMapFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
+    /**
+     * Filter, which FocuserMap to fetch.
+     * 
+    **/
+    where?: FocuserMapWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FocuserMaps to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FocuserMaps.
+     * 
+    **/
+    cursor?: FocuserMapWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FocuserMaps from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FocuserMaps.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FocuserMaps.
+     * 
+    **/
+    distinct?: Enumerable<FocuserMapScalarFieldEnum>
+  }
+
+  /**
+   * FocuserMap findFirst
+   */
+  export interface FocuserMapFindFirstArgs extends FocuserMapFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * FocuserMap findFirstOrThrow
+   */
+  export type FocuserMapFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
+    /**
+     * Filter, which FocuserMap to fetch.
+     * 
+    **/
+    where?: FocuserMapWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FocuserMaps to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FocuserMaps.
+     * 
+    **/
+    cursor?: FocuserMapWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FocuserMaps from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FocuserMaps.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FocuserMaps.
+     * 
+    **/
+    distinct?: Enumerable<FocuserMapScalarFieldEnum>
+  }
+
+
+  /**
+   * FocuserMap findMany
+   */
+  export type FocuserMapFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
+    /**
+     * Filter, which FocuserMaps to fetch.
+     * 
+    **/
+    where?: FocuserMapWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FocuserMaps to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FocuserMaps.
+     * 
+    **/
+    cursor?: FocuserMapWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FocuserMaps from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FocuserMaps.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<FocuserMapScalarFieldEnum>
+  }
+
+
+  /**
+   * FocuserMap create
+   */
+  export type FocuserMapCreateArgs = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
+    /**
+     * The data needed to create a FocuserMap.
+     * 
+    **/
+    data: XOR<FocuserMapCreateInput, FocuserMapUncheckedCreateInput>
+  }
+
+
+  /**
+   * FocuserMap createMany
+   */
+  export type FocuserMapCreateManyArgs = {
+    /**
+     * The data used to create many FocuserMaps.
+     * 
+    **/
+    data: Enumerable<FocuserMapCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * FocuserMap update
+   */
+  export type FocuserMapUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
+    /**
+     * The data needed to update a FocuserMap.
+     * 
+    **/
+    data: XOR<FocuserMapUpdateInput, FocuserMapUncheckedUpdateInput>
+    /**
+     * Choose, which FocuserMap to update.
+     * 
+    **/
+    where: FocuserMapWhereUniqueInput
+  }
+
+
+  /**
+   * FocuserMap updateMany
+   */
+  export type FocuserMapUpdateManyArgs = {
+    /**
+     * The data used to update FocuserMaps.
+     * 
+    **/
+    data: XOR<FocuserMapUpdateManyMutationInput, FocuserMapUncheckedUpdateManyInput>
+    /**
+     * Filter which FocuserMaps to update
+     * 
+    **/
+    where?: FocuserMapWhereInput
+  }
+
+
+  /**
+   * FocuserMap upsert
+   */
+  export type FocuserMapUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
+    /**
+     * The filter to search for the FocuserMap to update in case it exists.
+     * 
+    **/
+    where: FocuserMapWhereUniqueInput
+    /**
+     * In case the FocuserMap found by the `where` argument doesn't exist, create a new FocuserMap with this data.
+     * 
+    **/
+    create: XOR<FocuserMapCreateInput, FocuserMapUncheckedCreateInput>
+    /**
+     * In case the FocuserMap was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<FocuserMapUpdateInput, FocuserMapUncheckedUpdateInput>
+  }
+
+
+  /**
+   * FocuserMap delete
+   */
+  export type FocuserMapDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
+    /**
+     * Filter which FocuserMap to delete.
+     * 
+    **/
+    where: FocuserMapWhereUniqueInput
+  }
+
+
+  /**
+   * FocuserMap deleteMany
+   */
+  export type FocuserMapDeleteManyArgs = {
+    /**
+     * Filter which FocuserMaps to delete
+     * 
+    **/
+    where?: FocuserMapWhereInput
+  }
+
+
+  /**
+   * FocuserMap without action
+   */
+  export type FocuserMapArgs = {
+    /**
+     * Select specific fields to fetch from the FocuserMap
+     * 
+    **/
+    select?: FocuserMapSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FocuserMapInclude | null
   }
 
 
@@ -5235,51 +6241,97 @@ export namespace Prisma {
 
   export type AggregateComment = {
     _count: CommentCountAggregateOutputType | null
+    _avg: CommentAvgAggregateOutputType | null
+    _sum: CommentSumAggregateOutputType | null
     _min: CommentMinAggregateOutputType | null
     _max: CommentMaxAggregateOutputType | null
   }
 
+  export type CommentAvgAggregateOutputType = {
+    like_times: number | null
+    dislike_times: number | null
+  }
+
+  export type CommentSumAggregateOutputType = {
+    like_times: number | null
+    dislike_times: number | null
+  }
+
   export type CommentMinAggregateOutputType = {
     id: string | null
-    createdAt: Date | null
+    parent_id: string | null
     comment: string | null
+    user_id: string | null
+    like_times: number | null
+    dislike_times: number | null
+    createdAt: Date | null
     article_id: string | null
   }
 
   export type CommentMaxAggregateOutputType = {
     id: string | null
-    createdAt: Date | null
+    parent_id: string | null
     comment: string | null
+    user_id: string | null
+    like_times: number | null
+    dislike_times: number | null
+    createdAt: Date | null
     article_id: string | null
   }
 
   export type CommentCountAggregateOutputType = {
     id: number
-    createdAt: number
+    parent_id: number
     comment: number
+    user_id: number
+    like_times: number
+    dislike_times: number
+    createdAt: number
     article_id: number
     _all: number
   }
 
 
+  export type CommentAvgAggregateInputType = {
+    like_times?: true
+    dislike_times?: true
+  }
+
+  export type CommentSumAggregateInputType = {
+    like_times?: true
+    dislike_times?: true
+  }
+
   export type CommentMinAggregateInputType = {
     id?: true
-    createdAt?: true
+    parent_id?: true
     comment?: true
+    user_id?: true
+    like_times?: true
+    dislike_times?: true
+    createdAt?: true
     article_id?: true
   }
 
   export type CommentMaxAggregateInputType = {
     id?: true
-    createdAt?: true
+    parent_id?: true
     comment?: true
+    user_id?: true
+    like_times?: true
+    dislike_times?: true
+    createdAt?: true
     article_id?: true
   }
 
   export type CommentCountAggregateInputType = {
     id?: true
-    createdAt?: true
+    parent_id?: true
     comment?: true
+    user_id?: true
+    like_times?: true
+    dislike_times?: true
+    createdAt?: true
     article_id?: true
     _all?: true
   }
@@ -5327,6 +6379,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: CommentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CommentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: CommentMinAggregateInputType
@@ -5357,6 +6421,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: CommentCountAggregateInputType | true
+    _avg?: CommentAvgAggregateInputType
+    _sum?: CommentSumAggregateInputType
     _min?: CommentMinAggregateInputType
     _max?: CommentMaxAggregateInputType
   }
@@ -5364,10 +6430,16 @@ export namespace Prisma {
 
   export type CommentGroupByOutputType = {
     id: string
-    createdAt: Date
+    parent_id: string
     comment: string
+    user_id: string
+    like_times: number
+    dislike_times: number
+    createdAt: Date
     article_id: string
     _count: CommentCountAggregateOutputType | null
+    _avg: CommentAvgAggregateOutputType | null
+    _sum: CommentSumAggregateOutputType | null
     _min: CommentMinAggregateOutputType | null
     _max: CommentMaxAggregateOutputType | null
   }
@@ -5388,14 +6460,20 @@ export namespace Prisma {
 
   export type CommentSelect = {
     id?: boolean
-    createdAt?: boolean
+    parent_id?: boolean
     comment?: boolean
+    commentBy?: boolean | UserArgs
+    user_id?: boolean
+    like_times?: boolean
+    dislike_times?: boolean
+    createdAt?: boolean
     article?: boolean | ArticleArgs
     article_id?: boolean
   }
 
 
   export type CommentInclude = {
+    commentBy?: boolean | UserArgs
     article?: boolean | ArticleArgs
   } 
 
@@ -5406,11 +6484,13 @@ export namespace Prisma {
     S extends { include: any } & (CommentArgs | CommentFindManyArgs)
     ? Comment  & {
     [P in TruthyKeys<S['include']>]:
+        P extends 'commentBy' ? UserGetPayload<S['include'][P]> :
         P extends 'article' ? ArticleGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (CommentArgs | CommentFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
+        P extends 'commentBy' ? UserGetPayload<S['select'][P]> :
         P extends 'article' ? ArticleGetPayload<S['select'][P]> :  P extends keyof Comment ? Comment[P] : never
   } 
       : Comment
@@ -5784,6 +6864,8 @@ export namespace Prisma {
     private _requestPromise?;
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    commentBy<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
 
     article<T extends ArticleArgs= {}>(args?: Subset<T, ArticleArgs>): Prisma__ArticleClient<ArticleGetPayload<T> | Null>;
 
@@ -6223,6 +7305,7 @@ export namespace Prisma {
     article_bigCover: 'article_bigCover',
     article_cover: 'article_cover',
     author_id: 'author_id',
+    isExist: 'isExist',
     browse_times: 'browse_times',
     like_times: 'like_times',
     createdAt: 'createdAt',
@@ -6244,19 +7327,32 @@ export namespace Prisma {
 
   export const CommentScalarFieldEnum: {
     id: 'id',
-    createdAt: 'createdAt',
+    parent_id: 'parent_id',
     comment: 'comment',
+    user_id: 'user_id',
+    like_times: 'like_times',
+    dislike_times: 'dislike_times',
+    createdAt: 'createdAt',
     article_id: 'article_id'
   };
 
   export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
 
 
-  export const FollowerScalarFieldEnum: {
-    id: 'id'
+  export const FocuserMapScalarFieldEnum: {
+    id: 'id',
+    follower_id: 'follower_id'
   };
 
-  export type FollowerScalarFieldEnum = (typeof FollowerScalarFieldEnum)[keyof typeof FollowerScalarFieldEnum]
+  export type FocuserMapScalarFieldEnum = (typeof FocuserMapScalarFieldEnum)[keyof typeof FocuserMapScalarFieldEnum]
+
+
+  export const FollowerMapScalarFieldEnum: {
+    id: 'id',
+    master_id: 'master_id'
+  };
+
+  export type FollowerMapScalarFieldEnum = (typeof FollowerMapScalarFieldEnum)[keyof typeof FollowerMapScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6280,7 +7376,8 @@ export namespace Prisma {
   export const UserScalarFieldEnum: {
     id: 'id',
     user_name: 'user_name',
-    avatar: 'avatar'
+    avatar: 'avatar',
+    isExist: 'isExist'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -6305,6 +7402,7 @@ export namespace Prisma {
     comment_list?: CommentListRelationFilter
     author?: XOR<UserRelationFilter, UserWhereInput>
     author_id?: StringFilter | string
+    isExist?: BoolFilter | boolean
     browse_times?: IntFilter | number
     like_times?: IntFilter | number
     createdAt?: DateTimeFilter | Date | string
@@ -6322,6 +7420,7 @@ export namespace Prisma {
     comment_list?: CommentOrderByRelationAggregateInput
     author?: UserOrderByWithRelationInput
     author_id?: SortOrder
+    isExist?: SortOrder
     browse_times?: SortOrder
     like_times?: SortOrder
     createdAt?: SortOrder
@@ -6341,6 +7440,7 @@ export namespace Prisma {
     article_bigCover?: SortOrder
     article_cover?: SortOrder
     author_id?: SortOrder
+    isExist?: SortOrder
     browse_times?: SortOrder
     like_times?: SortOrder
     createdAt?: SortOrder
@@ -6363,6 +7463,7 @@ export namespace Prisma {
     article_bigCover?: StringNullableWithAggregatesFilter | string | null
     article_cover?: StringNullableWithAggregatesFilter | string | null
     author_id?: StringWithAggregatesFilter | string
+    isExist?: BoolWithAggregatesFilter | boolean
     browse_times?: IntWithAggregatesFilter | number
     like_times?: IntWithAggregatesFilter | number
     createdAt?: DateTimeWithAggregatesFilter | Date | string
@@ -6391,7 +7492,6 @@ export namespace Prisma {
   export type CategoryWhereUniqueInput = {
     id?: string
     cate_name?: string
-    background?: string
   }
 
   export type CategoryOrderByWithAggregationInput = {
@@ -6422,7 +7522,10 @@ export namespace Prisma {
     user_name?: StringFilter | string
     avatar?: StringFilter | string
     article_list?: ArticleListRelationFilter
-    foller_list?: FollowerListRelationFilter
+    follower_list?: FollowerMapListRelationFilter
+    focuser_list?: FocuserMapListRelationFilter
+    comment_list?: CommentListRelationFilter
+    isExist?: BoolFilter | boolean
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6430,7 +7533,10 @@ export namespace Prisma {
     user_name?: SortOrder
     avatar?: SortOrder
     article_list?: ArticleOrderByRelationAggregateInput
-    foller_list?: FollowerOrderByRelationAggregateInput
+    follower_list?: FollowerMapOrderByRelationAggregateInput
+    focuser_list?: FocuserMapOrderByRelationAggregateInput
+    comment_list?: CommentOrderByRelationAggregateInput
+    isExist?: SortOrder
   }
 
   export type UserWhereUniqueInput = {
@@ -6442,6 +7548,7 @@ export namespace Prisma {
     id?: SortOrder
     user_name?: SortOrder
     avatar?: SortOrder
+    isExist?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -6454,37 +7561,77 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter | string
     user_name?: StringWithAggregatesFilter | string
     avatar?: StringWithAggregatesFilter | string
+    isExist?: BoolWithAggregatesFilter | boolean
   }
 
-  export type FollowerWhereInput = {
-    AND?: Enumerable<FollowerWhereInput>
-    OR?: Enumerable<FollowerWhereInput>
-    NOT?: Enumerable<FollowerWhereInput>
+  export type FollowerMapWhereInput = {
+    AND?: Enumerable<FollowerMapWhereInput>
+    OR?: Enumerable<FollowerMapWhereInput>
+    NOT?: Enumerable<FollowerMapWhereInput>
     id?: StringFilter | string
-    followers?: UserListRelationFilter
+    master?: XOR<UserRelationFilter, UserWhereInput>
+    master_id?: StringFilter | string
   }
 
-  export type FollowerOrderByWithRelationInput = {
+  export type FollowerMapOrderByWithRelationInput = {
     id?: SortOrder
-    followers?: UserOrderByRelationAggregateInput
+    master?: UserOrderByWithRelationInput
+    master_id?: SortOrder
   }
 
-  export type FollowerWhereUniqueInput = {
+  export type FollowerMapWhereUniqueInput = {
     id?: string
   }
 
-  export type FollowerOrderByWithAggregationInput = {
+  export type FollowerMapOrderByWithAggregationInput = {
     id?: SortOrder
-    _count?: FollowerCountOrderByAggregateInput
-    _max?: FollowerMaxOrderByAggregateInput
-    _min?: FollowerMinOrderByAggregateInput
+    master_id?: SortOrder
+    _count?: FollowerMapCountOrderByAggregateInput
+    _max?: FollowerMapMaxOrderByAggregateInput
+    _min?: FollowerMapMinOrderByAggregateInput
   }
 
-  export type FollowerScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<FollowerScalarWhereWithAggregatesInput>
-    OR?: Enumerable<FollowerScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<FollowerScalarWhereWithAggregatesInput>
+  export type FollowerMapScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<FollowerMapScalarWhereWithAggregatesInput>
+    OR?: Enumerable<FollowerMapScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<FollowerMapScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
+    master_id?: StringWithAggregatesFilter | string
+  }
+
+  export type FocuserMapWhereInput = {
+    AND?: Enumerable<FocuserMapWhereInput>
+    OR?: Enumerable<FocuserMapWhereInput>
+    NOT?: Enumerable<FocuserMapWhereInput>
+    id?: StringFilter | string
+    follower?: XOR<UserRelationFilter, UserWhereInput>
+    follower_id?: StringFilter | string
+  }
+
+  export type FocuserMapOrderByWithRelationInput = {
+    id?: SortOrder
+    follower?: UserOrderByWithRelationInput
+    follower_id?: SortOrder
+  }
+
+  export type FocuserMapWhereUniqueInput = {
+    id?: string
+  }
+
+  export type FocuserMapOrderByWithAggregationInput = {
+    id?: SortOrder
+    follower_id?: SortOrder
+    _count?: FocuserMapCountOrderByAggregateInput
+    _max?: FocuserMapMaxOrderByAggregateInput
+    _min?: FocuserMapMinOrderByAggregateInput
+  }
+
+  export type FocuserMapScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<FocuserMapScalarWhereWithAggregatesInput>
+    OR?: Enumerable<FocuserMapScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<FocuserMapScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    follower_id?: StringWithAggregatesFilter | string
   }
 
   export type CommentWhereInput = {
@@ -6492,16 +7639,26 @@ export namespace Prisma {
     OR?: Enumerable<CommentWhereInput>
     NOT?: Enumerable<CommentWhereInput>
     id?: StringFilter | string
-    createdAt?: DateTimeFilter | Date | string
+    parent_id?: StringFilter | string
     comment?: StringFilter | string
+    commentBy?: XOR<UserRelationFilter, UserWhereInput>
+    user_id?: StringFilter | string
+    like_times?: IntFilter | number
+    dislike_times?: IntFilter | number
+    createdAt?: DateTimeFilter | Date | string
     article?: XOR<ArticleRelationFilter, ArticleWhereInput>
     article_id?: StringFilter | string
   }
 
   export type CommentOrderByWithRelationInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    parent_id?: SortOrder
     comment?: SortOrder
+    commentBy?: UserOrderByWithRelationInput
+    user_id?: SortOrder
+    like_times?: SortOrder
+    dislike_times?: SortOrder
+    createdAt?: SortOrder
     article?: ArticleOrderByWithRelationInput
     article_id?: SortOrder
   }
@@ -6512,12 +7669,18 @@ export namespace Prisma {
 
   export type CommentOrderByWithAggregationInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    parent_id?: SortOrder
     comment?: SortOrder
+    user_id?: SortOrder
+    like_times?: SortOrder
+    dislike_times?: SortOrder
+    createdAt?: SortOrder
     article_id?: SortOrder
     _count?: CommentCountOrderByAggregateInput
+    _avg?: CommentAvgOrderByAggregateInput
     _max?: CommentMaxOrderByAggregateInput
     _min?: CommentMinOrderByAggregateInput
+    _sum?: CommentSumOrderByAggregateInput
   }
 
   export type CommentScalarWhereWithAggregatesInput = {
@@ -6525,8 +7688,12 @@ export namespace Prisma {
     OR?: Enumerable<CommentScalarWhereWithAggregatesInput>
     NOT?: Enumerable<CommentScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
-    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    parent_id?: StringWithAggregatesFilter | string
     comment?: StringWithAggregatesFilter | string
+    user_id?: StringWithAggregatesFilter | string
+    like_times?: IntWithAggregatesFilter | number
+    dislike_times?: IntWithAggregatesFilter | number
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
     article_id?: StringWithAggregatesFilter | string
   }
 
@@ -6540,6 +7707,7 @@ export namespace Prisma {
     category_list?: CategoryCreateNestedManyWithoutArticle_listInput
     comment_list?: CommentCreateNestedManyWithoutArticleInput
     author: UserCreateNestedOneWithoutArticle_listInput
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
@@ -6556,6 +7724,7 @@ export namespace Prisma {
     category_list?: CategoryUncheckedCreateNestedManyWithoutArticle_listInput
     comment_list?: CommentUncheckedCreateNestedManyWithoutArticleInput
     author_id: string
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
@@ -6572,6 +7741,7 @@ export namespace Prisma {
     category_list?: CategoryUpdateManyWithoutArticle_listNestedInput
     comment_list?: CommentUpdateManyWithoutArticleNestedInput
     author?: UserUpdateOneRequiredWithoutArticle_listNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6588,6 +7758,7 @@ export namespace Prisma {
     category_list?: CategoryUncheckedUpdateManyWithoutArticle_listNestedInput
     comment_list?: CommentUncheckedUpdateManyWithoutArticleNestedInput
     author_id?: StringFieldUpdateOperationsInput | string
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6602,6 +7773,7 @@ export namespace Prisma {
     article_bigCover?: string | null
     article_cover?: string | null
     author_id: string
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
@@ -6615,6 +7787,7 @@ export namespace Prisma {
     article_content?: StringFieldUpdateOperationsInput | string
     article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
     article_cover?: NullableStringFieldUpdateOperationsInput | string | null
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6629,6 +7802,7 @@ export namespace Prisma {
     article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
     article_cover?: NullableStringFieldUpdateOperationsInput | string | null
     author_id?: StringFieldUpdateOperationsInput | string
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6693,7 +7867,10 @@ export namespace Prisma {
     user_name: string
     avatar: string
     article_list?: ArticleCreateNestedManyWithoutAuthorInput
-    foller_list?: FollowerCreateNestedManyWithoutFollowersInput
+    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput
+    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput
+    comment_list?: CommentCreateNestedManyWithoutCommentByInput
+    isExist?: boolean
   }
 
   export type UserUncheckedCreateInput = {
@@ -6701,7 +7878,10 @@ export namespace Prisma {
     user_name: string
     avatar: string
     article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    foller_list?: FollowerUncheckedCreateNestedManyWithoutFollowersInput
+    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput
+    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput
+    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput
+    isExist?: boolean
   }
 
   export type UserUpdateInput = {
@@ -6709,7 +7889,10 @@ export namespace Prisma {
     user_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     article_list?: ArticleUpdateManyWithoutAuthorNestedInput
-    foller_list?: FollowerUpdateManyWithoutFollowersNestedInput
+    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput
+    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput
+    comment_list?: CommentUpdateManyWithoutCommentByNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6717,104 +7900,173 @@ export namespace Prisma {
     user_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
     article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    foller_list?: FollowerUncheckedUpdateManyWithoutFollowersNestedInput
+    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput
+    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput
+    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserCreateManyInput = {
     id?: string
     user_name: string
     avatar: string
+    isExist?: boolean
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
+    isExist?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
+    isExist?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type FollowerCreateInput = {
+  export type FollowerMapCreateInput = {
     id?: string
-    followers?: UserCreateNestedManyWithoutFoller_listInput
+    master: UserCreateNestedOneWithoutFollower_listInput
   }
 
-  export type FollowerUncheckedCreateInput = {
+  export type FollowerMapUncheckedCreateInput = {
     id?: string
-    followers?: UserUncheckedCreateNestedManyWithoutFoller_listInput
+    master_id: string
   }
 
-  export type FollowerUpdateInput = {
+  export type FollowerMapUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    followers?: UserUpdateManyWithoutFoller_listNestedInput
+    master?: UserUpdateOneRequiredWithoutFollower_listNestedInput
   }
 
-  export type FollowerUncheckedUpdateInput = {
+  export type FollowerMapUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    followers?: UserUncheckedUpdateManyWithoutFoller_listNestedInput
+    master_id?: StringFieldUpdateOperationsInput | string
   }
 
-  export type FollowerCreateManyInput = {
+  export type FollowerMapCreateManyInput = {
     id?: string
+    master_id: string
   }
 
-  export type FollowerUpdateManyMutationInput = {
+  export type FollowerMapUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
   }
 
-  export type FollowerUncheckedUpdateManyInput = {
+  export type FollowerMapUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    master_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FocuserMapCreateInput = {
+    id?: string
+    follower: UserCreateNestedOneWithoutFocuser_listInput
+  }
+
+  export type FocuserMapUncheckedCreateInput = {
+    id?: string
+    follower_id: string
+  }
+
+  export type FocuserMapUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    follower?: UserUpdateOneRequiredWithoutFocuser_listNestedInput
+  }
+
+  export type FocuserMapUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    follower_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FocuserMapCreateManyInput = {
+    id?: string
+    follower_id: string
+  }
+
+  export type FocuserMapUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FocuserMapUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    follower_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type CommentCreateInput = {
     id?: string
-    createdAt?: Date | string
+    parent_id?: string
     comment: string
+    commentBy: UserCreateNestedOneWithoutComment_listInput
+    like_times?: number
+    dislike_times?: number
+    createdAt?: Date | string
     article: ArticleCreateNestedOneWithoutComment_listInput
   }
 
   export type CommentUncheckedCreateInput = {
     id?: string
-    createdAt?: Date | string
+    parent_id?: string
     comment: string
+    user_id: string
+    like_times?: number
+    dislike_times?: number
+    createdAt?: Date | string
     article_id: string
   }
 
   export type CommentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent_id?: StringFieldUpdateOperationsInput | string
     comment?: StringFieldUpdateOperationsInput | string
+    commentBy?: UserUpdateOneRequiredWithoutComment_listNestedInput
+    like_times?: IntFieldUpdateOperationsInput | number
+    dislike_times?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     article?: ArticleUpdateOneRequiredWithoutComment_listNestedInput
   }
 
   export type CommentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent_id?: StringFieldUpdateOperationsInput | string
     comment?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    like_times?: IntFieldUpdateOperationsInput | number
+    dislike_times?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     article_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type CommentCreateManyInput = {
     id?: string
-    createdAt?: Date | string
+    parent_id?: string
     comment: string
+    user_id: string
+    like_times?: number
+    dislike_times?: number
+    createdAt?: Date | string
     article_id: string
   }
 
   export type CommentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent_id?: StringFieldUpdateOperationsInput | string
     comment?: StringFieldUpdateOperationsInput | string
+    like_times?: IntFieldUpdateOperationsInput | number
+    dislike_times?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CommentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent_id?: StringFieldUpdateOperationsInput | string
     comment?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    like_times?: IntFieldUpdateOperationsInput | number
+    dislike_times?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     article_id?: StringFieldUpdateOperationsInput | string
   }
 
@@ -6863,6 +8115,11 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
+  export type BoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
+  }
+
   export type IntFilter = {
     equals?: number
     in?: Enumerable<number>
@@ -6901,6 +8158,7 @@ export namespace Prisma {
     article_bigCover?: SortOrder
     article_cover?: SortOrder
     author_id?: SortOrder
+    isExist?: SortOrder
     browse_times?: SortOrder
     like_times?: SortOrder
     createdAt?: SortOrder
@@ -6920,6 +8178,7 @@ export namespace Prisma {
     article_bigCover?: SortOrder
     article_cover?: SortOrder
     author_id?: SortOrder
+    isExist?: SortOrder
     browse_times?: SortOrder
     like_times?: SortOrder
     createdAt?: SortOrder
@@ -6934,6 +8193,7 @@ export namespace Prisma {
     article_bigCover?: SortOrder
     article_cover?: SortOrder
     author_id?: SortOrder
+    isExist?: SortOrder
     browse_times?: SortOrder
     like_times?: SortOrder
     createdAt?: SortOrder
@@ -6977,6 +8237,14 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter
     _min?: NestedStringNullableFilter
     _max?: NestedStringNullableFilter
+  }
+
+  export type BoolWithAggregatesFilter = {
+    equals?: boolean
+    not?: NestedBoolWithAggregatesFilter | boolean
+    _count?: NestedIntFilter
+    _min?: NestedBoolFilter
+    _max?: NestedBoolFilter
   }
 
   export type IntWithAggregatesFilter = {
@@ -7040,13 +8308,23 @@ export namespace Prisma {
     cate_pic?: SortOrder
   }
 
-  export type FollowerListRelationFilter = {
-    every?: FollowerWhereInput
-    some?: FollowerWhereInput
-    none?: FollowerWhereInput
+  export type FollowerMapListRelationFilter = {
+    every?: FollowerMapWhereInput
+    some?: FollowerMapWhereInput
+    none?: FollowerMapWhereInput
   }
 
-  export type FollowerOrderByRelationAggregateInput = {
+  export type FocuserMapListRelationFilter = {
+    every?: FocuserMapWhereInput
+    some?: FocuserMapWhereInput
+    none?: FocuserMapWhereInput
+  }
+
+  export type FollowerMapOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FocuserMapOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -7054,40 +8332,51 @@ export namespace Prisma {
     id?: SortOrder
     user_name?: SortOrder
     avatar?: SortOrder
+    isExist?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     user_name?: SortOrder
     avatar?: SortOrder
+    isExist?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     user_name?: SortOrder
     avatar?: SortOrder
+    isExist?: SortOrder
   }
 
-  export type UserListRelationFilter = {
-    every?: UserWhereInput
-    some?: UserWhereInput
-    none?: UserWhereInput
-  }
-
-  export type UserOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type FollowerCountOrderByAggregateInput = {
+  export type FollowerMapCountOrderByAggregateInput = {
     id?: SortOrder
+    master_id?: SortOrder
   }
 
-  export type FollowerMaxOrderByAggregateInput = {
+  export type FollowerMapMaxOrderByAggregateInput = {
     id?: SortOrder
+    master_id?: SortOrder
   }
 
-  export type FollowerMinOrderByAggregateInput = {
+  export type FollowerMapMinOrderByAggregateInput = {
     id?: SortOrder
+    master_id?: SortOrder
+  }
+
+  export type FocuserMapCountOrderByAggregateInput = {
+    id?: SortOrder
+    follower_id?: SortOrder
+  }
+
+  export type FocuserMapMaxOrderByAggregateInput = {
+    id?: SortOrder
+    follower_id?: SortOrder
+  }
+
+  export type FocuserMapMinOrderByAggregateInput = {
+    id?: SortOrder
+    follower_id?: SortOrder
   }
 
   export type ArticleRelationFilter = {
@@ -7097,23 +8386,45 @@ export namespace Prisma {
 
   export type CommentCountOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    parent_id?: SortOrder
     comment?: SortOrder
+    user_id?: SortOrder
+    like_times?: SortOrder
+    dislike_times?: SortOrder
+    createdAt?: SortOrder
     article_id?: SortOrder
+  }
+
+  export type CommentAvgOrderByAggregateInput = {
+    like_times?: SortOrder
+    dislike_times?: SortOrder
   }
 
   export type CommentMaxOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    parent_id?: SortOrder
     comment?: SortOrder
+    user_id?: SortOrder
+    like_times?: SortOrder
+    dislike_times?: SortOrder
+    createdAt?: SortOrder
     article_id?: SortOrder
   }
 
   export type CommentMinOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    parent_id?: SortOrder
     comment?: SortOrder
+    user_id?: SortOrder
+    like_times?: SortOrder
+    dislike_times?: SortOrder
+    createdAt?: SortOrder
     article_id?: SortOrder
+  }
+
+  export type CommentSumOrderByAggregateInput = {
+    like_times?: SortOrder
+    dislike_times?: SortOrder
   }
 
   export type CategoryCreateNestedManyWithoutArticle_listInput = {
@@ -7189,6 +8500,10 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutArticle_listInput
     connect?: UserWhereUniqueInput
     update?: XOR<UserUpdateWithoutArticle_listInput, UserUncheckedUpdateWithoutArticle_listInput>
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -7275,10 +8590,25 @@ export namespace Prisma {
     connect?: Enumerable<ArticleWhereUniqueInput>
   }
 
-  export type FollowerCreateNestedManyWithoutFollowersInput = {
-    create?: XOR<Enumerable<FollowerCreateWithoutFollowersInput>, Enumerable<FollowerUncheckedCreateWithoutFollowersInput>>
-    connectOrCreate?: Enumerable<FollowerCreateOrConnectWithoutFollowersInput>
-    connect?: Enumerable<FollowerWhereUniqueInput>
+  export type FollowerMapCreateNestedManyWithoutMasterInput = {
+    create?: XOR<Enumerable<FollowerMapCreateWithoutMasterInput>, Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>>
+    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>
+    createMany?: FollowerMapCreateManyMasterInputEnvelope
+    connect?: Enumerable<FollowerMapWhereUniqueInput>
+  }
+
+  export type FocuserMapCreateNestedManyWithoutFollowerInput = {
+    create?: XOR<Enumerable<FocuserMapCreateWithoutFollowerInput>, Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>>
+    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>
+    createMany?: FocuserMapCreateManyFollowerInputEnvelope
+    connect?: Enumerable<FocuserMapWhereUniqueInput>
+  }
+
+  export type CommentCreateNestedManyWithoutCommentByInput = {
+    create?: XOR<Enumerable<CommentCreateWithoutCommentByInput>, Enumerable<CommentUncheckedCreateWithoutCommentByInput>>
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>
+    createMany?: CommentCreateManyCommentByInputEnvelope
+    connect?: Enumerable<CommentWhereUniqueInput>
   }
 
   export type ArticleUncheckedCreateNestedManyWithoutAuthorInput = {
@@ -7288,10 +8618,25 @@ export namespace Prisma {
     connect?: Enumerable<ArticleWhereUniqueInput>
   }
 
-  export type FollowerUncheckedCreateNestedManyWithoutFollowersInput = {
-    create?: XOR<Enumerable<FollowerCreateWithoutFollowersInput>, Enumerable<FollowerUncheckedCreateWithoutFollowersInput>>
-    connectOrCreate?: Enumerable<FollowerCreateOrConnectWithoutFollowersInput>
-    connect?: Enumerable<FollowerWhereUniqueInput>
+  export type FollowerMapUncheckedCreateNestedManyWithoutMasterInput = {
+    create?: XOR<Enumerable<FollowerMapCreateWithoutMasterInput>, Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>>
+    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>
+    createMany?: FollowerMapCreateManyMasterInputEnvelope
+    connect?: Enumerable<FollowerMapWhereUniqueInput>
+  }
+
+  export type FocuserMapUncheckedCreateNestedManyWithoutFollowerInput = {
+    create?: XOR<Enumerable<FocuserMapCreateWithoutFollowerInput>, Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>>
+    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>
+    createMany?: FocuserMapCreateManyFollowerInputEnvelope
+    connect?: Enumerable<FocuserMapWhereUniqueInput>
+  }
+
+  export type CommentUncheckedCreateNestedManyWithoutCommentByInput = {
+    create?: XOR<Enumerable<CommentCreateWithoutCommentByInput>, Enumerable<CommentUncheckedCreateWithoutCommentByInput>>
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>
+    createMany?: CommentCreateManyCommentByInputEnvelope
+    connect?: Enumerable<CommentWhereUniqueInput>
   }
 
   export type ArticleUpdateManyWithoutAuthorNestedInput = {
@@ -7308,17 +8653,46 @@ export namespace Prisma {
     deleteMany?: Enumerable<ArticleScalarWhereInput>
   }
 
-  export type FollowerUpdateManyWithoutFollowersNestedInput = {
-    create?: XOR<Enumerable<FollowerCreateWithoutFollowersInput>, Enumerable<FollowerUncheckedCreateWithoutFollowersInput>>
-    connectOrCreate?: Enumerable<FollowerCreateOrConnectWithoutFollowersInput>
-    upsert?: Enumerable<FollowerUpsertWithWhereUniqueWithoutFollowersInput>
-    set?: Enumerable<FollowerWhereUniqueInput>
-    disconnect?: Enumerable<FollowerWhereUniqueInput>
-    delete?: Enumerable<FollowerWhereUniqueInput>
-    connect?: Enumerable<FollowerWhereUniqueInput>
-    update?: Enumerable<FollowerUpdateWithWhereUniqueWithoutFollowersInput>
-    updateMany?: Enumerable<FollowerUpdateManyWithWhereWithoutFollowersInput>
-    deleteMany?: Enumerable<FollowerScalarWhereInput>
+  export type FollowerMapUpdateManyWithoutMasterNestedInput = {
+    create?: XOR<Enumerable<FollowerMapCreateWithoutMasterInput>, Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>>
+    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>
+    upsert?: Enumerable<FollowerMapUpsertWithWhereUniqueWithoutMasterInput>
+    createMany?: FollowerMapCreateManyMasterInputEnvelope
+    set?: Enumerable<FollowerMapWhereUniqueInput>
+    disconnect?: Enumerable<FollowerMapWhereUniqueInput>
+    delete?: Enumerable<FollowerMapWhereUniqueInput>
+    connect?: Enumerable<FollowerMapWhereUniqueInput>
+    update?: Enumerable<FollowerMapUpdateWithWhereUniqueWithoutMasterInput>
+    updateMany?: Enumerable<FollowerMapUpdateManyWithWhereWithoutMasterInput>
+    deleteMany?: Enumerable<FollowerMapScalarWhereInput>
+  }
+
+  export type FocuserMapUpdateManyWithoutFollowerNestedInput = {
+    create?: XOR<Enumerable<FocuserMapCreateWithoutFollowerInput>, Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>>
+    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>
+    upsert?: Enumerable<FocuserMapUpsertWithWhereUniqueWithoutFollowerInput>
+    createMany?: FocuserMapCreateManyFollowerInputEnvelope
+    set?: Enumerable<FocuserMapWhereUniqueInput>
+    disconnect?: Enumerable<FocuserMapWhereUniqueInput>
+    delete?: Enumerable<FocuserMapWhereUniqueInput>
+    connect?: Enumerable<FocuserMapWhereUniqueInput>
+    update?: Enumerable<FocuserMapUpdateWithWhereUniqueWithoutFollowerInput>
+    updateMany?: Enumerable<FocuserMapUpdateManyWithWhereWithoutFollowerInput>
+    deleteMany?: Enumerable<FocuserMapScalarWhereInput>
+  }
+
+  export type CommentUpdateManyWithoutCommentByNestedInput = {
+    create?: XOR<Enumerable<CommentCreateWithoutCommentByInput>, Enumerable<CommentUncheckedCreateWithoutCommentByInput>>
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>
+    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutCommentByInput>
+    createMany?: CommentCreateManyCommentByInputEnvelope
+    set?: Enumerable<CommentWhereUniqueInput>
+    disconnect?: Enumerable<CommentWhereUniqueInput>
+    delete?: Enumerable<CommentWhereUniqueInput>
+    connect?: Enumerable<CommentWhereUniqueInput>
+    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutCommentByInput>
+    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutCommentByInput>
+    deleteMany?: Enumerable<CommentScalarWhereInput>
   }
 
   export type ArticleUncheckedUpdateManyWithoutAuthorNestedInput = {
@@ -7335,61 +8709,94 @@ export namespace Prisma {
     deleteMany?: Enumerable<ArticleScalarWhereInput>
   }
 
-  export type FollowerUncheckedUpdateManyWithoutFollowersNestedInput = {
-    create?: XOR<Enumerable<FollowerCreateWithoutFollowersInput>, Enumerable<FollowerUncheckedCreateWithoutFollowersInput>>
-    connectOrCreate?: Enumerable<FollowerCreateOrConnectWithoutFollowersInput>
-    upsert?: Enumerable<FollowerUpsertWithWhereUniqueWithoutFollowersInput>
-    set?: Enumerable<FollowerWhereUniqueInput>
-    disconnect?: Enumerable<FollowerWhereUniqueInput>
-    delete?: Enumerable<FollowerWhereUniqueInput>
-    connect?: Enumerable<FollowerWhereUniqueInput>
-    update?: Enumerable<FollowerUpdateWithWhereUniqueWithoutFollowersInput>
-    updateMany?: Enumerable<FollowerUpdateManyWithWhereWithoutFollowersInput>
-    deleteMany?: Enumerable<FollowerScalarWhereInput>
+  export type FollowerMapUncheckedUpdateManyWithoutMasterNestedInput = {
+    create?: XOR<Enumerable<FollowerMapCreateWithoutMasterInput>, Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>>
+    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>
+    upsert?: Enumerable<FollowerMapUpsertWithWhereUniqueWithoutMasterInput>
+    createMany?: FollowerMapCreateManyMasterInputEnvelope
+    set?: Enumerable<FollowerMapWhereUniqueInput>
+    disconnect?: Enumerable<FollowerMapWhereUniqueInput>
+    delete?: Enumerable<FollowerMapWhereUniqueInput>
+    connect?: Enumerable<FollowerMapWhereUniqueInput>
+    update?: Enumerable<FollowerMapUpdateWithWhereUniqueWithoutMasterInput>
+    updateMany?: Enumerable<FollowerMapUpdateManyWithWhereWithoutMasterInput>
+    deleteMany?: Enumerable<FollowerMapScalarWhereInput>
   }
 
-  export type UserCreateNestedManyWithoutFoller_listInput = {
-    create?: XOR<Enumerable<UserCreateWithoutFoller_listInput>, Enumerable<UserUncheckedCreateWithoutFoller_listInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutFoller_listInput>
-    connect?: Enumerable<UserWhereUniqueInput>
+  export type FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput = {
+    create?: XOR<Enumerable<FocuserMapCreateWithoutFollowerInput>, Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>>
+    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>
+    upsert?: Enumerable<FocuserMapUpsertWithWhereUniqueWithoutFollowerInput>
+    createMany?: FocuserMapCreateManyFollowerInputEnvelope
+    set?: Enumerable<FocuserMapWhereUniqueInput>
+    disconnect?: Enumerable<FocuserMapWhereUniqueInput>
+    delete?: Enumerable<FocuserMapWhereUniqueInput>
+    connect?: Enumerable<FocuserMapWhereUniqueInput>
+    update?: Enumerable<FocuserMapUpdateWithWhereUniqueWithoutFollowerInput>
+    updateMany?: Enumerable<FocuserMapUpdateManyWithWhereWithoutFollowerInput>
+    deleteMany?: Enumerable<FocuserMapScalarWhereInput>
   }
 
-  export type UserUncheckedCreateNestedManyWithoutFoller_listInput = {
-    create?: XOR<Enumerable<UserCreateWithoutFoller_listInput>, Enumerable<UserUncheckedCreateWithoutFoller_listInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutFoller_listInput>
-    connect?: Enumerable<UserWhereUniqueInput>
+  export type CommentUncheckedUpdateManyWithoutCommentByNestedInput = {
+    create?: XOR<Enumerable<CommentCreateWithoutCommentByInput>, Enumerable<CommentUncheckedCreateWithoutCommentByInput>>
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>
+    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutCommentByInput>
+    createMany?: CommentCreateManyCommentByInputEnvelope
+    set?: Enumerable<CommentWhereUniqueInput>
+    disconnect?: Enumerable<CommentWhereUniqueInput>
+    delete?: Enumerable<CommentWhereUniqueInput>
+    connect?: Enumerable<CommentWhereUniqueInput>
+    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutCommentByInput>
+    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutCommentByInput>
+    deleteMany?: Enumerable<CommentScalarWhereInput>
   }
 
-  export type UserUpdateManyWithoutFoller_listNestedInput = {
-    create?: XOR<Enumerable<UserCreateWithoutFoller_listInput>, Enumerable<UserUncheckedCreateWithoutFoller_listInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutFoller_listInput>
-    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutFoller_listInput>
-    set?: Enumerable<UserWhereUniqueInput>
-    disconnect?: Enumerable<UserWhereUniqueInput>
-    delete?: Enumerable<UserWhereUniqueInput>
-    connect?: Enumerable<UserWhereUniqueInput>
-    update?: Enumerable<UserUpdateWithWhereUniqueWithoutFoller_listInput>
-    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutFoller_listInput>
-    deleteMany?: Enumerable<UserScalarWhereInput>
+  export type UserCreateNestedOneWithoutFollower_listInput = {
+    create?: XOR<UserCreateWithoutFollower_listInput, UserUncheckedCreateWithoutFollower_listInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollower_listInput
+    connect?: UserWhereUniqueInput
   }
 
-  export type UserUncheckedUpdateManyWithoutFoller_listNestedInput = {
-    create?: XOR<Enumerable<UserCreateWithoutFoller_listInput>, Enumerable<UserUncheckedCreateWithoutFoller_listInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutFoller_listInput>
-    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutFoller_listInput>
-    set?: Enumerable<UserWhereUniqueInput>
-    disconnect?: Enumerable<UserWhereUniqueInput>
-    delete?: Enumerable<UserWhereUniqueInput>
-    connect?: Enumerable<UserWhereUniqueInput>
-    update?: Enumerable<UserUpdateWithWhereUniqueWithoutFoller_listInput>
-    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutFoller_listInput>
-    deleteMany?: Enumerable<UserScalarWhereInput>
+  export type UserUpdateOneRequiredWithoutFollower_listNestedInput = {
+    create?: XOR<UserCreateWithoutFollower_listInput, UserUncheckedCreateWithoutFollower_listInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollower_listInput
+    upsert?: UserUpsertWithoutFollower_listInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutFollower_listInput, UserUncheckedUpdateWithoutFollower_listInput>
+  }
+
+  export type UserCreateNestedOneWithoutFocuser_listInput = {
+    create?: XOR<UserCreateWithoutFocuser_listInput, UserUncheckedCreateWithoutFocuser_listInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFocuser_listInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFocuser_listNestedInput = {
+    create?: XOR<UserCreateWithoutFocuser_listInput, UserUncheckedCreateWithoutFocuser_listInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFocuser_listInput
+    upsert?: UserUpsertWithoutFocuser_listInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutFocuser_listInput, UserUncheckedUpdateWithoutFocuser_listInput>
+  }
+
+  export type UserCreateNestedOneWithoutComment_listInput = {
+    create?: XOR<UserCreateWithoutComment_listInput, UserUncheckedCreateWithoutComment_listInput>
+    connectOrCreate?: UserCreateOrConnectWithoutComment_listInput
+    connect?: UserWhereUniqueInput
   }
 
   export type ArticleCreateNestedOneWithoutComment_listInput = {
     create?: XOR<ArticleCreateWithoutComment_listInput, ArticleUncheckedCreateWithoutComment_listInput>
     connectOrCreate?: ArticleCreateOrConnectWithoutComment_listInput
     connect?: ArticleWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutComment_listNestedInput = {
+    create?: XOR<UserCreateWithoutComment_listInput, UserUncheckedCreateWithoutComment_listInput>
+    connectOrCreate?: UserCreateOrConnectWithoutComment_listInput
+    upsert?: UserUpsertWithoutComment_listInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutComment_listInput, UserUncheckedUpdateWithoutComment_listInput>
   }
 
   export type ArticleUpdateOneRequiredWithoutComment_listNestedInput = {
@@ -7426,6 +8833,11 @@ export namespace Prisma {
     startsWith?: string
     endsWith?: string
     not?: NestedStringNullableFilter | string | null
+  }
+
+  export type NestedBoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
   }
 
   export type NestedIntFilter = {
@@ -7495,6 +8907,14 @@ export namespace Prisma {
     not?: NestedIntNullableFilter | number | null
   }
 
+  export type NestedBoolWithAggregatesFilter = {
+    equals?: boolean
+    not?: NestedBoolWithAggregatesFilter | boolean
+    _count?: NestedIntFilter
+    _min?: NestedBoolFilter
+    _max?: NestedBoolFilter
+  }
+
   export type NestedIntWithAggregatesFilter = {
     equals?: number
     in?: Enumerable<number>
@@ -7557,14 +8977,22 @@ export namespace Prisma {
 
   export type CommentCreateWithoutArticleInput = {
     id?: string
-    createdAt?: Date | string
+    parent_id?: string
     comment: string
+    commentBy: UserCreateNestedOneWithoutComment_listInput
+    like_times?: number
+    dislike_times?: number
+    createdAt?: Date | string
   }
 
   export type CommentUncheckedCreateWithoutArticleInput = {
     id?: string
-    createdAt?: Date | string
+    parent_id?: string
     comment: string
+    user_id: string
+    like_times?: number
+    dislike_times?: number
+    createdAt?: Date | string
   }
 
   export type CommentCreateOrConnectWithoutArticleInput = {
@@ -7581,14 +9009,20 @@ export namespace Prisma {
     id?: string
     user_name: string
     avatar: string
-    foller_list?: FollowerCreateNestedManyWithoutFollowersInput
+    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput
+    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput
+    comment_list?: CommentCreateNestedManyWithoutCommentByInput
+    isExist?: boolean
   }
 
   export type UserUncheckedCreateWithoutArticle_listInput = {
     id?: string
     user_name: string
     avatar: string
-    foller_list?: FollowerUncheckedCreateNestedManyWithoutFollowersInput
+    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput
+    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput
+    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput
+    isExist?: boolean
   }
 
   export type UserCreateOrConnectWithoutArticle_listInput = {
@@ -7643,8 +9077,12 @@ export namespace Prisma {
     OR?: Enumerable<CommentScalarWhereInput>
     NOT?: Enumerable<CommentScalarWhereInput>
     id?: StringFilter | string
-    createdAt?: DateTimeFilter | Date | string
+    parent_id?: StringFilter | string
     comment?: StringFilter | string
+    user_id?: StringFilter | string
+    like_times?: IntFilter | number
+    dislike_times?: IntFilter | number
+    createdAt?: DateTimeFilter | Date | string
     article_id?: StringFilter | string
   }
 
@@ -7657,14 +9095,20 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
-    foller_list?: FollowerUpdateManyWithoutFollowersNestedInput
+    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput
+    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput
+    comment_list?: CommentUpdateManyWithoutCommentByNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateWithoutArticle_listInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_name?: StringFieldUpdateOperationsInput | string
     avatar?: StringFieldUpdateOperationsInput | string
-    foller_list?: FollowerUncheckedUpdateManyWithoutFollowersNestedInput
+    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput
+    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput
+    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ArticleCreateWithoutCategory_listInput = {
@@ -7676,6 +9120,7 @@ export namespace Prisma {
     article_cover?: string | null
     comment_list?: CommentCreateNestedManyWithoutArticleInput
     author: UserCreateNestedOneWithoutArticle_listInput
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
@@ -7691,6 +9136,7 @@ export namespace Prisma {
     article_cover?: string | null
     comment_list?: CommentUncheckedCreateNestedManyWithoutArticleInput
     author_id: string
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
@@ -7729,6 +9175,7 @@ export namespace Prisma {
     article_bigCover?: StringNullableFilter | string | null
     article_cover?: StringNullableFilter | string | null
     author_id?: StringFilter | string
+    isExist?: BoolFilter | boolean
     browse_times?: IntFilter | number
     like_times?: IntFilter | number
     createdAt?: DateTimeFilter | Date | string
@@ -7744,6 +9191,7 @@ export namespace Prisma {
     article_cover?: string | null
     category_list?: CategoryCreateNestedManyWithoutArticle_listInput
     comment_list?: CommentCreateNestedManyWithoutArticleInput
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
@@ -7759,6 +9207,7 @@ export namespace Prisma {
     article_cover?: string | null
     category_list?: CategoryUncheckedCreateNestedManyWithoutArticle_listInput
     comment_list?: CommentUncheckedCreateNestedManyWithoutArticleInput
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
@@ -7775,17 +9224,70 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FollowerCreateWithoutFollowersInput = {
+  export type FollowerMapCreateWithoutMasterInput = {
     id?: string
   }
 
-  export type FollowerUncheckedCreateWithoutFollowersInput = {
+  export type FollowerMapUncheckedCreateWithoutMasterInput = {
     id?: string
   }
 
-  export type FollowerCreateOrConnectWithoutFollowersInput = {
-    where: FollowerWhereUniqueInput
-    create: XOR<FollowerCreateWithoutFollowersInput, FollowerUncheckedCreateWithoutFollowersInput>
+  export type FollowerMapCreateOrConnectWithoutMasterInput = {
+    where: FollowerMapWhereUniqueInput
+    create: XOR<FollowerMapCreateWithoutMasterInput, FollowerMapUncheckedCreateWithoutMasterInput>
+  }
+
+  export type FollowerMapCreateManyMasterInputEnvelope = {
+    data: Enumerable<FollowerMapCreateManyMasterInput>
+    skipDuplicates?: boolean
+  }
+
+  export type FocuserMapCreateWithoutFollowerInput = {
+    id?: string
+  }
+
+  export type FocuserMapUncheckedCreateWithoutFollowerInput = {
+    id?: string
+  }
+
+  export type FocuserMapCreateOrConnectWithoutFollowerInput = {
+    where: FocuserMapWhereUniqueInput
+    create: XOR<FocuserMapCreateWithoutFollowerInput, FocuserMapUncheckedCreateWithoutFollowerInput>
+  }
+
+  export type FocuserMapCreateManyFollowerInputEnvelope = {
+    data: Enumerable<FocuserMapCreateManyFollowerInput>
+    skipDuplicates?: boolean
+  }
+
+  export type CommentCreateWithoutCommentByInput = {
+    id?: string
+    parent_id?: string
+    comment: string
+    like_times?: number
+    dislike_times?: number
+    createdAt?: Date | string
+    article: ArticleCreateNestedOneWithoutComment_listInput
+  }
+
+  export type CommentUncheckedCreateWithoutCommentByInput = {
+    id?: string
+    parent_id?: string
+    comment: string
+    like_times?: number
+    dislike_times?: number
+    createdAt?: Date | string
+    article_id: string
+  }
+
+  export type CommentCreateOrConnectWithoutCommentByInput = {
+    where: CommentWhereUniqueInput
+    create: XOR<CommentCreateWithoutCommentByInput, CommentUncheckedCreateWithoutCommentByInput>
+  }
+
+  export type CommentCreateManyCommentByInputEnvelope = {
+    data: Enumerable<CommentCreateManyCommentByInput>
+    skipDuplicates?: boolean
   }
 
   export type ArticleUpsertWithWhereUniqueWithoutAuthorInput = {
@@ -7804,71 +9306,193 @@ export namespace Prisma {
     data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyWithoutArticle_listInput>
   }
 
-  export type FollowerUpsertWithWhereUniqueWithoutFollowersInput = {
-    where: FollowerWhereUniqueInput
-    update: XOR<FollowerUpdateWithoutFollowersInput, FollowerUncheckedUpdateWithoutFollowersInput>
-    create: XOR<FollowerCreateWithoutFollowersInput, FollowerUncheckedCreateWithoutFollowersInput>
+  export type FollowerMapUpsertWithWhereUniqueWithoutMasterInput = {
+    where: FollowerMapWhereUniqueInput
+    update: XOR<FollowerMapUpdateWithoutMasterInput, FollowerMapUncheckedUpdateWithoutMasterInput>
+    create: XOR<FollowerMapCreateWithoutMasterInput, FollowerMapUncheckedCreateWithoutMasterInput>
   }
 
-  export type FollowerUpdateWithWhereUniqueWithoutFollowersInput = {
-    where: FollowerWhereUniqueInput
-    data: XOR<FollowerUpdateWithoutFollowersInput, FollowerUncheckedUpdateWithoutFollowersInput>
+  export type FollowerMapUpdateWithWhereUniqueWithoutMasterInput = {
+    where: FollowerMapWhereUniqueInput
+    data: XOR<FollowerMapUpdateWithoutMasterInput, FollowerMapUncheckedUpdateWithoutMasterInput>
   }
 
-  export type FollowerUpdateManyWithWhereWithoutFollowersInput = {
-    where: FollowerScalarWhereInput
-    data: XOR<FollowerUpdateManyMutationInput, FollowerUncheckedUpdateManyWithoutFoller_listInput>
+  export type FollowerMapUpdateManyWithWhereWithoutMasterInput = {
+    where: FollowerMapScalarWhereInput
+    data: XOR<FollowerMapUpdateManyMutationInput, FollowerMapUncheckedUpdateManyWithoutFollower_listInput>
   }
 
-  export type FollowerScalarWhereInput = {
-    AND?: Enumerable<FollowerScalarWhereInput>
-    OR?: Enumerable<FollowerScalarWhereInput>
-    NOT?: Enumerable<FollowerScalarWhereInput>
+  export type FollowerMapScalarWhereInput = {
+    AND?: Enumerable<FollowerMapScalarWhereInput>
+    OR?: Enumerable<FollowerMapScalarWhereInput>
+    NOT?: Enumerable<FollowerMapScalarWhereInput>
     id?: StringFilter | string
+    master_id?: StringFilter | string
   }
 
-  export type UserCreateWithoutFoller_listInput = {
+  export type FocuserMapUpsertWithWhereUniqueWithoutFollowerInput = {
+    where: FocuserMapWhereUniqueInput
+    update: XOR<FocuserMapUpdateWithoutFollowerInput, FocuserMapUncheckedUpdateWithoutFollowerInput>
+    create: XOR<FocuserMapCreateWithoutFollowerInput, FocuserMapUncheckedCreateWithoutFollowerInput>
+  }
+
+  export type FocuserMapUpdateWithWhereUniqueWithoutFollowerInput = {
+    where: FocuserMapWhereUniqueInput
+    data: XOR<FocuserMapUpdateWithoutFollowerInput, FocuserMapUncheckedUpdateWithoutFollowerInput>
+  }
+
+  export type FocuserMapUpdateManyWithWhereWithoutFollowerInput = {
+    where: FocuserMapScalarWhereInput
+    data: XOR<FocuserMapUpdateManyMutationInput, FocuserMapUncheckedUpdateManyWithoutFocuser_listInput>
+  }
+
+  export type FocuserMapScalarWhereInput = {
+    AND?: Enumerable<FocuserMapScalarWhereInput>
+    OR?: Enumerable<FocuserMapScalarWhereInput>
+    NOT?: Enumerable<FocuserMapScalarWhereInput>
+    id?: StringFilter | string
+    follower_id?: StringFilter | string
+  }
+
+  export type CommentUpsertWithWhereUniqueWithoutCommentByInput = {
+    where: CommentWhereUniqueInput
+    update: XOR<CommentUpdateWithoutCommentByInput, CommentUncheckedUpdateWithoutCommentByInput>
+    create: XOR<CommentCreateWithoutCommentByInput, CommentUncheckedCreateWithoutCommentByInput>
+  }
+
+  export type CommentUpdateWithWhereUniqueWithoutCommentByInput = {
+    where: CommentWhereUniqueInput
+    data: XOR<CommentUpdateWithoutCommentByInput, CommentUncheckedUpdateWithoutCommentByInput>
+  }
+
+  export type CommentUpdateManyWithWhereWithoutCommentByInput = {
+    where: CommentScalarWhereInput
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutComment_listInput>
+  }
+
+  export type UserCreateWithoutFollower_listInput = {
     id?: string
     user_name: string
     avatar: string
     article_list?: ArticleCreateNestedManyWithoutAuthorInput
+    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput
+    comment_list?: CommentCreateNestedManyWithoutCommentByInput
+    isExist?: boolean
   }
 
-  export type UserUncheckedCreateWithoutFoller_listInput = {
+  export type UserUncheckedCreateWithoutFollower_listInput = {
     id?: string
     user_name: string
     avatar: string
     article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput
+    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput
+    isExist?: boolean
   }
 
-  export type UserCreateOrConnectWithoutFoller_listInput = {
+  export type UserCreateOrConnectWithoutFollower_listInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutFoller_listInput, UserUncheckedCreateWithoutFoller_listInput>
+    create: XOR<UserCreateWithoutFollower_listInput, UserUncheckedCreateWithoutFollower_listInput>
   }
 
-  export type UserUpsertWithWhereUniqueWithoutFoller_listInput = {
+  export type UserUpsertWithoutFollower_listInput = {
+    update: XOR<UserUpdateWithoutFollower_listInput, UserUncheckedUpdateWithoutFollower_listInput>
+    create: XOR<UserCreateWithoutFollower_listInput, UserUncheckedCreateWithoutFollower_listInput>
+  }
+
+  export type UserUpdateWithoutFollower_listInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_name?: StringFieldUpdateOperationsInput | string
+    avatar?: StringFieldUpdateOperationsInput | string
+    article_list?: ArticleUpdateManyWithoutAuthorNestedInput
+    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput
+    comment_list?: CommentUpdateManyWithoutCommentByNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserUncheckedUpdateWithoutFollower_listInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_name?: StringFieldUpdateOperationsInput | string
+    avatar?: StringFieldUpdateOperationsInput | string
+    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput
+    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserCreateWithoutFocuser_listInput = {
+    id?: string
+    user_name: string
+    avatar: string
+    article_list?: ArticleCreateNestedManyWithoutAuthorInput
+    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput
+    comment_list?: CommentCreateNestedManyWithoutCommentByInput
+    isExist?: boolean
+  }
+
+  export type UserUncheckedCreateWithoutFocuser_listInput = {
+    id?: string
+    user_name: string
+    avatar: string
+    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput
+    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput
+    isExist?: boolean
+  }
+
+  export type UserCreateOrConnectWithoutFocuser_listInput = {
     where: UserWhereUniqueInput
-    update: XOR<UserUpdateWithoutFoller_listInput, UserUncheckedUpdateWithoutFoller_listInput>
-    create: XOR<UserCreateWithoutFoller_listInput, UserUncheckedCreateWithoutFoller_listInput>
+    create: XOR<UserCreateWithoutFocuser_listInput, UserUncheckedCreateWithoutFocuser_listInput>
   }
 
-  export type UserUpdateWithWhereUniqueWithoutFoller_listInput = {
+  export type UserUpsertWithoutFocuser_listInput = {
+    update: XOR<UserUpdateWithoutFocuser_listInput, UserUncheckedUpdateWithoutFocuser_listInput>
+    create: XOR<UserCreateWithoutFocuser_listInput, UserUncheckedCreateWithoutFocuser_listInput>
+  }
+
+  export type UserUpdateWithoutFocuser_listInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_name?: StringFieldUpdateOperationsInput | string
+    avatar?: StringFieldUpdateOperationsInput | string
+    article_list?: ArticleUpdateManyWithoutAuthorNestedInput
+    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput
+    comment_list?: CommentUpdateManyWithoutCommentByNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserUncheckedUpdateWithoutFocuser_listInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_name?: StringFieldUpdateOperationsInput | string
+    avatar?: StringFieldUpdateOperationsInput | string
+    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput
+    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserCreateWithoutComment_listInput = {
+    id?: string
+    user_name: string
+    avatar: string
+    article_list?: ArticleCreateNestedManyWithoutAuthorInput
+    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput
+    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput
+    isExist?: boolean
+  }
+
+  export type UserUncheckedCreateWithoutComment_listInput = {
+    id?: string
+    user_name: string
+    avatar: string
+    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput
+    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput
+    isExist?: boolean
+  }
+
+  export type UserCreateOrConnectWithoutComment_listInput = {
     where: UserWhereUniqueInput
-    data: XOR<UserUpdateWithoutFoller_listInput, UserUncheckedUpdateWithoutFoller_listInput>
-  }
-
-  export type UserUpdateManyWithWhereWithoutFoller_listInput = {
-    where: UserScalarWhereInput
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutFollowersInput>
-  }
-
-  export type UserScalarWhereInput = {
-    AND?: Enumerable<UserScalarWhereInput>
-    OR?: Enumerable<UserScalarWhereInput>
-    NOT?: Enumerable<UserScalarWhereInput>
-    id?: StringFilter | string
-    user_name?: StringFilter | string
-    avatar?: StringFilter | string
+    create: XOR<UserCreateWithoutComment_listInput, UserUncheckedCreateWithoutComment_listInput>
   }
 
   export type ArticleCreateWithoutComment_listInput = {
@@ -7880,6 +9504,7 @@ export namespace Prisma {
     article_cover?: string | null
     category_list?: CategoryCreateNestedManyWithoutArticle_listInput
     author: UserCreateNestedOneWithoutArticle_listInput
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
@@ -7895,6 +9520,7 @@ export namespace Prisma {
     article_cover?: string | null
     category_list?: CategoryUncheckedCreateNestedManyWithoutArticle_listInput
     author_id: string
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
@@ -7904,6 +9530,31 @@ export namespace Prisma {
   export type ArticleCreateOrConnectWithoutComment_listInput = {
     where: ArticleWhereUniqueInput
     create: XOR<ArticleCreateWithoutComment_listInput, ArticleUncheckedCreateWithoutComment_listInput>
+  }
+
+  export type UserUpsertWithoutComment_listInput = {
+    update: XOR<UserUpdateWithoutComment_listInput, UserUncheckedUpdateWithoutComment_listInput>
+    create: XOR<UserCreateWithoutComment_listInput, UserUncheckedCreateWithoutComment_listInput>
+  }
+
+  export type UserUpdateWithoutComment_listInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_name?: StringFieldUpdateOperationsInput | string
+    avatar?: StringFieldUpdateOperationsInput | string
+    article_list?: ArticleUpdateManyWithoutAuthorNestedInput
+    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput
+    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserUncheckedUpdateWithoutComment_listInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_name?: StringFieldUpdateOperationsInput | string
+    avatar?: StringFieldUpdateOperationsInput | string
+    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput
+    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ArticleUpsertWithoutComment_listInput = {
@@ -7920,6 +9571,7 @@ export namespace Prisma {
     article_cover?: NullableStringFieldUpdateOperationsInput | string | null
     category_list?: CategoryUpdateManyWithoutArticle_listNestedInput
     author?: UserUpdateOneRequiredWithoutArticle_listNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7935,6 +9587,7 @@ export namespace Prisma {
     article_cover?: NullableStringFieldUpdateOperationsInput | string | null
     category_list?: CategoryUncheckedUpdateManyWithoutArticle_listNestedInput
     author_id?: StringFieldUpdateOperationsInput | string
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7943,8 +9596,12 @@ export namespace Prisma {
 
   export type CommentCreateManyArticleInput = {
     id?: string
-    createdAt?: Date | string
+    parent_id?: string
     comment: string
+    user_id: string
+    like_times?: number
+    dislike_times?: number
+    createdAt?: Date | string
   }
 
   export type CategoryUpdateWithoutArticle_listInput = {
@@ -7970,20 +9627,32 @@ export namespace Prisma {
 
   export type CommentUpdateWithoutArticleInput = {
     id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent_id?: StringFieldUpdateOperationsInput | string
     comment?: StringFieldUpdateOperationsInput | string
+    commentBy?: UserUpdateOneRequiredWithoutComment_listNestedInput
+    like_times?: IntFieldUpdateOperationsInput | number
+    dislike_times?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CommentUncheckedUpdateWithoutArticleInput = {
     id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent_id?: StringFieldUpdateOperationsInput | string
     comment?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    like_times?: IntFieldUpdateOperationsInput | number
+    dislike_times?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CommentUncheckedUpdateManyWithoutComment_listInput = {
     id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent_id?: StringFieldUpdateOperationsInput | string
     comment?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    like_times?: IntFieldUpdateOperationsInput | number
+    dislike_times?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ArticleUpdateWithoutCategory_listInput = {
@@ -7995,6 +9664,7 @@ export namespace Prisma {
     article_cover?: NullableStringFieldUpdateOperationsInput | string | null
     comment_list?: CommentUpdateManyWithoutArticleNestedInput
     author?: UserUpdateOneRequiredWithoutArticle_listNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8010,6 +9680,7 @@ export namespace Prisma {
     article_cover?: NullableStringFieldUpdateOperationsInput | string | null
     comment_list?: CommentUncheckedUpdateManyWithoutArticleNestedInput
     author_id?: StringFieldUpdateOperationsInput | string
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8024,6 +9695,7 @@ export namespace Prisma {
     article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
     article_cover?: NullableStringFieldUpdateOperationsInput | string | null
     author_id?: StringFieldUpdateOperationsInput | string
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8037,10 +9709,29 @@ export namespace Prisma {
     article_content: string
     article_bigCover?: string | null
     article_cover?: string | null
+    isExist?: boolean
     browse_times?: number
     like_times?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type FollowerMapCreateManyMasterInput = {
+    id?: string
+  }
+
+  export type FocuserMapCreateManyFollowerInput = {
+    id?: string
+  }
+
+  export type CommentCreateManyCommentByInput = {
+    id?: string
+    parent_id?: string
+    comment: string
+    like_times?: number
+    dislike_times?: number
+    createdAt?: Date | string
+    article_id: string
   }
 
   export type ArticleUpdateWithoutAuthorInput = {
@@ -8052,6 +9743,7 @@ export namespace Prisma {
     article_cover?: NullableStringFieldUpdateOperationsInput | string | null
     category_list?: CategoryUpdateManyWithoutArticle_listNestedInput
     comment_list?: CommentUpdateManyWithoutArticleNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8067,42 +9759,55 @@ export namespace Prisma {
     article_cover?: NullableStringFieldUpdateOperationsInput | string | null
     category_list?: CategoryUncheckedUpdateManyWithoutArticle_listNestedInput
     comment_list?: CommentUncheckedUpdateManyWithoutArticleNestedInput
+    isExist?: BoolFieldUpdateOperationsInput | boolean
     browse_times?: IntFieldUpdateOperationsInput | number
     like_times?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type FollowerUpdateWithoutFollowersInput = {
+  export type FollowerMapUpdateWithoutMasterInput = {
     id?: StringFieldUpdateOperationsInput | string
   }
 
-  export type FollowerUncheckedUpdateWithoutFollowersInput = {
+  export type FollowerMapUncheckedUpdateWithoutMasterInput = {
     id?: StringFieldUpdateOperationsInput | string
   }
 
-  export type FollowerUncheckedUpdateManyWithoutFoller_listInput = {
+  export type FollowerMapUncheckedUpdateManyWithoutFollower_listInput = {
     id?: StringFieldUpdateOperationsInput | string
   }
 
-  export type UserUpdateWithoutFoller_listInput = {
+  export type FocuserMapUpdateWithoutFollowerInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUpdateManyWithoutAuthorNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutFoller_listInput = {
+  export type FocuserMapUncheckedUpdateWithoutFollowerInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
-  export type UserUncheckedUpdateManyWithoutFollowersInput = {
+  export type FocuserMapUncheckedUpdateManyWithoutFocuser_listInput = {
     id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CommentUpdateWithoutCommentByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    parent_id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    like_times?: IntFieldUpdateOperationsInput | number
+    dislike_times?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    article?: ArticleUpdateOneRequiredWithoutComment_listNestedInput
+  }
+
+  export type CommentUncheckedUpdateWithoutCommentByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    parent_id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    like_times?: IntFieldUpdateOperationsInput | number
+    dislike_times?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    article_id?: StringFieldUpdateOperationsInput | string
   }
 
 

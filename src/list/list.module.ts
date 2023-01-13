@@ -4,6 +4,6 @@ import { ListController } from './list.controller';
 
 @Module({
   controllers: [ListController],
-  providers: [ListService]
+  providers: [ListService],
 })
 export class ListModule {}

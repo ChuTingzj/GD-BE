@@ -1,11 +1,9 @@
-const path = require('path');
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { resolve } = require('path');
 console.log('start build');
 module.exports = {
-  mode: 'development',
   entry: './src/main',
   target: 'node',
   module: {
@@ -24,11 +22,11 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: resolve(__dirname, 'dist'),
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src/'),
+      '@': resolve(__dirname, 'src/'),
     },
     extensions: ['.js', '.ts', '.json'],
   },

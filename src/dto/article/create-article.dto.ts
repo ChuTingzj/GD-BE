@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateListDto {
+export class CreateArticleDto {
   @ApiProperty({ nullable: true, required: true })
   article_bigCover: string | null;
   @ApiProperty({ required: true })

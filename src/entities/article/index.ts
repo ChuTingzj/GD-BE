@@ -42,7 +42,7 @@ export class ListResponse implements NormalEntity<Array<ArticleEntity>> {
   success: boolean;
 }
 
-export class ListItemResponse implements NormalEntity<ArticleEntity> {
+export class ArticleResponse implements NormalEntity<ArticleEntity> {
   @ApiProperty()
   data: ArticleEntity;
   @ApiProperty()
@@ -50,12 +50,3 @@ export class ListItemResponse implements NormalEntity<ArticleEntity> {
   @ApiProperty()
   success: boolean;
 }
-
-export class CreateListItemResponse {
-  @ApiProperty()
-  success: boolean;
-  @ApiProperty()
-  message: string;
-}
-
-export class DeleteListItemResponse extends CreateListItemResponse {}

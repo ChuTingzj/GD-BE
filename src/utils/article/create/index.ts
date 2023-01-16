@@ -31,3 +31,4 @@ export const createArticle = async (
 };
 
 export const createArticle_mock = async () => await createArticle(ArticleList);
+export * from './mock';

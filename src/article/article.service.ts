@@ -1,16 +1,58 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { ArticleResponse } from '@/entities';
-
+import { CreateResponse, ArticleResponse } from '@/entities';
+import { CreateArticleDto, UpdateArticleDto } from '@/dto';
 @Injectable()
 export class ArticleService {
   constructor(private readonly prismaService: PrismaService) {}
-  create() {
-    return 'This action adds a new article';
-  }
-
-  findAll() {
-    return `This action returns all article`;
+  async create(article: CreateArticleDto) {
+    let response: CreateResponse;
+    const req_cateList: Array<{ id: string }> = [];
+    const {
+      cate_name,
+      article_title,
+      article_description,
+      author_id,
+      article_content,
+      article_bigCover,
+      article_cover,
+    } = article;
+    for (const item of cate_name) {
+      try {
+        const res = await this.prismaService.category.findUnique({
+          where: { cate_name: item },
+          select: { id: true },
+        });
+        res.id && req_cateList.push(res);
+      } catch (e) {
+        response = {
+          success: false,
+          message: e.message,
+        };
+        return response;
+      }
+    }
+    try {
+      const res = await this.prismaService.article.create({
+        data: {
+          article_title,
+          article_content,
+          article_cover,
+          article_bigCover,
+          article_description,
+          author_id,
+          category_list: {
+            connect: req_cateList,
+          },
+        },
+      });
+      response = res.id
+        ? { success: true, message: '操作成功' }
+        : { success: false, message: '操作失败' };
+    } catch (e) {
+      response = { success: false, message: e.message };
+    }
+    return response;
   }
 
   async findOne(id: string) {
@@ -43,8 +85,51 @@ export class ArticleService {
     return response;
   }
 
-  update(id: number) {
-    return `This action updates a #${id} article`;
+  async update(id: string, article: UpdateArticleDto) {
+    const needUpdate: Record<any, any> = {};
+    const cateList: Array<{ id: string }> = [];
+    let response: CreateResponse;
+    for (const articleKey in article) {
+      article[articleKey] && (needUpdate[articleKey] = article[articleKey]);
+    }
+    if (Reflect.has(needUpdate, 'cate_name')) {
+      for (const item of needUpdate['cate_name']) {
+        try {
+          const res = await this.prismaService.category.findUnique({
+            where: { cate_name: item },
+            select: { id: true },
+          });
+          res.id && cateList.push(res);
+        } catch (e) {
+          response = {
+            success: false,
+            message: e.message,
+          };
+          return response;
+        }
+      }
+      delete needUpdate.cate_name;
+    }
+    try {
+      const res = await this.prismaService.article.update({
+        data: {
+          ...needUpdate,
+          category_list: {
+            connect: cateList,
+          },
+        },
+        where: { id },
+      });
+      response = res.id
+        ? { success: true, message: '操作成功' }
+        : { success: false, message: '操作失败' };
+    } catch (e) {
+      response = {
+        success: false,
+        message: e.message,
+      };
+    }
+    return response;
   }
 
   async remove(id: string) {

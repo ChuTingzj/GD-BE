@@ -30,21 +30,17 @@ module.exports = {
     },
     extensions: ['.js', '.ts', '.json'],
   },
-  optimization: {
-    minimizer: [
-      new CopyWebpackPlugin({
-        patterns: [
-          {
-            from: resolve(__dirname, './src/generated/client/schema.prisma'),
-            to: resolve(__dirname, './dist/src/generated/client/schema.prisma'),
-            toType: 'file',
-            noErrorOnMissing: true,
-          },
-        ],
-      }),
-    ],
-  },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: resolve(__dirname, './src/generated/client/schema.prisma'),
+          to: resolve(__dirname, './dist/src/generated/client/schema.prisma'),
+          toType: 'file',
+          noErrorOnMissing: true,
+        },
+      ],
+    }),
     new webpack.IgnorePlugin({
       checkResource(resource) {
         const lazyImports = [

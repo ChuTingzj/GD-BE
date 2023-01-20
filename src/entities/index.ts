@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export * from './article';
+export * from './category';
+export * from './comment';
+export * from './user';
 export abstract class NormalEntity<T> {
   success: boolean;
   message: string;

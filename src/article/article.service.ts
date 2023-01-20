@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { CreateResponse, ArticleResponse } from '@/entities';
+import { CreateResponse, ArticleResponse, DeleteResponse } from '@/entities';
 import { CreateArticleDto, UpdateArticleDto } from '@/dto';
 @Injectable()
 export class ArticleService {
@@ -90,10 +90,11 @@ export class ArticleService {
     const cateList: Array<{ id: string }> = [];
     let response: CreateResponse;
     for (const articleKey in article) {
-      article[articleKey] && (needUpdate[articleKey] = article[articleKey]);
+      Reflect.has(article, articleKey) &&
+        Reflect.set(needUpdate, articleKey, Reflect.get(article, articleKey));
     }
     if (Reflect.has(needUpdate, 'cate_name')) {
-      for (const item of needUpdate['cate_name']) {
+      for (const item of Reflect.get(needUpdate, 'cate_name')) {
         try {
           const res = await this.prismaService.category.findUnique({
             where: { cate_name: item },
@@ -111,10 +112,15 @@ export class ArticleService {
       delete needUpdate.cate_name;
     }
     try {
+      const origin = await this.prismaService.article.findUnique({
+        where: { id },
+        select: { category_list: true },
+      });
       const res = await this.prismaService.article.update({
         data: {
           ...needUpdate,
           category_list: {
+            disconnect: origin.category_list.map((item) => ({ id: item.id })),
             connect: cateList,
           },
         },
@@ -133,7 +139,7 @@ export class ArticleService {
   }
 
   async remove(id: string) {
-    let response = null;
+    let response: DeleteResponse;
     try {
       const res = await this.prismaService.article.update({
         where: { id },
@@ -147,7 +153,6 @@ export class ArticleService {
         : {
             success: false,
             message: '操作失败',
-            data: res,
           };
     } catch (e) {
       response = {

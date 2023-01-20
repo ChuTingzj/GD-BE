@@ -10,7 +10,7 @@ import {
 import { ArticleService } from './article.service';
 import { CreateArticleDto, UpdateArticleDto } from '@/dto';
 import { ArticleResponse, DeleteResponse, CreateResponse } from '@/entities';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
 
 @Controller('article')
 @ApiTags('文章')
@@ -18,25 +18,31 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Post()
-  @ApiOkResponse({ type: CreateResponse, description: '发布文章' })
+  @ApiOperation({ summary: '发布文章' })
+  @ApiOkResponse({ type: CreateResponse })
+  @ApiBody({ type: CreateArticleDto })
   create(@Body('article') article: CreateArticleDto) {
     return this.articleService.create(article);
   }
 
   @Get(':id')
-  @ApiOkResponse({ type: ArticleResponse, description: '文章详情' })
+  @ApiOperation({ summary: '文章详情' })
+  @ApiOkResponse({ type: ArticleResponse })
   findOne(@Param('id') id: string) {
     return this.articleService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOkResponse({ type: CreateResponse, description: '修改文章' })
+  @ApiOperation({ summary: '修改文章' })
+  @ApiOkResponse({ type: CreateResponse })
+  @ApiBody({ type: UpdateArticleDto })
   update(@Param('id') id: string, @Body('article') article: UpdateArticleDto) {
     return this.articleService.update(id, article);
   }
 
   @Delete(':id')
-  @ApiOkResponse({ type: DeleteResponse, description: '删除文章' })
+  @ApiOperation({ summary: '删除文章' })
+  @ApiOkResponse({ type: DeleteResponse })
   remove(@Param('id') id: string) {
     return this.articleService.remove(id);
   }

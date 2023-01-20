@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Article, User, Category } from '@/generated/client';
-import { NormalEntity } from '@/entities';
+import { Article } from '@/generated/client';
+import {
+  NormalEntity,
+  CategoryEntity,
+  CommentEntity,
+  UserEntity,
+} from '@/entities';
 export class ArticleEntity implements Article {
   @ApiProperty({ nullable: true })
   article_bigCover: string | null;
@@ -22,19 +27,19 @@ export class ArticleEntity implements Article {
   id: string;
   @ApiProperty()
   isExist: boolean;
-  @ApiProperty()
-  category_list: Array<Category>;
-  @ApiProperty()
-  comment_list: Array<Comment>;
-  @ApiProperty()
-  author: User;
+  @ApiProperty({ type: [CategoryEntity] })
+  category_list: Array<CategoryEntity>;
+  @ApiProperty({ type: [CommentEntity] })
+  comment_list: Array<CommentEntity>;
+  @ApiProperty({ type: UserEntity })
+  author: UserEntity;
   @ApiProperty()
   like_times: number;
   @ApiProperty()
   updatedAt: Date;
 }
 export class ListResponse implements NormalEntity<Array<ArticleEntity>> {
-  @ApiProperty()
+  @ApiProperty({ type: [ArticleEntity] })
   data: Array<ArticleEntity>;
   @ApiProperty()
   message: string;

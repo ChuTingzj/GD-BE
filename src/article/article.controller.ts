@@ -6,11 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto, UpdateArticleDto } from '@/dto';
 import { ArticleResponse, DeleteResponse, CreateResponse } from '@/entities';
-import { ApiBody, ApiOkResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiTags,
+  ApiOperation,
+  ApiCreatedResponse,
+} from '@nestjs/swagger';
 
 @Controller('article')
 @ApiTags('文章')
@@ -18,10 +25,11 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Post()
+  @HttpCode(201)
   @ApiOperation({ summary: '发布文章' })
-  @ApiOkResponse({ type: CreateResponse })
+  @ApiCreatedResponse({ type: CreateResponse })
   @ApiBody({ type: CreateArticleDto })
-  create(@Body('article') article: CreateArticleDto) {
+  create(@Body() article: CreateArticleDto) {
     return this.articleService.create(article);
   }
 
@@ -36,7 +44,7 @@ export class ArticleController {
   @ApiOperation({ summary: '修改文章' })
   @ApiOkResponse({ type: CreateResponse })
   @ApiBody({ type: UpdateArticleDto })
-  update(@Param('id') id: string, @Body('article') article: UpdateArticleDto) {
+  update(@Param('id') id: string, @Body() article: UpdateArticleDto) {
     return this.articleService.update(id, article);
   }
 

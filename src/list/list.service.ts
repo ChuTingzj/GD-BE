@@ -13,10 +13,14 @@ export class ListService {
       filters,
       'hottest',
     )
-      ? { like_times: 'asc' }
+      ? { like_times: 'desc' }
       : Reflect.has(filters, 'latest')
-      ? { like_times: 'asc', createdAt: 'asc' }
+      ? { createdAt: 'asc' }
       : { id: 'asc' };
+    const skip = Reflect.has(filters, 'end_id') ? 1 : 0;
+    const cursor_id = Reflect.has(filters, 'end_id')
+      ? { id: filters.end_id }
+      : {};
     if (Reflect.has(filters, 'cate_name')) {
       try {
         const res = await this.prismaService.category.findUnique({
@@ -47,6 +51,9 @@ export class ListService {
           },
         },
         orderBy: { ...orderBy },
+        cursor: { ...cursor_id },
+        take: 10,
+        skip,
       });
       response = Object.assign(
         { data: res as any },

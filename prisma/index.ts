@@ -1,4 +1,4 @@
-import { createUserMany_mock } from '@/utils/user';
+import { createUserMany_mock,createCarousel_mock } from '@/utils';
 import {
   createArticle_mock,
   deleteArticle,
@@ -6,9 +6,7 @@ import {
 } from '@/utils/article';
 (async () => {
   try {
-    const res = await findArticle({
-      id: '05109fb4-6a37-483c-b62a-44fcaa7cf385',
-    });
+    const res = await createCarousel_mock();
     console.log(res);
   } catch (e) {
     console.log(e);

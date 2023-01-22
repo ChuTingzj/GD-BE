@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { ApiTags, ApiOkResponse, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { ListService } from './list.service';
 import { ListResponse } from '@/entities';
@@ -14,5 +14,11 @@ export class ListController {
   @ApiOkResponse({ type: ListResponse })
   findAll(@Body() req_body: ReadListDto) {
     return this.listService.findAll(req_body);
+  }
+  @Get('hot')
+  @ApiOperation({ summary: '精彩文章列表' })
+  @ApiOkResponse({ type: ListResponse })
+  findTopArticle() {
+    return this.listService.findTopArticle();
   }
 }

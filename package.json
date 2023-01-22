@@ -13,7 +13,7 @@
     "start:build-wp": "cross-env NODE_ENV=production nest build --webpack --webpackPath=./webpack.config.js && pnpm run start:prod",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --files ./prisma/index.ts",
     "generate": "pnpx prisma generate",
-    "migrate": "pnpx prisma migrate dev --name \"reset\"",
+    "migrate": "pnpx prisma migrate dev --name \"carousel\"",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

@@ -14,11 +14,11 @@ exports.Prisma = Prisma
 
 /**
  * Prisma Client JS version: 4.8.1
- * Query Engine version: d6e67a83f971b175a593ccc12e15c4a757f93ffe
+ * Query Engine version: ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
  */
 Prisma.prismaVersion = {
   client: "4.8.1",
-  engine: "d6e67a83f971b175a593ccc12e15c4a757f93ffe"
+  engine: "ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -104,6 +104,11 @@ exports.Prisma.ArticleScalarFieldEnum = makeEnum({
   updatedAt: 'updatedAt'
 });
 
+exports.Prisma.CarouselScalarFieldEnum = makeEnum({
+  id: 'id',
+  img_url: 'img_url'
+});
+
 exports.Prisma.CategoryScalarFieldEnum = makeEnum({
   id: 'id',
   cate_name: 'cate_name',
@@ -158,7 +163,8 @@ exports.Prisma.ModelName = makeEnum({
   User: 'User',
   FollowerMap: 'FollowerMap',
   FocuserMap: 'FocuserMap',
-  Comment: 'Comment'
+  Comment: 'Comment',
+  Carousel: 'Carousel'
 });
 
 /**

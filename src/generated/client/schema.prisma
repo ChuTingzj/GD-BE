@@ -75,3 +75,8 @@ model Comment {
     article             Article        @relation(fields:[article_id],references:[id])
     article_id          String
 }
+
+model Carousel{
+    id                  String        @id @default(uuid())
+    img_url             String
+}

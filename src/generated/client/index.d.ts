@@ -86,6 +86,15 @@ export type Comment = {
   article_id: string
 }
 
+/**
+ * Model Carousel
+ * 
+ */
+export type Carousel = {
+  id: string
+  img_url: string
+}
+
 
 /**
  * ##  Prisma Client ʲˢ
@@ -263,6 +272,16 @@ export class PrismaClient<
     * ```
     */
   get comment(): Prisma.CommentDelegate<GlobalReject>;
+
+  /**
+   * `prisma.carousel`: Exposes CRUD operations for the **Carousel** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Carousels
+    * const carousels = await prisma.carousel.findMany()
+    * ```
+    */
+  get carousel(): Prisma.CarouselDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -305,7 +324,7 @@ export namespace Prisma {
 
   /**
    * Prisma Client JS version: 4.8.1
-   * Query Engine version: d6e67a83f971b175a593ccc12e15c4a757f93ffe
+   * Query Engine version: ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
    */
   export type PrismaVersion = {
     client: string
@@ -752,7 +771,8 @@ export namespace Prisma {
     User: 'User',
     FollowerMap: 'FollowerMap',
     FocuserMap: 'FocuserMap',
-    Comment: 'Comment'
+    Comment: 'Comment',
+    Carousel: 'Carousel'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -7291,6 +7311,911 @@ export namespace Prisma {
 
 
   /**
+   * Model Carousel
+   */
+
+
+  export type AggregateCarousel = {
+    _count: CarouselCountAggregateOutputType | null
+    _min: CarouselMinAggregateOutputType | null
+    _max: CarouselMaxAggregateOutputType | null
+  }
+
+  export type CarouselMinAggregateOutputType = {
+    id: string | null
+    img_url: string | null
+  }
+
+  export type CarouselMaxAggregateOutputType = {
+    id: string | null
+    img_url: string | null
+  }
+
+  export type CarouselCountAggregateOutputType = {
+    id: number
+    img_url: number
+    _all: number
+  }
+
+
+  export type CarouselMinAggregateInputType = {
+    id?: true
+    img_url?: true
+  }
+
+  export type CarouselMaxAggregateInputType = {
+    id?: true
+    img_url?: true
+  }
+
+  export type CarouselCountAggregateInputType = {
+    id?: true
+    img_url?: true
+    _all?: true
+  }
+
+  export type CarouselAggregateArgs = {
+    /**
+     * Filter which Carousel to aggregate.
+     * 
+    **/
+    where?: CarouselWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Carousels to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<CarouselOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: CarouselWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Carousels from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Carousels.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Carousels
+    **/
+    _count?: true | CarouselCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CarouselMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CarouselMaxAggregateInputType
+  }
+
+  export type GetCarouselAggregateType<T extends CarouselAggregateArgs> = {
+        [P in keyof T & keyof AggregateCarousel]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCarousel[P]>
+      : GetScalarType<T[P], AggregateCarousel[P]>
+  }
+
+
+
+
+  export type CarouselGroupByArgs = {
+    where?: CarouselWhereInput
+    orderBy?: Enumerable<CarouselOrderByWithAggregationInput>
+    by: Array<CarouselScalarFieldEnum>
+    having?: CarouselScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CarouselCountAggregateInputType | true
+    _min?: CarouselMinAggregateInputType
+    _max?: CarouselMaxAggregateInputType
+  }
+
+
+  export type CarouselGroupByOutputType = {
+    id: string
+    img_url: string
+    _count: CarouselCountAggregateOutputType | null
+    _min: CarouselMinAggregateOutputType | null
+    _max: CarouselMaxAggregateOutputType | null
+  }
+
+  type GetCarouselGroupByPayload<T extends CarouselGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<CarouselGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CarouselGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CarouselGroupByOutputType[P]>
+            : GetScalarType<T[P], CarouselGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CarouselSelect = {
+    id?: boolean
+    img_url?: boolean
+  }
+
+
+  export type CarouselGetPayload<S extends boolean | null | undefined | CarouselArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? Carousel :
+    S extends undefined ? never :
+    S extends { include: any } & (CarouselArgs | CarouselFindManyArgs)
+    ? Carousel 
+    : S extends { select: any } & (CarouselArgs | CarouselFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof Carousel ? Carousel[P] : never
+  } 
+      : Carousel
+
+
+  type CarouselCountArgs = Merge<
+    Omit<CarouselFindManyArgs, 'select' | 'include'> & {
+      select?: CarouselCountAggregateInputType | true
+    }
+  >
+
+  export interface CarouselDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+    /**
+     * Find zero or one Carousel that matches the filter.
+     * @param {CarouselFindUniqueArgs} args - Arguments to find a Carousel
+     * @example
+     * // Get one Carousel
+     * const carousel = await prisma.carousel.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends CarouselFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, CarouselFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Carousel'> extends True ? Prisma__CarouselClient<CarouselGetPayload<T>> : Prisma__CarouselClient<CarouselGetPayload<T> | null, null>
+
+    /**
+     * Find one Carousel that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {CarouselFindUniqueOrThrowArgs} args - Arguments to find a Carousel
+     * @example
+     * // Get one Carousel
+     * const carousel = await prisma.carousel.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends CarouselFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, CarouselFindUniqueOrThrowArgs>
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+
+    /**
+     * Find the first Carousel that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarouselFindFirstArgs} args - Arguments to find a Carousel
+     * @example
+     * // Get one Carousel
+     * const carousel = await prisma.carousel.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends CarouselFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, CarouselFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Carousel'> extends True ? Prisma__CarouselClient<CarouselGetPayload<T>> : Prisma__CarouselClient<CarouselGetPayload<T> | null, null>
+
+    /**
+     * Find the first Carousel that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarouselFindFirstOrThrowArgs} args - Arguments to find a Carousel
+     * @example
+     * // Get one Carousel
+     * const carousel = await prisma.carousel.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends CarouselFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, CarouselFindFirstOrThrowArgs>
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+
+    /**
+     * Find zero or more Carousels that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarouselFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Carousels
+     * const carousels = await prisma.carousel.findMany()
+     * 
+     * // Get first 10 Carousels
+     * const carousels = await prisma.carousel.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const carouselWithIdOnly = await prisma.carousel.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends CarouselFindManyArgs>(
+      args?: SelectSubset<T, CarouselFindManyArgs>
+    ): PrismaPromise<Array<CarouselGetPayload<T>>>
+
+    /**
+     * Create a Carousel.
+     * @param {CarouselCreateArgs} args - Arguments to create a Carousel.
+     * @example
+     * // Create one Carousel
+     * const Carousel = await prisma.carousel.create({
+     *   data: {
+     *     // ... data to create a Carousel
+     *   }
+     * })
+     * 
+    **/
+    create<T extends CarouselCreateArgs>(
+      args: SelectSubset<T, CarouselCreateArgs>
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+
+    /**
+     * Create many Carousels.
+     *     @param {CarouselCreateManyArgs} args - Arguments to create many Carousels.
+     *     @example
+     *     // Create many Carousels
+     *     const carousel = await prisma.carousel.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends CarouselCreateManyArgs>(
+      args?: SelectSubset<T, CarouselCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Carousel.
+     * @param {CarouselDeleteArgs} args - Arguments to delete one Carousel.
+     * @example
+     * // Delete one Carousel
+     * const Carousel = await prisma.carousel.delete({
+     *   where: {
+     *     // ... filter to delete one Carousel
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends CarouselDeleteArgs>(
+      args: SelectSubset<T, CarouselDeleteArgs>
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+
+    /**
+     * Update one Carousel.
+     * @param {CarouselUpdateArgs} args - Arguments to update one Carousel.
+     * @example
+     * // Update one Carousel
+     * const carousel = await prisma.carousel.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends CarouselUpdateArgs>(
+      args: SelectSubset<T, CarouselUpdateArgs>
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+
+    /**
+     * Delete zero or more Carousels.
+     * @param {CarouselDeleteManyArgs} args - Arguments to filter Carousels to delete.
+     * @example
+     * // Delete a few Carousels
+     * const { count } = await prisma.carousel.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends CarouselDeleteManyArgs>(
+      args?: SelectSubset<T, CarouselDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Carousels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarouselUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Carousels
+     * const carousel = await prisma.carousel.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends CarouselUpdateManyArgs>(
+      args: SelectSubset<T, CarouselUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Carousel.
+     * @param {CarouselUpsertArgs} args - Arguments to update or create a Carousel.
+     * @example
+     * // Update or create a Carousel
+     * const carousel = await prisma.carousel.upsert({
+     *   create: {
+     *     // ... data to create a Carousel
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Carousel we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends CarouselUpsertArgs>(
+      args: SelectSubset<T, CarouselUpsertArgs>
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+
+    /**
+     * Count the number of Carousels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarouselCountArgs} args - Arguments to filter Carousels to count.
+     * @example
+     * // Count the number of Carousels
+     * const count = await prisma.carousel.count({
+     *   where: {
+     *     // ... the filter for the Carousels we want to count
+     *   }
+     * })
+    **/
+    count<T extends CarouselCountArgs>(
+      args?: Subset<T, CarouselCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CarouselCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Carousel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarouselAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CarouselAggregateArgs>(args: Subset<T, CarouselAggregateArgs>): PrismaPromise<GetCarouselAggregateType<T>>
+
+    /**
+     * Group by Carousel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CarouselGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CarouselGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CarouselGroupByArgs['orderBy'] }
+        : { orderBy?: CarouselGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CarouselGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCarouselGroupByPayload<T> : PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Carousel.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__CarouselClient<T, Null = never> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * Carousel base type for findUnique actions
+   */
+  export type CarouselFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+    /**
+     * Filter, which Carousel to fetch.
+     * 
+    **/
+    where: CarouselWhereUniqueInput
+  }
+
+  /**
+   * Carousel findUnique
+   */
+  export interface CarouselFindUniqueArgs extends CarouselFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Carousel findUniqueOrThrow
+   */
+  export type CarouselFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+    /**
+     * Filter, which Carousel to fetch.
+     * 
+    **/
+    where: CarouselWhereUniqueInput
+  }
+
+
+  /**
+   * Carousel base type for findFirst actions
+   */
+  export type CarouselFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+    /**
+     * Filter, which Carousel to fetch.
+     * 
+    **/
+    where?: CarouselWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Carousels to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<CarouselOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Carousels.
+     * 
+    **/
+    cursor?: CarouselWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Carousels from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Carousels.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Carousels.
+     * 
+    **/
+    distinct?: Enumerable<CarouselScalarFieldEnum>
+  }
+
+  /**
+   * Carousel findFirst
+   */
+  export interface CarouselFindFirstArgs extends CarouselFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Carousel findFirstOrThrow
+   */
+  export type CarouselFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+    /**
+     * Filter, which Carousel to fetch.
+     * 
+    **/
+    where?: CarouselWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Carousels to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<CarouselOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Carousels.
+     * 
+    **/
+    cursor?: CarouselWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Carousels from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Carousels.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Carousels.
+     * 
+    **/
+    distinct?: Enumerable<CarouselScalarFieldEnum>
+  }
+
+
+  /**
+   * Carousel findMany
+   */
+  export type CarouselFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+    /**
+     * Filter, which Carousels to fetch.
+     * 
+    **/
+    where?: CarouselWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Carousels to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<CarouselOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Carousels.
+     * 
+    **/
+    cursor?: CarouselWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Carousels from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Carousels.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<CarouselScalarFieldEnum>
+  }
+
+
+  /**
+   * Carousel create
+   */
+  export type CarouselCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+    /**
+     * The data needed to create a Carousel.
+     * 
+    **/
+    data: XOR<CarouselCreateInput, CarouselUncheckedCreateInput>
+  }
+
+
+  /**
+   * Carousel createMany
+   */
+  export type CarouselCreateManyArgs = {
+    /**
+     * The data used to create many Carousels.
+     * 
+    **/
+    data: Enumerable<CarouselCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Carousel update
+   */
+  export type CarouselUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+    /**
+     * The data needed to update a Carousel.
+     * 
+    **/
+    data: XOR<CarouselUpdateInput, CarouselUncheckedUpdateInput>
+    /**
+     * Choose, which Carousel to update.
+     * 
+    **/
+    where: CarouselWhereUniqueInput
+  }
+
+
+  /**
+   * Carousel updateMany
+   */
+  export type CarouselUpdateManyArgs = {
+    /**
+     * The data used to update Carousels.
+     * 
+    **/
+    data: XOR<CarouselUpdateManyMutationInput, CarouselUncheckedUpdateManyInput>
+    /**
+     * Filter which Carousels to update
+     * 
+    **/
+    where?: CarouselWhereInput
+  }
+
+
+  /**
+   * Carousel upsert
+   */
+  export type CarouselUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+    /**
+     * The filter to search for the Carousel to update in case it exists.
+     * 
+    **/
+    where: CarouselWhereUniqueInput
+    /**
+     * In case the Carousel found by the `where` argument doesn't exist, create a new Carousel with this data.
+     * 
+    **/
+    create: XOR<CarouselCreateInput, CarouselUncheckedCreateInput>
+    /**
+     * In case the Carousel was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<CarouselUpdateInput, CarouselUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Carousel delete
+   */
+  export type CarouselDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+    /**
+     * Filter which Carousel to delete.
+     * 
+    **/
+    where: CarouselWhereUniqueInput
+  }
+
+
+  /**
+   * Carousel deleteMany
+   */
+  export type CarouselDeleteManyArgs = {
+    /**
+     * Filter which Carousels to delete
+     * 
+    **/
+    where?: CarouselWhereInput
+  }
+
+
+  /**
+   * Carousel without action
+   */
+  export type CarouselArgs = {
+    /**
+     * Select specific fields to fetch from the Carousel
+     * 
+    **/
+    select?: CarouselSelect | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -7313,6 +8238,14 @@ export namespace Prisma {
   };
 
   export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
+
+
+  export const CarouselScalarFieldEnum: {
+    id: 'id',
+    img_url: 'img_url'
+  };
+
+  export type CarouselScalarFieldEnum = (typeof CarouselScalarFieldEnum)[keyof typeof CarouselScalarFieldEnum]
 
 
   export const CategoryScalarFieldEnum: {
@@ -7697,6 +8630,39 @@ export namespace Prisma {
     article_id?: StringWithAggregatesFilter | string
   }
 
+  export type CarouselWhereInput = {
+    AND?: Enumerable<CarouselWhereInput>
+    OR?: Enumerable<CarouselWhereInput>
+    NOT?: Enumerable<CarouselWhereInput>
+    id?: StringFilter | string
+    img_url?: StringFilter | string
+  }
+
+  export type CarouselOrderByWithRelationInput = {
+    id?: SortOrder
+    img_url?: SortOrder
+  }
+
+  export type CarouselWhereUniqueInput = {
+    id?: string
+  }
+
+  export type CarouselOrderByWithAggregationInput = {
+    id?: SortOrder
+    img_url?: SortOrder
+    _count?: CarouselCountOrderByAggregateInput
+    _max?: CarouselMaxOrderByAggregateInput
+    _min?: CarouselMinOrderByAggregateInput
+  }
+
+  export type CarouselScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<CarouselScalarWhereWithAggregatesInput>
+    OR?: Enumerable<CarouselScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<CarouselScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    img_url?: StringWithAggregatesFilter | string
+  }
+
   export type ArticleCreateInput = {
     id?: string
     article_title: string
@@ -8070,6 +9036,41 @@ export namespace Prisma {
     article_id?: StringFieldUpdateOperationsInput | string
   }
 
+  export type CarouselCreateInput = {
+    id?: string
+    img_url: string
+  }
+
+  export type CarouselUncheckedCreateInput = {
+    id?: string
+    img_url: string
+  }
+
+  export type CarouselUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    img_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CarouselUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    img_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CarouselCreateManyInput = {
+    id?: string
+    img_url: string
+  }
+
+  export type CarouselUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    img_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CarouselUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    img_url?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter = {
     equals?: string
     in?: Enumerable<string>
@@ -8425,6 +9426,21 @@ export namespace Prisma {
   export type CommentSumOrderByAggregateInput = {
     like_times?: SortOrder
     dislike_times?: SortOrder
+  }
+
+  export type CarouselCountOrderByAggregateInput = {
+    id?: SortOrder
+    img_url?: SortOrder
+  }
+
+  export type CarouselMaxOrderByAggregateInput = {
+    id?: SortOrder
+    img_url?: SortOrder
+  }
+
+  export type CarouselMinOrderByAggregateInput = {
+    id?: SortOrder
+    img_url?: SortOrder
   }
 
   export type CategoryCreateNestedManyWithoutArticle_listInput = {

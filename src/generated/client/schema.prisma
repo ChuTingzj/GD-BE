@@ -3,13 +3,13 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["darwin","windows","linux-musl"]
+  binaryTargets = ["darwin","windows","linux-musl","rhel-openssl-1.0.x"]
   output = "../src/generated/client"
 }
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:admin123@localhost:3306/gd-be"
+  url      = "mysql://root:10cb6333b8dfae21@124.223.56.117:3306/gd-db"
 }
 
 

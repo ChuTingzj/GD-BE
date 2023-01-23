@@ -1,4 +1,4 @@
-import { createUserMany_mock,createCarousel_mock } from '@/utils';
+import { createUserMany_mock, createCarousel_mock,createCategoryMany_mock } from '@/utils';
 import {
   createArticle_mock,
   deleteArticle,
@@ -6,7 +6,7 @@ import {
 } from '@/utils/article';
 (async () => {
   try {
-    const res = await createCarousel_mock();
+    const res = await createArticle_mock();
     console.log(res);
   } catch (e) {
     console.log(e);

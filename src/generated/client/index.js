@@ -204,6 +204,10 @@ const config = {
       {
         "fromEnvVar": null,
         "value": "linux-musl"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-1.0.x"
       }
     ],
     "previewFeatures": [],
@@ -247,5 +251,8 @@ path.join(process.cwd(), "src\\generated\\client\\query_engine-windows.dll.node"
 
 path.join(__dirname, "libquery_engine-linux-musl.so.node");
 path.join(process.cwd(), "src\\generated\\client\\libquery_engine-linux-musl.so.node")
+
+path.join(__dirname, "libquery_engine-rhel-openssl-1.0.x.so.node");
+path.join(process.cwd(), "src\\generated\\client\\libquery_engine-rhel-openssl-1.0.x.so.node")
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src\\generated\\client\\schema.prisma")

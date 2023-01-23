@@ -9,7 +9,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:admin123@localhost:3306/gd-be"
+  url      = "mysql://BE:admin123@124.223.56.117:3306/gd-db"
 }
 
 

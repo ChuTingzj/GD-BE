@@ -5,6 +5,7 @@ const { resolve } = require('path');
 console.log('start build');
 module.exports = {
   entry: './src/main',
+  mode: 'production',
   target: 'node',
   module: {
     rules: [
@@ -13,7 +14,7 @@ module.exports = {
         use: [
           {
             loader: 'ts-loader',
-            options: { transpileOnly: true, happyPackMode: false },
+            options: { transpileOnly: true },
           },
         ],
         exclude: /node_modules/,

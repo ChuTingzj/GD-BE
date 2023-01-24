@@ -5,7 +5,6 @@ const { resolve } = require('path');
 console.log('start build');
 module.exports = {
   entry: './src/main',
-  mode: 'production',
   target: 'node',
   module: {
     rules: [

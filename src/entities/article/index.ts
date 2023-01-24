@@ -27,11 +27,11 @@ export class ArticleEntity implements Article {
   id: string;
   @ApiProperty()
   isExist: boolean;
-  @ApiProperty({ type: [CategoryEntity] })
+  @ApiProperty({ type: () => [CategoryEntity] })
   category_list: Array<CategoryEntity>;
-  @ApiProperty({ type: [CommentEntity] })
+  @ApiProperty({ type: () => [CommentEntity] })
   comment_list: Array<CommentEntity>;
-  @ApiProperty({ type: UserEntity })
+  @ApiProperty({ type: () => UserEntity })
   author: UserEntity;
   @ApiProperty()
   like_times: number;
@@ -39,7 +39,7 @@ export class ArticleEntity implements Article {
   updatedAt: Date;
 }
 export class ListResponse implements NormalEntity<Array<ArticleEntity>> {
-  @ApiProperty({ type: [ArticleEntity] })
+  @ApiProperty({ type: () => [ArticleEntity] })
   data: Array<ArticleEntity>;
   @ApiProperty()
   message: string;
@@ -48,7 +48,7 @@ export class ListResponse implements NormalEntity<Array<ArticleEntity>> {
 }
 
 export class ArticleResponse implements NormalEntity<ArticleEntity> {
-  @ApiProperty()
+  @ApiProperty({ type: () => ArticleEntity })
   data: ArticleEntity;
   @ApiProperty()
   message: string;

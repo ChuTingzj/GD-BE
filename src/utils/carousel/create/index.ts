@@ -25,4 +25,4 @@ export const createCarousel = async (
 
 export const createCarousel_mock = async () =>
   await createCarousel(carouselList);
-export * from './mock'
+export * from './mock';

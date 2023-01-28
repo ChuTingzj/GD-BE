@@ -3,7 +3,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { UserEntity, CommentEntity, CategoryEntity } from '@/entities';
-const history = require('connect-history-api-fallback');
 
 async function bootstrap() {
   const options = new DocumentBuilder()
@@ -12,7 +11,6 @@ async function bootstrap() {
     .setVersion('1')
     .build();
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // app.use(history());
   const document = SwaggerModule.createDocument(app, options, {
     extraModels: [UserEntity, CommentEntity, CategoryEntity],
   });

@@ -5,7 +5,7 @@
 
 import * as runtime from './runtime/index';
 declare const prisma: unique symbol
-export type PrismaPromise<A> = Promise<A> & {[prisma]: true}
+export interface PrismaPromise<A> extends Promise<A> {[prisma]: true}
 type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
 type UnwrapTuple<Tuple extends readonly unknown[]> = {
   [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
@@ -209,9 +209,9 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
-  $transaction<P extends PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<UnwrapTuple<P>>;
+  $transaction<P extends PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<UnwrapTuple<P>>
 
-  $transaction<R>(fn: (prisma: Prisma.TransactionClient) => Promise<R>, options?: {maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel}): Promise<R>;
+  $transaction<R>(fn: (prisma: Prisma.TransactionClient) => Promise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<R>
 
       /**
    * `prisma.article`: Exposes CRUD operations for the **Article** model.
@@ -323,7 +323,7 @@ export namespace Prisma {
 
 
   /**
-   * Prisma Client JS version: 4.8.1
+   * Prisma Client JS version: 4.9.0
    * Query Engine version: ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
    */
   export type PrismaVersion = {
@@ -688,19 +688,11 @@ export namespace Prisma {
 
   export type Keys<U extends Union> = U extends unknown ? keyof U : never
 
-  type Exact<A, W = unknown> = 
-  W extends unknown ? A extends Narrowable ? Cast<A, W> : Cast<
-  {[K in keyof A]: K extends keyof W ? Exact<A[K], W[K]> : never},
-  {[K in keyof W]: K extends keyof A ? Exact<A[K], W[K]> : W[K]}>
-  : never;
-
-  type Narrowable = string | number | boolean | bigint;
-
   type Cast<A, B> = A extends B ? A : B;
 
   export const type: unique symbol;
 
-  export function validator<V>(): <S>(select: Exact<S, V>) => S;
+  export function validator<V>(): <S>(select: runtime.Types.Utils.LegacyExact<S, V>) => S;
 
   /**
    * Used by group by
@@ -976,8 +968,7 @@ export namespace Prisma {
   export type ArticleCountOutputTypeArgs = {
     /**
      * Select specific fields to fetch from the ArticleCountOutputType
-     * 
-    **/
+     */
     select?: ArticleCountOutputTypeSelect | null
   }
 
@@ -1020,8 +1011,7 @@ export namespace Prisma {
   export type CategoryCountOutputTypeArgs = {
     /**
      * Select specific fields to fetch from the CategoryCountOutputType
-     * 
-    **/
+     */
     select?: CategoryCountOutputTypeSelect | null
   }
 
@@ -1070,8 +1060,7 @@ export namespace Prisma {
   export type UserCountOutputTypeArgs = {
     /**
      * Select specific fields to fetch from the UserCountOutputType
-     * 
-    **/
+     */
     select?: UserCountOutputTypeSelect | null
   }
 
@@ -1210,36 +1199,31 @@ export namespace Prisma {
   export type ArticleAggregateArgs = {
     /**
      * Filter which Article to aggregate.
-     * 
-    **/
+     */
     where?: ArticleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Articles to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<ArticleOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
-     * 
-    **/
+     */
     cursor?: ArticleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Articles from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Articles.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
@@ -1287,7 +1271,7 @@ export namespace Prisma {
   export type ArticleGroupByArgs = {
     where?: ArticleWhereInput
     orderBy?: Enumerable<ArticleOrderByWithAggregationInput>
-    by: Array<ArticleScalarFieldEnum>
+    by: ArticleScalarFieldEnum[]
     having?: ArticleScalarWhereWithAggregatesInput
     take?: number
     skip?: number
@@ -1358,7 +1342,7 @@ export namespace Prisma {
     comment_list?: boolean | Article$comment_listArgs
     author?: boolean | UserArgs
     _count?: boolean | ArticleCountOutputTypeArgs
-  } 
+  }
 
   export type ArticleGetPayload<S extends boolean | null | undefined | ArticleArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
@@ -1383,13 +1367,13 @@ export namespace Prisma {
       : Article
 
 
-  type ArticleCountArgs = Merge<
+  type ArticleCountArgs = 
     Omit<ArticleFindManyArgs, 'select' | 'include'> & {
       select?: ArticleCountAggregateInputType | true
     }
-  >
 
   export interface ArticleDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
     /**
      * Find zero or one Article that matches the filter.
      * @param {ArticleFindUniqueArgs} args - Arguments to find a Article
@@ -1791,18 +1775,15 @@ export namespace Prisma {
   export type ArticleFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     /**
      * Filter, which Article to fetch.
-     * 
-    **/
+     */
     where: ArticleWhereUniqueInput
   }
 
@@ -1824,18 +1805,15 @@ export namespace Prisma {
   export type ArticleFindUniqueOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     /**
      * Filter, which Article to fetch.
-     * 
-    **/
+     */
     where: ArticleWhereUniqueInput
   }
 
@@ -1846,53 +1824,45 @@ export namespace Prisma {
   export type ArticleFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     /**
      * Filter, which Article to fetch.
-     * 
-    **/
+     */
     where?: ArticleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Articles to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<ArticleOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Articles.
-     * 
-    **/
+     */
     cursor?: ArticleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Articles from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Articles.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Articles.
-     * 
-    **/
+     */
     distinct?: Enumerable<ArticleScalarFieldEnum>
   }
 
@@ -1914,53 +1884,45 @@ export namespace Prisma {
   export type ArticleFindFirstOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     /**
      * Filter, which Article to fetch.
-     * 
-    **/
+     */
     where?: ArticleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Articles to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<ArticleOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Articles.
-     * 
-    **/
+     */
     cursor?: ArticleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Articles from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Articles.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Articles.
-     * 
-    **/
+     */
     distinct?: Enumerable<ArticleScalarFieldEnum>
   }
 
@@ -1971,46 +1933,39 @@ export namespace Prisma {
   export type ArticleFindManyArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     /**
      * Filter, which Articles to fetch.
-     * 
-    **/
+     */
     where?: ArticleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Articles to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<ArticleOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for listing Articles.
-     * 
-    **/
+     */
     cursor?: ArticleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Articles from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Articles.
-     * 
-    **/
+     */
     skip?: number
     distinct?: Enumerable<ArticleScalarFieldEnum>
   }
@@ -2022,18 +1977,15 @@ export namespace Prisma {
   export type ArticleCreateArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     /**
      * The data needed to create a Article.
-     * 
-    **/
+     */
     data: XOR<ArticleCreateInput, ArticleUncheckedCreateInput>
   }
 
@@ -2044,8 +1996,7 @@ export namespace Prisma {
   export type ArticleCreateManyArgs = {
     /**
      * The data used to create many Articles.
-     * 
-    **/
+     */
     data: Enumerable<ArticleCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -2057,23 +2008,19 @@ export namespace Prisma {
   export type ArticleUpdateArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     /**
      * The data needed to update a Article.
-     * 
-    **/
+     */
     data: XOR<ArticleUpdateInput, ArticleUncheckedUpdateInput>
     /**
      * Choose, which Article to update.
-     * 
-    **/
+     */
     where: ArticleWhereUniqueInput
   }
 
@@ -2084,13 +2031,11 @@ export namespace Prisma {
   export type ArticleUpdateManyArgs = {
     /**
      * The data used to update Articles.
-     * 
-    **/
+     */
     data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyInput>
     /**
      * Filter which Articles to update
-     * 
-    **/
+     */
     where?: ArticleWhereInput
   }
 
@@ -2101,28 +2046,23 @@ export namespace Prisma {
   export type ArticleUpsertArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     /**
      * The filter to search for the Article to update in case it exists.
-     * 
-    **/
+     */
     where: ArticleWhereUniqueInput
     /**
      * In case the Article found by the `where` argument doesn't exist, create a new Article with this data.
-     * 
-    **/
+     */
     create: XOR<ArticleCreateInput, ArticleUncheckedCreateInput>
     /**
      * In case the Article was found with the provided `where` argument, update it with this data.
-     * 
-    **/
+     */
     update: XOR<ArticleUpdateInput, ArticleUncheckedUpdateInput>
   }
 
@@ -2133,18 +2073,15 @@ export namespace Prisma {
   export type ArticleDeleteArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     /**
      * Filter which Article to delete.
-     * 
-    **/
+     */
     where: ArticleWhereUniqueInput
   }
 
@@ -2155,8 +2092,7 @@ export namespace Prisma {
   export type ArticleDeleteManyArgs = {
     /**
      * Filter which Articles to delete
-     * 
-    **/
+     */
     where?: ArticleWhereInput
   }
 
@@ -2167,13 +2103,11 @@ export namespace Prisma {
   export type Article$category_listArgs = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     where?: CategoryWhereInput
     orderBy?: Enumerable<CategoryOrderByWithRelationInput>
@@ -2190,13 +2124,11 @@ export namespace Prisma {
   export type Article$comment_listArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     where?: CommentWhereInput
     orderBy?: Enumerable<CommentOrderByWithRelationInput>
@@ -2213,13 +2145,11 @@ export namespace Prisma {
   export type ArticleArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
   }
 
@@ -2284,36 +2214,31 @@ export namespace Prisma {
   export type CategoryAggregateArgs = {
     /**
      * Filter which Category to aggregate.
-     * 
-    **/
+     */
     where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Categories to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CategoryOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
-     * 
-    **/
+     */
     cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Categories from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Categories.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
@@ -2349,7 +2274,7 @@ export namespace Prisma {
   export type CategoryGroupByArgs = {
     where?: CategoryWhereInput
     orderBy?: Enumerable<CategoryOrderByWithAggregationInput>
-    by: Array<CategoryScalarFieldEnum>
+    by: CategoryScalarFieldEnum[]
     having?: CategoryScalarWhereWithAggregatesInput
     take?: number
     skip?: number
@@ -2396,7 +2321,7 @@ export namespace Prisma {
   export type CategoryInclude = {
     article_list?: boolean | Category$article_listArgs
     _count?: boolean | CategoryCountOutputTypeArgs
-  } 
+  }
 
   export type CategoryGetPayload<S extends boolean | null | undefined | CategoryArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
@@ -2417,13 +2342,13 @@ export namespace Prisma {
       : Category
 
 
-  type CategoryCountArgs = Merge<
+  type CategoryCountArgs = 
     Omit<CategoryFindManyArgs, 'select' | 'include'> & {
       select?: CategoryCountAggregateInputType | true
     }
-  >
 
   export interface CategoryDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
     /**
      * Find zero or one Category that matches the filter.
      * @param {CategoryFindUniqueArgs} args - Arguments to find a Category
@@ -2821,18 +2746,15 @@ export namespace Prisma {
   export type CategoryFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     /**
      * Filter, which Category to fetch.
-     * 
-    **/
+     */
     where: CategoryWhereUniqueInput
   }
 
@@ -2854,18 +2776,15 @@ export namespace Prisma {
   export type CategoryFindUniqueOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     /**
      * Filter, which Category to fetch.
-     * 
-    **/
+     */
     where: CategoryWhereUniqueInput
   }
 
@@ -2876,53 +2795,45 @@ export namespace Prisma {
   export type CategoryFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     /**
      * Filter, which Category to fetch.
-     * 
-    **/
+     */
     where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Categories to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CategoryOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Categories.
-     * 
-    **/
+     */
     cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Categories from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Categories.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Categories.
-     * 
-    **/
+     */
     distinct?: Enumerable<CategoryScalarFieldEnum>
   }
 
@@ -2944,53 +2855,45 @@ export namespace Prisma {
   export type CategoryFindFirstOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     /**
      * Filter, which Category to fetch.
-     * 
-    **/
+     */
     where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Categories to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CategoryOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Categories.
-     * 
-    **/
+     */
     cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Categories from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Categories.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Categories.
-     * 
-    **/
+     */
     distinct?: Enumerable<CategoryScalarFieldEnum>
   }
 
@@ -3001,46 +2904,39 @@ export namespace Prisma {
   export type CategoryFindManyArgs = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     /**
      * Filter, which Categories to fetch.
-     * 
-    **/
+     */
     where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Categories to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CategoryOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for listing Categories.
-     * 
-    **/
+     */
     cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Categories from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Categories.
-     * 
-    **/
+     */
     skip?: number
     distinct?: Enumerable<CategoryScalarFieldEnum>
   }
@@ -3052,18 +2948,15 @@ export namespace Prisma {
   export type CategoryCreateArgs = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     /**
      * The data needed to create a Category.
-     * 
-    **/
+     */
     data: XOR<CategoryCreateInput, CategoryUncheckedCreateInput>
   }
 
@@ -3074,8 +2967,7 @@ export namespace Prisma {
   export type CategoryCreateManyArgs = {
     /**
      * The data used to create many Categories.
-     * 
-    **/
+     */
     data: Enumerable<CategoryCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -3087,23 +2979,19 @@ export namespace Prisma {
   export type CategoryUpdateArgs = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     /**
      * The data needed to update a Category.
-     * 
-    **/
+     */
     data: XOR<CategoryUpdateInput, CategoryUncheckedUpdateInput>
     /**
      * Choose, which Category to update.
-     * 
-    **/
+     */
     where: CategoryWhereUniqueInput
   }
 
@@ -3114,13 +3002,11 @@ export namespace Prisma {
   export type CategoryUpdateManyArgs = {
     /**
      * The data used to update Categories.
-     * 
-    **/
+     */
     data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyInput>
     /**
      * Filter which Categories to update
-     * 
-    **/
+     */
     where?: CategoryWhereInput
   }
 
@@ -3131,28 +3017,23 @@ export namespace Prisma {
   export type CategoryUpsertArgs = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     /**
      * The filter to search for the Category to update in case it exists.
-     * 
-    **/
+     */
     where: CategoryWhereUniqueInput
     /**
      * In case the Category found by the `where` argument doesn't exist, create a new Category with this data.
-     * 
-    **/
+     */
     create: XOR<CategoryCreateInput, CategoryUncheckedCreateInput>
     /**
      * In case the Category was found with the provided `where` argument, update it with this data.
-     * 
-    **/
+     */
     update: XOR<CategoryUpdateInput, CategoryUncheckedUpdateInput>
   }
 
@@ -3163,18 +3044,15 @@ export namespace Prisma {
   export type CategoryDeleteArgs = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
     /**
      * Filter which Category to delete.
-     * 
-    **/
+     */
     where: CategoryWhereUniqueInput
   }
 
@@ -3185,8 +3063,7 @@ export namespace Prisma {
   export type CategoryDeleteManyArgs = {
     /**
      * Filter which Categories to delete
-     * 
-    **/
+     */
     where?: CategoryWhereInput
   }
 
@@ -3197,13 +3074,11 @@ export namespace Prisma {
   export type Category$article_listArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     where?: ArticleWhereInput
     orderBy?: Enumerable<ArticleOrderByWithRelationInput>
@@ -3220,13 +3095,11 @@ export namespace Prisma {
   export type CategoryArgs = {
     /**
      * Select specific fields to fetch from the Category
-     * 
-    **/
+     */
     select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CategoryInclude | null
   }
 
@@ -3291,36 +3164,31 @@ export namespace Prisma {
   export type UserAggregateArgs = {
     /**
      * Filter which User to aggregate.
-     * 
-    **/
+     */
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Users to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<UserOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
-     * 
-    **/
+     */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Users from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Users.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
@@ -3356,7 +3224,7 @@ export namespace Prisma {
   export type UserGroupByArgs = {
     where?: UserWhereInput
     orderBy?: Enumerable<UserOrderByWithAggregationInput>
-    by: Array<UserScalarFieldEnum>
+    by: UserScalarFieldEnum[]
     having?: UserScalarWhereWithAggregatesInput
     take?: number
     skip?: number
@@ -3409,7 +3277,7 @@ export namespace Prisma {
     focuser_list?: boolean | User$focuser_listArgs
     comment_list?: boolean | User$comment_listArgs
     _count?: boolean | UserCountOutputTypeArgs
-  } 
+  }
 
   export type UserGetPayload<S extends boolean | null | undefined | UserArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
@@ -3436,13 +3304,13 @@ export namespace Prisma {
       : User
 
 
-  type UserCountArgs = Merge<
+  type UserCountArgs = 
     Omit<UserFindManyArgs, 'select' | 'include'> & {
       select?: UserCountAggregateInputType | true
     }
-  >
 
   export interface UserDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
     /**
      * Find zero or one User that matches the filter.
      * @param {UserFindUniqueArgs} args - Arguments to find a User
@@ -3846,18 +3714,15 @@ export namespace Prisma {
   export type UserFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which User to fetch.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
   }
 
@@ -3879,18 +3744,15 @@ export namespace Prisma {
   export type UserFindUniqueOrThrowArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which User to fetch.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
   }
 
@@ -3901,53 +3763,45 @@ export namespace Prisma {
   export type UserFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which User to fetch.
-     * 
-    **/
+     */
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Users to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<UserOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Users.
-     * 
-    **/
+     */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Users from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Users.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Users.
-     * 
-    **/
+     */
     distinct?: Enumerable<UserScalarFieldEnum>
   }
 
@@ -3969,53 +3823,45 @@ export namespace Prisma {
   export type UserFindFirstOrThrowArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which User to fetch.
-     * 
-    **/
+     */
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Users to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<UserOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Users.
-     * 
-    **/
+     */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Users from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Users.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Users.
-     * 
-    **/
+     */
     distinct?: Enumerable<UserScalarFieldEnum>
   }
 
@@ -4026,46 +3872,39 @@ export namespace Prisma {
   export type UserFindManyArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter, which Users to fetch.
-     * 
-    **/
+     */
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Users to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<UserOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for listing Users.
-     * 
-    **/
+     */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Users from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Users.
-     * 
-    **/
+     */
     skip?: number
     distinct?: Enumerable<UserScalarFieldEnum>
   }
@@ -4077,18 +3916,15 @@ export namespace Prisma {
   export type UserCreateArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * The data needed to create a User.
-     * 
-    **/
+     */
     data: XOR<UserCreateInput, UserUncheckedCreateInput>
   }
 
@@ -4099,8 +3935,7 @@ export namespace Prisma {
   export type UserCreateManyArgs = {
     /**
      * The data used to create many Users.
-     * 
-    **/
+     */
     data: Enumerable<UserCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -4112,23 +3947,19 @@ export namespace Prisma {
   export type UserUpdateArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * The data needed to update a User.
-     * 
-    **/
+     */
     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
     /**
      * Choose, which User to update.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
   }
 
@@ -4139,13 +3970,11 @@ export namespace Prisma {
   export type UserUpdateManyArgs = {
     /**
      * The data used to update Users.
-     * 
-    **/
+     */
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
     /**
      * Filter which Users to update
-     * 
-    **/
+     */
     where?: UserWhereInput
   }
 
@@ -4156,28 +3985,23 @@ export namespace Prisma {
   export type UserUpsertArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * The filter to search for the User to update in case it exists.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
     /**
      * In case the User found by the `where` argument doesn't exist, create a new User with this data.
-     * 
-    **/
+     */
     create: XOR<UserCreateInput, UserUncheckedCreateInput>
     /**
      * In case the User was found with the provided `where` argument, update it with this data.
-     * 
-    **/
+     */
     update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
   }
 
@@ -4188,18 +4012,15 @@ export namespace Prisma {
   export type UserDeleteArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
     /**
      * Filter which User to delete.
-     * 
-    **/
+     */
     where: UserWhereUniqueInput
   }
 
@@ -4210,8 +4031,7 @@ export namespace Prisma {
   export type UserDeleteManyArgs = {
     /**
      * Filter which Users to delete
-     * 
-    **/
+     */
     where?: UserWhereInput
   }
 
@@ -4222,13 +4042,11 @@ export namespace Prisma {
   export type User$article_listArgs = {
     /**
      * Select specific fields to fetch from the Article
-     * 
-    **/
+     */
     select?: ArticleSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: ArticleInclude | null
     where?: ArticleWhereInput
     orderBy?: Enumerable<ArticleOrderByWithRelationInput>
@@ -4245,13 +4063,11 @@ export namespace Prisma {
   export type User$follower_listArgs = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     where?: FollowerMapWhereInput
     orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
@@ -4268,13 +4084,11 @@ export namespace Prisma {
   export type User$focuser_listArgs = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     where?: FocuserMapWhereInput
     orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
@@ -4291,13 +4105,11 @@ export namespace Prisma {
   export type User$comment_listArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     where?: CommentWhereInput
     orderBy?: Enumerable<CommentOrderByWithRelationInput>
@@ -4314,13 +4126,11 @@ export namespace Prisma {
   export type UserArgs = {
     /**
      * Select specific fields to fetch from the User
-     * 
-    **/
+     */
     select?: UserSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: UserInclude | null
   }
 
@@ -4373,36 +4183,31 @@ export namespace Prisma {
   export type FollowerMapAggregateArgs = {
     /**
      * Filter which FollowerMap to aggregate.
-     * 
-    **/
+     */
     where?: FollowerMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of FollowerMaps to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
-     * 
-    **/
+     */
     cursor?: FollowerMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` FollowerMaps from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` FollowerMaps.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
@@ -4438,7 +4243,7 @@ export namespace Prisma {
   export type FollowerMapGroupByArgs = {
     where?: FollowerMapWhereInput
     orderBy?: Enumerable<FollowerMapOrderByWithAggregationInput>
-    by: Array<FollowerMapScalarFieldEnum>
+    by: FollowerMapScalarFieldEnum[]
     having?: FollowerMapScalarWhereWithAggregatesInput
     take?: number
     skip?: number
@@ -4479,7 +4284,7 @@ export namespace Prisma {
 
   export type FollowerMapInclude = {
     master?: boolean | UserArgs
-  } 
+  }
 
   export type FollowerMapGetPayload<S extends boolean | null | undefined | FollowerMapArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
@@ -4498,13 +4303,13 @@ export namespace Prisma {
       : FollowerMap
 
 
-  type FollowerMapCountArgs = Merge<
+  type FollowerMapCountArgs = 
     Omit<FollowerMapFindManyArgs, 'select' | 'include'> & {
       select?: FollowerMapCountAggregateInputType | true
     }
-  >
 
   export interface FollowerMapDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
     /**
      * Find zero or one FollowerMap that matches the filter.
      * @param {FollowerMapFindUniqueArgs} args - Arguments to find a FollowerMap
@@ -4902,18 +4707,15 @@ export namespace Prisma {
   export type FollowerMapFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     /**
      * Filter, which FollowerMap to fetch.
-     * 
-    **/
+     */
     where: FollowerMapWhereUniqueInput
   }
 
@@ -4935,18 +4737,15 @@ export namespace Prisma {
   export type FollowerMapFindUniqueOrThrowArgs = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     /**
      * Filter, which FollowerMap to fetch.
-     * 
-    **/
+     */
     where: FollowerMapWhereUniqueInput
   }
 
@@ -4957,53 +4756,45 @@ export namespace Prisma {
   export type FollowerMapFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     /**
      * Filter, which FollowerMap to fetch.
-     * 
-    **/
+     */
     where?: FollowerMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of FollowerMaps to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for FollowerMaps.
-     * 
-    **/
+     */
     cursor?: FollowerMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` FollowerMaps from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` FollowerMaps.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of FollowerMaps.
-     * 
-    **/
+     */
     distinct?: Enumerable<FollowerMapScalarFieldEnum>
   }
 
@@ -5025,53 +4816,45 @@ export namespace Prisma {
   export type FollowerMapFindFirstOrThrowArgs = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     /**
      * Filter, which FollowerMap to fetch.
-     * 
-    **/
+     */
     where?: FollowerMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of FollowerMaps to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for FollowerMaps.
-     * 
-    **/
+     */
     cursor?: FollowerMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` FollowerMaps from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` FollowerMaps.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of FollowerMaps.
-     * 
-    **/
+     */
     distinct?: Enumerable<FollowerMapScalarFieldEnum>
   }
 
@@ -5082,46 +4865,39 @@ export namespace Prisma {
   export type FollowerMapFindManyArgs = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     /**
      * Filter, which FollowerMaps to fetch.
-     * 
-    **/
+     */
     where?: FollowerMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of FollowerMaps to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for listing FollowerMaps.
-     * 
-    **/
+     */
     cursor?: FollowerMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` FollowerMaps from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` FollowerMaps.
-     * 
-    **/
+     */
     skip?: number
     distinct?: Enumerable<FollowerMapScalarFieldEnum>
   }
@@ -5133,18 +4909,15 @@ export namespace Prisma {
   export type FollowerMapCreateArgs = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     /**
      * The data needed to create a FollowerMap.
-     * 
-    **/
+     */
     data: XOR<FollowerMapCreateInput, FollowerMapUncheckedCreateInput>
   }
 
@@ -5155,8 +4928,7 @@ export namespace Prisma {
   export type FollowerMapCreateManyArgs = {
     /**
      * The data used to create many FollowerMaps.
-     * 
-    **/
+     */
     data: Enumerable<FollowerMapCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -5168,23 +4940,19 @@ export namespace Prisma {
   export type FollowerMapUpdateArgs = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     /**
      * The data needed to update a FollowerMap.
-     * 
-    **/
+     */
     data: XOR<FollowerMapUpdateInput, FollowerMapUncheckedUpdateInput>
     /**
      * Choose, which FollowerMap to update.
-     * 
-    **/
+     */
     where: FollowerMapWhereUniqueInput
   }
 
@@ -5195,13 +4963,11 @@ export namespace Prisma {
   export type FollowerMapUpdateManyArgs = {
     /**
      * The data used to update FollowerMaps.
-     * 
-    **/
+     */
     data: XOR<FollowerMapUpdateManyMutationInput, FollowerMapUncheckedUpdateManyInput>
     /**
      * Filter which FollowerMaps to update
-     * 
-    **/
+     */
     where?: FollowerMapWhereInput
   }
 
@@ -5212,28 +4978,23 @@ export namespace Prisma {
   export type FollowerMapUpsertArgs = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     /**
      * The filter to search for the FollowerMap to update in case it exists.
-     * 
-    **/
+     */
     where: FollowerMapWhereUniqueInput
     /**
      * In case the FollowerMap found by the `where` argument doesn't exist, create a new FollowerMap with this data.
-     * 
-    **/
+     */
     create: XOR<FollowerMapCreateInput, FollowerMapUncheckedCreateInput>
     /**
      * In case the FollowerMap was found with the provided `where` argument, update it with this data.
-     * 
-    **/
+     */
     update: XOR<FollowerMapUpdateInput, FollowerMapUncheckedUpdateInput>
   }
 
@@ -5244,18 +5005,15 @@ export namespace Prisma {
   export type FollowerMapDeleteArgs = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
     /**
      * Filter which FollowerMap to delete.
-     * 
-    **/
+     */
     where: FollowerMapWhereUniqueInput
   }
 
@@ -5266,8 +5024,7 @@ export namespace Prisma {
   export type FollowerMapDeleteManyArgs = {
     /**
      * Filter which FollowerMaps to delete
-     * 
-    **/
+     */
     where?: FollowerMapWhereInput
   }
 
@@ -5278,13 +5035,11 @@ export namespace Prisma {
   export type FollowerMapArgs = {
     /**
      * Select specific fields to fetch from the FollowerMap
-     * 
-    **/
+     */
     select?: FollowerMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FollowerMapInclude | null
   }
 
@@ -5337,36 +5092,31 @@ export namespace Prisma {
   export type FocuserMapAggregateArgs = {
     /**
      * Filter which FocuserMap to aggregate.
-     * 
-    **/
+     */
     where?: FocuserMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of FocuserMaps to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
-     * 
-    **/
+     */
     cursor?: FocuserMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` FocuserMaps from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` FocuserMaps.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
@@ -5402,7 +5152,7 @@ export namespace Prisma {
   export type FocuserMapGroupByArgs = {
     where?: FocuserMapWhereInput
     orderBy?: Enumerable<FocuserMapOrderByWithAggregationInput>
-    by: Array<FocuserMapScalarFieldEnum>
+    by: FocuserMapScalarFieldEnum[]
     having?: FocuserMapScalarWhereWithAggregatesInput
     take?: number
     skip?: number
@@ -5443,7 +5193,7 @@ export namespace Prisma {
 
   export type FocuserMapInclude = {
     follower?: boolean | UserArgs
-  } 
+  }
 
   export type FocuserMapGetPayload<S extends boolean | null | undefined | FocuserMapArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
@@ -5462,13 +5212,13 @@ export namespace Prisma {
       : FocuserMap
 
 
-  type FocuserMapCountArgs = Merge<
+  type FocuserMapCountArgs = 
     Omit<FocuserMapFindManyArgs, 'select' | 'include'> & {
       select?: FocuserMapCountAggregateInputType | true
     }
-  >
 
   export interface FocuserMapDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
     /**
      * Find zero or one FocuserMap that matches the filter.
      * @param {FocuserMapFindUniqueArgs} args - Arguments to find a FocuserMap
@@ -5866,18 +5616,15 @@ export namespace Prisma {
   export type FocuserMapFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     /**
      * Filter, which FocuserMap to fetch.
-     * 
-    **/
+     */
     where: FocuserMapWhereUniqueInput
   }
 
@@ -5899,18 +5646,15 @@ export namespace Prisma {
   export type FocuserMapFindUniqueOrThrowArgs = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     /**
      * Filter, which FocuserMap to fetch.
-     * 
-    **/
+     */
     where: FocuserMapWhereUniqueInput
   }
 
@@ -5921,53 +5665,45 @@ export namespace Prisma {
   export type FocuserMapFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     /**
      * Filter, which FocuserMap to fetch.
-     * 
-    **/
+     */
     where?: FocuserMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of FocuserMaps to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for FocuserMaps.
-     * 
-    **/
+     */
     cursor?: FocuserMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` FocuserMaps from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` FocuserMaps.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of FocuserMaps.
-     * 
-    **/
+     */
     distinct?: Enumerable<FocuserMapScalarFieldEnum>
   }
 
@@ -5989,53 +5725,45 @@ export namespace Prisma {
   export type FocuserMapFindFirstOrThrowArgs = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     /**
      * Filter, which FocuserMap to fetch.
-     * 
-    **/
+     */
     where?: FocuserMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of FocuserMaps to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for FocuserMaps.
-     * 
-    **/
+     */
     cursor?: FocuserMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` FocuserMaps from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` FocuserMaps.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of FocuserMaps.
-     * 
-    **/
+     */
     distinct?: Enumerable<FocuserMapScalarFieldEnum>
   }
 
@@ -6046,46 +5774,39 @@ export namespace Prisma {
   export type FocuserMapFindManyArgs = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     /**
      * Filter, which FocuserMaps to fetch.
-     * 
-    **/
+     */
     where?: FocuserMapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of FocuserMaps to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for listing FocuserMaps.
-     * 
-    **/
+     */
     cursor?: FocuserMapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` FocuserMaps from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` FocuserMaps.
-     * 
-    **/
+     */
     skip?: number
     distinct?: Enumerable<FocuserMapScalarFieldEnum>
   }
@@ -6097,18 +5818,15 @@ export namespace Prisma {
   export type FocuserMapCreateArgs = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     /**
      * The data needed to create a FocuserMap.
-     * 
-    **/
+     */
     data: XOR<FocuserMapCreateInput, FocuserMapUncheckedCreateInput>
   }
 
@@ -6119,8 +5837,7 @@ export namespace Prisma {
   export type FocuserMapCreateManyArgs = {
     /**
      * The data used to create many FocuserMaps.
-     * 
-    **/
+     */
     data: Enumerable<FocuserMapCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -6132,23 +5849,19 @@ export namespace Prisma {
   export type FocuserMapUpdateArgs = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     /**
      * The data needed to update a FocuserMap.
-     * 
-    **/
+     */
     data: XOR<FocuserMapUpdateInput, FocuserMapUncheckedUpdateInput>
     /**
      * Choose, which FocuserMap to update.
-     * 
-    **/
+     */
     where: FocuserMapWhereUniqueInput
   }
 
@@ -6159,13 +5872,11 @@ export namespace Prisma {
   export type FocuserMapUpdateManyArgs = {
     /**
      * The data used to update FocuserMaps.
-     * 
-    **/
+     */
     data: XOR<FocuserMapUpdateManyMutationInput, FocuserMapUncheckedUpdateManyInput>
     /**
      * Filter which FocuserMaps to update
-     * 
-    **/
+     */
     where?: FocuserMapWhereInput
   }
 
@@ -6176,28 +5887,23 @@ export namespace Prisma {
   export type FocuserMapUpsertArgs = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     /**
      * The filter to search for the FocuserMap to update in case it exists.
-     * 
-    **/
+     */
     where: FocuserMapWhereUniqueInput
     /**
      * In case the FocuserMap found by the `where` argument doesn't exist, create a new FocuserMap with this data.
-     * 
-    **/
+     */
     create: XOR<FocuserMapCreateInput, FocuserMapUncheckedCreateInput>
     /**
      * In case the FocuserMap was found with the provided `where` argument, update it with this data.
-     * 
-    **/
+     */
     update: XOR<FocuserMapUpdateInput, FocuserMapUncheckedUpdateInput>
   }
 
@@ -6208,18 +5914,15 @@ export namespace Prisma {
   export type FocuserMapDeleteArgs = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
     /**
      * Filter which FocuserMap to delete.
-     * 
-    **/
+     */
     where: FocuserMapWhereUniqueInput
   }
 
@@ -6230,8 +5933,7 @@ export namespace Prisma {
   export type FocuserMapDeleteManyArgs = {
     /**
      * Filter which FocuserMaps to delete
-     * 
-    **/
+     */
     where?: FocuserMapWhereInput
   }
 
@@ -6242,13 +5944,11 @@ export namespace Prisma {
   export type FocuserMapArgs = {
     /**
      * Select specific fields to fetch from the FocuserMap
-     * 
-    **/
+     */
     select?: FocuserMapSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: FocuserMapInclude | null
   }
 
@@ -6359,36 +6059,31 @@ export namespace Prisma {
   export type CommentAggregateArgs = {
     /**
      * Filter which Comment to aggregate.
-     * 
-    **/
+     */
     where?: CommentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Comments to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CommentOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
-     * 
-    **/
+     */
     cursor?: CommentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Comments from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Comments.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
@@ -6436,7 +6131,7 @@ export namespace Prisma {
   export type CommentGroupByArgs = {
     where?: CommentWhereInput
     orderBy?: Enumerable<CommentOrderByWithAggregationInput>
-    by: Array<CommentScalarFieldEnum>
+    by: CommentScalarFieldEnum[]
     having?: CommentScalarWhereWithAggregatesInput
     take?: number
     skip?: number
@@ -6495,7 +6190,7 @@ export namespace Prisma {
   export type CommentInclude = {
     commentBy?: boolean | UserArgs
     article?: boolean | ArticleArgs
-  } 
+  }
 
   export type CommentGetPayload<S extends boolean | null | undefined | CommentArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
@@ -6516,13 +6211,13 @@ export namespace Prisma {
       : Comment
 
 
-  type CommentCountArgs = Merge<
+  type CommentCountArgs = 
     Omit<CommentFindManyArgs, 'select' | 'include'> & {
       select?: CommentCountAggregateInputType | true
     }
-  >
 
   export interface CommentDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
     /**
      * Find zero or one Comment that matches the filter.
      * @param {CommentFindUniqueArgs} args - Arguments to find a Comment
@@ -6922,18 +6617,15 @@ export namespace Prisma {
   export type CommentFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     /**
      * Filter, which Comment to fetch.
-     * 
-    **/
+     */
     where: CommentWhereUniqueInput
   }
 
@@ -6955,18 +6647,15 @@ export namespace Prisma {
   export type CommentFindUniqueOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     /**
      * Filter, which Comment to fetch.
-     * 
-    **/
+     */
     where: CommentWhereUniqueInput
   }
 
@@ -6977,53 +6666,45 @@ export namespace Prisma {
   export type CommentFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     /**
      * Filter, which Comment to fetch.
-     * 
-    **/
+     */
     where?: CommentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Comments to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CommentOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Comments.
-     * 
-    **/
+     */
     cursor?: CommentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Comments from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Comments.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Comments.
-     * 
-    **/
+     */
     distinct?: Enumerable<CommentScalarFieldEnum>
   }
 
@@ -7045,53 +6726,45 @@ export namespace Prisma {
   export type CommentFindFirstOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     /**
      * Filter, which Comment to fetch.
-     * 
-    **/
+     */
     where?: CommentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Comments to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CommentOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Comments.
-     * 
-    **/
+     */
     cursor?: CommentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Comments from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Comments.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Comments.
-     * 
-    **/
+     */
     distinct?: Enumerable<CommentScalarFieldEnum>
   }
 
@@ -7102,46 +6775,39 @@ export namespace Prisma {
   export type CommentFindManyArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     /**
      * Filter, which Comments to fetch.
-     * 
-    **/
+     */
     where?: CommentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Comments to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CommentOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for listing Comments.
-     * 
-    **/
+     */
     cursor?: CommentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Comments from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Comments.
-     * 
-    **/
+     */
     skip?: number
     distinct?: Enumerable<CommentScalarFieldEnum>
   }
@@ -7153,18 +6819,15 @@ export namespace Prisma {
   export type CommentCreateArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     /**
      * The data needed to create a Comment.
-     * 
-    **/
+     */
     data: XOR<CommentCreateInput, CommentUncheckedCreateInput>
   }
 
@@ -7175,8 +6838,7 @@ export namespace Prisma {
   export type CommentCreateManyArgs = {
     /**
      * The data used to create many Comments.
-     * 
-    **/
+     */
     data: Enumerable<CommentCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -7188,23 +6850,19 @@ export namespace Prisma {
   export type CommentUpdateArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     /**
      * The data needed to update a Comment.
-     * 
-    **/
+     */
     data: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
     /**
      * Choose, which Comment to update.
-     * 
-    **/
+     */
     where: CommentWhereUniqueInput
   }
 
@@ -7215,13 +6873,11 @@ export namespace Prisma {
   export type CommentUpdateManyArgs = {
     /**
      * The data used to update Comments.
-     * 
-    **/
+     */
     data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyInput>
     /**
      * Filter which Comments to update
-     * 
-    **/
+     */
     where?: CommentWhereInput
   }
 
@@ -7232,28 +6888,23 @@ export namespace Prisma {
   export type CommentUpsertArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     /**
      * The filter to search for the Comment to update in case it exists.
-     * 
-    **/
+     */
     where: CommentWhereUniqueInput
     /**
      * In case the Comment found by the `where` argument doesn't exist, create a new Comment with this data.
-     * 
-    **/
+     */
     create: XOR<CommentCreateInput, CommentUncheckedCreateInput>
     /**
      * In case the Comment was found with the provided `where` argument, update it with this data.
-     * 
-    **/
+     */
     update: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
   }
 
@@ -7264,18 +6915,15 @@ export namespace Prisma {
   export type CommentDeleteArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
     /**
      * Filter which Comment to delete.
-     * 
-    **/
+     */
     where: CommentWhereUniqueInput
   }
 
@@ -7286,8 +6934,7 @@ export namespace Prisma {
   export type CommentDeleteManyArgs = {
     /**
      * Filter which Comments to delete
-     * 
-    **/
+     */
     where?: CommentWhereInput
   }
 
@@ -7298,13 +6945,11 @@ export namespace Prisma {
   export type CommentArgs = {
     /**
      * Select specific fields to fetch from the Comment
-     * 
-    **/
+     */
     select?: CommentSelect | null
     /**
      * Choose, which related nodes to fetch as well.
-     * 
-    **/
+     */
     include?: CommentInclude | null
   }
 
@@ -7357,36 +7002,31 @@ export namespace Prisma {
   export type CarouselAggregateArgs = {
     /**
      * Filter which Carousel to aggregate.
-     * 
-    **/
+     */
     where?: CarouselWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Carousels to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CarouselOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
-     * 
-    **/
+     */
     cursor?: CarouselWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Carousels from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Carousels.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
@@ -7422,7 +7062,7 @@ export namespace Prisma {
   export type CarouselGroupByArgs = {
     where?: CarouselWhereInput
     orderBy?: Enumerable<CarouselOrderByWithAggregationInput>
-    by: Array<CarouselScalarFieldEnum>
+    by: CarouselScalarFieldEnum[]
     having?: CarouselScalarWhereWithAggregatesInput
     take?: number
     skip?: number
@@ -7474,13 +7114,13 @@ export namespace Prisma {
       : Carousel
 
 
-  type CarouselCountArgs = Merge<
+  type CarouselCountArgs = 
     Omit<CarouselFindManyArgs, 'select' | 'include'> & {
       select?: CarouselCountAggregateInputType | true
     }
-  >
 
   export interface CarouselDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
     /**
      * Find zero or one Carousel that matches the filter.
      * @param {CarouselFindUniqueArgs} args - Arguments to find a Carousel
@@ -7877,13 +7517,11 @@ export namespace Prisma {
   export type CarouselFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
     /**
      * Filter, which Carousel to fetch.
-     * 
-    **/
+     */
     where: CarouselWhereUniqueInput
   }
 
@@ -7905,13 +7543,11 @@ export namespace Prisma {
   export type CarouselFindUniqueOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
     /**
      * Filter, which Carousel to fetch.
-     * 
-    **/
+     */
     where: CarouselWhereUniqueInput
   }
 
@@ -7922,48 +7558,41 @@ export namespace Prisma {
   export type CarouselFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
     /**
      * Filter, which Carousel to fetch.
-     * 
-    **/
+     */
     where?: CarouselWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Carousels to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CarouselOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Carousels.
-     * 
-    **/
+     */
     cursor?: CarouselWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Carousels from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Carousels.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Carousels.
-     * 
-    **/
+     */
     distinct?: Enumerable<CarouselScalarFieldEnum>
   }
 
@@ -7985,48 +7614,41 @@ export namespace Prisma {
   export type CarouselFindFirstOrThrowArgs = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
     /**
      * Filter, which Carousel to fetch.
-     * 
-    **/
+     */
     where?: CarouselWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Carousels to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CarouselOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for searching for Carousels.
-     * 
-    **/
+     */
     cursor?: CarouselWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Carousels from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Carousels.
-     * 
-    **/
+     */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
      * Filter by unique combinations of Carousels.
-     * 
-    **/
+     */
     distinct?: Enumerable<CarouselScalarFieldEnum>
   }
 
@@ -8037,41 +7659,35 @@ export namespace Prisma {
   export type CarouselFindManyArgs = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
     /**
      * Filter, which Carousels to fetch.
-     * 
-    **/
+     */
     where?: CarouselWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
      * Determine the order of Carousels to fetch.
-     * 
-    **/
+     */
     orderBy?: Enumerable<CarouselOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the position for listing Carousels.
-     * 
-    **/
+     */
     cursor?: CarouselWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Take `±n` Carousels from the position of the cursor.
-     * 
-    **/
+     */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
      * Skip the first `n` Carousels.
-     * 
-    **/
+     */
     skip?: number
     distinct?: Enumerable<CarouselScalarFieldEnum>
   }
@@ -8083,13 +7699,11 @@ export namespace Prisma {
   export type CarouselCreateArgs = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
     /**
      * The data needed to create a Carousel.
-     * 
-    **/
+     */
     data: XOR<CarouselCreateInput, CarouselUncheckedCreateInput>
   }
 
@@ -8100,8 +7714,7 @@ export namespace Prisma {
   export type CarouselCreateManyArgs = {
     /**
      * The data used to create many Carousels.
-     * 
-    **/
+     */
     data: Enumerable<CarouselCreateManyInput>
     skipDuplicates?: boolean
   }
@@ -8113,18 +7726,15 @@ export namespace Prisma {
   export type CarouselUpdateArgs = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
     /**
      * The data needed to update a Carousel.
-     * 
-    **/
+     */
     data: XOR<CarouselUpdateInput, CarouselUncheckedUpdateInput>
     /**
      * Choose, which Carousel to update.
-     * 
-    **/
+     */
     where: CarouselWhereUniqueInput
   }
 
@@ -8135,13 +7745,11 @@ export namespace Prisma {
   export type CarouselUpdateManyArgs = {
     /**
      * The data used to update Carousels.
-     * 
-    **/
+     */
     data: XOR<CarouselUpdateManyMutationInput, CarouselUncheckedUpdateManyInput>
     /**
      * Filter which Carousels to update
-     * 
-    **/
+     */
     where?: CarouselWhereInput
   }
 
@@ -8152,23 +7760,19 @@ export namespace Prisma {
   export type CarouselUpsertArgs = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
     /**
      * The filter to search for the Carousel to update in case it exists.
-     * 
-    **/
+     */
     where: CarouselWhereUniqueInput
     /**
      * In case the Carousel found by the `where` argument doesn't exist, create a new Carousel with this data.
-     * 
-    **/
+     */
     create: XOR<CarouselCreateInput, CarouselUncheckedCreateInput>
     /**
      * In case the Carousel was found with the provided `where` argument, update it with this data.
-     * 
-    **/
+     */
     update: XOR<CarouselUpdateInput, CarouselUncheckedUpdateInput>
   }
 
@@ -8179,13 +7783,11 @@ export namespace Prisma {
   export type CarouselDeleteArgs = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
     /**
      * Filter which Carousel to delete.
-     * 
-    **/
+     */
     where: CarouselWhereUniqueInput
   }
 
@@ -8196,8 +7798,7 @@ export namespace Prisma {
   export type CarouselDeleteManyArgs = {
     /**
      * Filter which Carousels to delete
-     * 
-    **/
+     */
     where?: CarouselWhereInput
   }
 
@@ -8208,8 +7809,7 @@ export namespace Prisma {
   export type CarouselArgs = {
     /**
      * Select specific fields to fetch from the Carousel
-     * 
-    **/
+     */
     select?: CarouselSelect | null
   }
 

@@ -9,8 +9,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "start:dev": "cross-env NODE_ENV=development nest start --webpack --webpackPath=./webpack.config.js --watch",
-    "start:build-wp": "cross-env NODE_ENV=production nest build --webpack --webpackPath=./webpack.config.js",
+    "start:dev": "nest start --webpack --webpackPath=./webpack.config.js --watch",
+    "start:build-wp": "nest build --webpack --webpackPath=./webpack.config.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --files ./prisma/index.ts",
     "generate": "pnpx prisma generate",
     "db-prod:migrate": "pnpx prisma migrate dev --name \"carousel\"",

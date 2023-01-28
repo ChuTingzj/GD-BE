@@ -6,7 +6,6 @@ console.log('start build');
 module.exports = {
   entry: './src/main',
   target: 'node',
-  mode: 'production',
   module: {
     rules: [
       {

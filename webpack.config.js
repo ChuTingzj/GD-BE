@@ -6,6 +6,7 @@ console.log('start build');
 module.exports = {
   entry: './src/main',
   target: 'node',
+  mode: 'production',
   module: {
     rules: [
       {
@@ -35,7 +36,7 @@ module.exports = {
       patterns: [
         {
           from: resolve(__dirname, './src/generated/client/schema.prisma'),
-          to: resolve(__dirname, './dist/src/generated/client/schema.prisma'),
+          to: resolve(__dirname, './dist/schema.prisma'),
           toType: 'file',
           noErrorOnMissing: true,
         },
@@ -46,6 +47,7 @@ module.exports = {
         const lazyImports = [
           '@nestjs/microservices',
           '@nestjs/microservices/microservices-module',
+          '@nestjs/websockets/socket-module',
           'cache-manager',
           'class-validator',
           'class-transformer',

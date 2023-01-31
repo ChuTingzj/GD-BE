@@ -19,8 +19,6 @@ jobs:
           node-version: '14.17.6'
       - name: Install npm dependencies
         run: npm install
-      - name: Generate client
-        run: npx prisma generate
       - name: Run build task
         run: npm run start:build-wp
       - name: Deploy to Server

@@ -186,7 +186,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\A-Space\\ChuTing\\GraduationDesign\\graduation-design-back-end\\src\\generated\\client",
+      "value": "D:\\A-Space\\ChuTing\\GraduationDesign\\GD-BE\\src\\generated\\client",
       "fromEnvVar": null
     },
     "config": {

@@ -20,7 +20,7 @@ jobs:
       - name: Install npm dependencies
         run: npm install
       - name: Generate client
-        run: npm run generate
+        run: npx prisma generate
       - name: Run build task
         run: npm run start:build-wp
       - name: Deploy to Server

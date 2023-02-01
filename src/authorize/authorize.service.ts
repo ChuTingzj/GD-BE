@@ -10,6 +10,7 @@ export class AuthorizeService {
     const res = await fetch(
       `https://github.com/login/oauth/access_token?client_id=983cf4b3feff31bba087&client_secret=7a20564d4c78a7bb055f8cde2b1b25a07d5a5a32&code=${code}`,
     );
-    console.log(res.text());
+    const text = await res.text();
+    console.log(text);
   }
 }

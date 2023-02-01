@@ -1,104 +1,107 @@
-
 /**
  * Client
-**/
+ **/
 
 import * as runtime from './runtime/index';
-declare const prisma: unique symbol
-export interface PrismaPromise<A> extends Promise<A> {[prisma]: true}
-type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
+declare const prisma: unique symbol;
+export interface PrismaPromise<A> extends Promise<A> {
+  [prisma]: true;
+}
+type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P;
 type UnwrapTuple<Tuple extends readonly unknown[]> = {
-  [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
+  [K in keyof Tuple]: K extends `${number}`
+    ? Tuple[K] extends PrismaPromise<infer X>
+      ? X
+      : UnwrapPromise<Tuple[K]>
+    : UnwrapPromise<Tuple[K]>;
 };
-
 
 /**
  * Model Article
- * 
+ *
  */
 export type Article = {
-  id: string
-  article_title: string
-  article_description: string
-  article_content: string
-  article_bigCover: string | null
-  article_cover: string | null
-  author_id: string
-  isExist: boolean
-  browse_times: number
-  like_times: number
-  createdAt: Date
-  updatedAt: Date
-}
+  id: string;
+  article_title: string;
+  article_description: string;
+  article_content: string;
+  article_bigCover: string | null;
+  article_cover: string | null;
+  author_id: string;
+  isExist: boolean;
+  browse_times: number;
+  like_times: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 /**
  * Model Category
- * 
+ *
  */
 export type Category = {
-  id: string
-  cate_name: string
-  background: string
-  cate_pic: string
-}
+  id: string;
+  cate_name: string;
+  background: string;
+  cate_pic: string;
+};
 
 /**
  * Model User
- * 
+ *
  */
 export type User = {
-  id: string
-  user_name: string
-  avatar: string
-  isExist: boolean
-}
+  id: string;
+  user_name: string;
+  avatar: string;
+  isExist: boolean;
+};
 
 /**
  * Model FollowerMap
- * 
+ *
  */
 export type FollowerMap = {
-  id: string
-  master_id: string
-}
+  id: string;
+  master_id: string;
+};
 
 /**
  * Model FocuserMap
- * 
+ *
  */
 export type FocuserMap = {
-  id: string
-  follower_id: string
-}
+  id: string;
+  follower_id: string;
+};
 
 /**
  * Model Comment
- * 
+ *
  */
 export type Comment = {
-  id: string
-  parent_id: string
-  comment: string
-  user_id: string
-  like_times: number
-  dislike_times: number
-  createdAt: Date
-  article_id: string
-}
+  id: string;
+  parent_id: string;
+  comment: string;
+  user_id: string;
+  like_times: number;
+  dislike_times: number;
+  createdAt: Date;
+  article_id: string;
+};
 
 /**
  * Model Carousel
- * 
+ *
  */
 export type Carousel = {
-  id: string
-  img_url: string
-}
-
+  id: string;
+  img_url: string;
+};
 
 /**
  * ##  Prisma Client ʲˢ
- * 
+ *
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
@@ -107,19 +110,27 @@ export type Carousel = {
  * const articles = await prisma.article.findMany()
  * ```
  *
- * 
+ *
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
 export class PrismaClient<
   T extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  U = 'log' extends keyof T ? T['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<T['log']> : never : never,
-  GlobalReject extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined = 'rejectOnNotFound' extends keyof T
+  U = 'log' extends keyof T
+    ? T['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition>
+      ? Prisma.GetEvents<T['log']>
+      : never
+    : never,
+  GlobalReject extends
+    | Prisma.RejectOnNotFound
+    | Prisma.RejectPerOperation
+    | false
+    | undefined = 'rejectOnNotFound' extends keyof T
     ? T['rejectOnNotFound']
-    : false
-      > {
-    /**
+    : false,
+> {
+  /**
    * ##  Prisma Client ʲˢ
-   * 
+   *
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
@@ -128,12 +139,21 @@ export class PrismaClient<
    * const articles = await prisma.article.findMany()
    * ```
    *
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
    */
 
-  constructor(optionsArg ?: Prisma.Subset<T, Prisma.PrismaClientOptions>);
-  $on<V extends (U | 'beforeExit')>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : V extends 'beforeExit' ? () => Promise<void> : Prisma.LogEvent) => void): void;
+  constructor(optionsArg?: Prisma.Subset<T, Prisma.PrismaClientOptions>);
+  $on<V extends U | 'beforeExit'>(
+    eventType: V,
+    callback: (
+      event: V extends 'query'
+        ? Prisma.QueryEvent
+        : V extends 'beforeExit'
+        ? () => Promise<void>
+        : Prisma.LogEvent,
+    ) => void,
+  ): void;
 
   /**
    * Connect with the database
@@ -148,18 +168,21 @@ export class PrismaClient<
   /**
    * Add a middleware
    */
-  $use(cb: Prisma.Middleware): void
+  $use(cb: Prisma.Middleware): void;
 
-/**
+  /**
    * Executes a prepared raw query and returns the number of affected rows.
    * @example
    * ```
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
-  $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): PrismaPromise<number>;
+  $executeRaw<T = unknown>(
+    query: TemplateStringsArray | Prisma.Sql,
+    ...values: any[]
+  ): PrismaPromise<number>;
 
   /**
    * Executes a raw query and returns the number of affected rows.
@@ -168,10 +191,13 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
-  $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): PrismaPromise<number>;
+  $executeRawUnsafe<T = unknown>(
+    query: string,
+    ...values: any[]
+  ): PrismaPromise<number>;
 
   /**
    * Performs a prepared raw query and returns the `SELECT` data.
@@ -179,10 +205,13 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
-  $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): PrismaPromise<T>;
+  $queryRaw<T = unknown>(
+    query: TemplateStringsArray | Prisma.Sql,
+    ...values: any[]
+  ): PrismaPromise<T>;
 
   /**
    * Performs a raw query and returns the `SELECT` data.
@@ -191,10 +220,13 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
-  $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): PrismaPromise<T>;
+  $queryRawUnsafe<T = unknown>(
+    query: string,
+    ...values: any[]
+  ): PrismaPromise<T>;
 
   /**
    * Allows the running of a sequence of read/write operations that are guaranteed to either succeed or fail as a whole.
@@ -206,131 +238,140 @@ export class PrismaClient<
    *   prisma.user.create({ data: { name: 'Alice' } }),
    * ])
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
-  $transaction<P extends PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<UnwrapTuple<P>>
+  $transaction<P extends PrismaPromise<any>[]>(
+    arg: [...P],
+    options?: { isolationLevel?: Prisma.TransactionIsolationLevel },
+  ): Promise<UnwrapTuple<P>>;
 
-  $transaction<R>(fn: (prisma: Prisma.TransactionClient) => Promise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<R>
+  $transaction<R>(
+    fn: (prisma: Prisma.TransactionClient) => Promise<R>,
+    options?: {
+      maxWait?: number;
+      timeout?: number;
+      isolationLevel?: Prisma.TransactionIsolationLevel;
+    },
+  ): Promise<R>;
 
-      /**
+  /**
    * `prisma.article`: Exposes CRUD operations for the **Article** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Articles
-    * const articles = await prisma.article.findMany()
-    * ```
-    */
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more Articles
+   * const articles = await prisma.article.findMany()
+   * ```
+   */
   get article(): Prisma.ArticleDelegate<GlobalReject>;
 
   /**
    * `prisma.category`: Exposes CRUD operations for the **Category** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Categories
-    * const categories = await prisma.category.findMany()
-    * ```
-    */
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more Categories
+   * const categories = await prisma.category.findMany()
+   * ```
+   */
   get category(): Prisma.CategoryDelegate<GlobalReject>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Users
-    * const users = await prisma.user.findMany()
-    * ```
-    */
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
+   * ```
+   */
   get user(): Prisma.UserDelegate<GlobalReject>;
 
   /**
    * `prisma.followerMap`: Exposes CRUD operations for the **FollowerMap** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more FollowerMaps
-    * const followerMaps = await prisma.followerMap.findMany()
-    * ```
-    */
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more FollowerMaps
+   * const followerMaps = await prisma.followerMap.findMany()
+   * ```
+   */
   get followerMap(): Prisma.FollowerMapDelegate<GlobalReject>;
 
   /**
    * `prisma.focuserMap`: Exposes CRUD operations for the **FocuserMap** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more FocuserMaps
-    * const focuserMaps = await prisma.focuserMap.findMany()
-    * ```
-    */
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more FocuserMaps
+   * const focuserMaps = await prisma.focuserMap.findMany()
+   * ```
+   */
   get focuserMap(): Prisma.FocuserMapDelegate<GlobalReject>;
 
   /**
    * `prisma.comment`: Exposes CRUD operations for the **Comment** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Comments
-    * const comments = await prisma.comment.findMany()
-    * ```
-    */
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more Comments
+   * const comments = await prisma.comment.findMany()
+   * ```
+   */
   get comment(): Prisma.CommentDelegate<GlobalReject>;
 
   /**
    * `prisma.carousel`: Exposes CRUD operations for the **Carousel** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Carousels
-    * const carousels = await prisma.carousel.findMany()
-    * ```
-    */
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more Carousels
+   * const carousels = await prisma.carousel.findMany()
+   * ```
+   */
   get carousel(): Prisma.CarouselDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
-  export import DMMF = runtime.DMMF
+  export import DMMF = runtime.DMMF;
 
   /**
    * Prisma Errors
    */
-  export import PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError
-  export import PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError
-  export import PrismaClientRustPanicError = runtime.PrismaClientRustPanicError
-  export import PrismaClientInitializationError = runtime.PrismaClientInitializationError
-  export import PrismaClientValidationError = runtime.PrismaClientValidationError
-  export import NotFoundError = runtime.NotFoundError
+  export import PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError;
+  export import PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError;
+  export import PrismaClientRustPanicError = runtime.PrismaClientRustPanicError;
+  export import PrismaClientInitializationError = runtime.PrismaClientInitializationError;
+  export import PrismaClientValidationError = runtime.PrismaClientValidationError;
+  export import NotFoundError = runtime.NotFoundError;
 
   /**
    * Re-export of sql-template-tag
    */
-  export import sql = runtime.sqltag
-  export import empty = runtime.empty
-  export import join = runtime.join
-  export import raw = runtime.raw
-  export import Sql = runtime.Sql
+  export import sql = runtime.sqltag;
+  export import empty = runtime.empty;
+  export import join = runtime.join;
+  export import raw = runtime.raw;
+  export import Sql = runtime.Sql;
 
   /**
    * Decimal.js
    */
-  export import Decimal = runtime.Decimal
+  export import Decimal = runtime.Decimal;
 
-  export type DecimalJsLike = runtime.DecimalJsLike
+  export type DecimalJsLike = runtime.DecimalJsLike;
 
   /**
-   * Metrics 
+   * Metrics
    */
-  export type Metrics = runtime.Metrics
-  export type Metric<T> = runtime.Metric<T>
-  export type MetricHistogram = runtime.MetricHistogram
-  export type MetricHistogramBucket = runtime.MetricHistogramBucket
-
+  export type Metrics = runtime.Metrics;
+  export type Metric<T> = runtime.Metric<T>;
+  export type MetricHistogram = runtime.MetricHistogram;
+  export type MetricHistogramBucket = runtime.MetricHistogramBucket;
 
   /**
    * Prisma Client JS version: 4.9.0
    * Query Engine version: ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
    */
   export type PrismaVersion = {
-    client: string
-  }
+    client: string;
+  };
 
-  export const prismaVersion: PrismaVersion 
+  export const prismaVersion: PrismaVersion;
 
   /**
    * Utility Types
@@ -339,9 +380,9 @@ export namespace Prisma {
   /**
    * From https://github.com/sindresorhus/type-fest/
    * Matches a JSON object.
-   * This type can be useful to enforce some input to be JSON-compatible or as a super-type to be extended from. 
+   * This type can be useful to enforce some input to be JSON-compatible or as a super-type to be extended from.
    */
-  export type JsonObject = {[Key in string]?: JsonValue}
+  export type JsonObject = { [Key in string]?: JsonValue };
 
   /**
    * From https://github.com/sindresorhus/type-fest/
@@ -353,19 +394,28 @@ export namespace Prisma {
    * From https://github.com/sindresorhus/type-fest/
    * Matches any valid JSON value.
    */
-  export type JsonValue = string | number | boolean | JsonObject | JsonArray | null
+  export type JsonValue =
+    | string
+    | number
+    | boolean
+    | JsonObject
+    | JsonArray
+    | null;
 
   /**
    * Matches a JSON object.
    * Unlike `JsonObject`, this type allows undefined and read-only properties.
    */
-  export type InputJsonObject = {readonly [Key in string]?: InputJsonValue | null}
+  export type InputJsonObject = {
+    readonly [Key in string]?: InputJsonValue | null;
+  };
 
   /**
    * Matches a JSON array.
    * Unlike `JsonArray`, readonly arrays are assignable to this type.
    */
-  export interface InputJsonArray extends ReadonlyArray<InputJsonValue | null> {}
+  export interface InputJsonArray
+    extends ReadonlyArray<InputJsonValue | null> {}
 
   /**
    * Matches any valid value that can be used as an input for operations like
@@ -380,119 +430,128 @@ export namespace Prisma {
    *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
    */
-  export type InputJsonValue = string | number | boolean | InputJsonObject | InputJsonArray
+  export type InputJsonValue =
+    | string
+    | number
+    | boolean
+    | InputJsonObject
+    | InputJsonArray;
 
   /**
    * Types of the values used to represent different kinds of `null` values when working with JSON fields.
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   namespace NullTypes {
     /**
-    * Type of `Prisma.DbNull`.
-    * 
-    * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
-    * 
-    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
-    */
+     * Type of `Prisma.DbNull`.
+     *
+     * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
+     *
+     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+     */
     class DbNull {
-      private DbNull: never
-      private constructor()
+      private DbNull: never;
+      private constructor();
     }
 
     /**
-    * Type of `Prisma.JsonNull`.
-    * 
-    * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
-    * 
-    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
-    */
+     * Type of `Prisma.JsonNull`.
+     *
+     * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
+     *
+     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+     */
     class JsonNull {
-      private JsonNull: never
-      private constructor()
+      private JsonNull: never;
+      private constructor();
     }
 
     /**
-    * Type of `Prisma.AnyNull`.
-    * 
-    * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
-    * 
-    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
-    */
+     * Type of `Prisma.AnyNull`.
+     *
+     * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
+     *
+     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+     */
     class AnyNull {
-      private AnyNull: never
-      private constructor()
+      private AnyNull: never;
+      private constructor();
     }
   }
 
   /**
    * Helper for filtering JSON entries that have `null` on the database (empty on the db)
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const DbNull: NullTypes.DbNull
+  export const DbNull: NullTypes.DbNull;
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const JsonNull: NullTypes.JsonNull
+  export const JsonNull: NullTypes.JsonNull;
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const AnyNull: NullTypes.AnyNull
+  export const AnyNull: NullTypes.AnyNull;
 
   type SelectAndInclude = {
-    select: any
-    include: any
-  }
+    select: any;
+    include: any;
+  };
   type HasSelect = {
-    select: any
-  }
+    select: any;
+  };
   type HasInclude = {
-    include: any
-  }
+    include: any;
+  };
   type CheckSelect<T, S, U> = T extends SelectAndInclude
     ? 'Please either choose `select` or `include`'
     : T extends HasSelect
     ? U
     : T extends HasInclude
     ? U
-    : S
+    : S;
 
   /**
    * Get the type of the value, that the Promise holds.
    */
-  export type PromiseType<T extends PromiseLike<any>> = T extends PromiseLike<infer U> ? U : T;
+  export type PromiseType<T extends PromiseLike<any>> = T extends PromiseLike<
+    infer U
+  >
+    ? U
+    : T;
 
   /**
    * Get the return type of a function which returns a Promise.
    */
-  export type PromiseReturnType<T extends (...args: any) => Promise<any>> = PromiseType<ReturnType<T>>
+  export type PromiseReturnType<T extends (...args: any) => Promise<any>> =
+    PromiseType<ReturnType<T>>;
 
   /**
    * From T, pick a set of properties whose keys are in the union K
    */
   type Prisma__Pick<T, K extends keyof T> = {
-      [P in K]: T[P];
+    [P in K]: T[P];
   };
-
 
   export type Enumerable<T> = T | Array<T>;
 
   export type RequiredKeys<T> = {
-    [K in keyof T]-?: {} extends Prisma__Pick<T, K> ? never : K
-  }[keyof T]
+    [K in keyof T]-?: {} extends Prisma__Pick<T, K> ? never : K;
+  }[keyof T];
 
   export type TruthyKeys<T> = keyof {
-    [K in keyof T as T[K] extends false | undefined | null ? never : K]: K
-  }
+    [K in keyof T as T[K] extends false | undefined | null ? never : K]: K;
+  };
 
-  export type TrueKeys<T> = TruthyKeys<Prisma__Pick<T, RequiredKeys<T>>>
+  export type TrueKeys<T> = TruthyKeys<Prisma__Pick<T, RequiredKeys<T>>>;
 
   /**
    * Subset
@@ -508,20 +567,18 @@ export namespace Prisma {
    * Additionally, it validates, if both select and include are present. If the case, it errors.
    */
   export type SelectSubset<T, U> = {
-    [key in keyof T]: key extends keyof U ? T[key] : never
-  } &
-    (T extends SelectAndInclude
-      ? 'Please either choose `select` or `include`.'
-      : {})
+    [key in keyof T]: key extends keyof U ? T[key] : never;
+  } & (T extends SelectAndInclude
+    ? 'Please either choose `select` or `include`.'
+    : {});
 
   /**
    * Subset + Intersection
    * @desc From `T` pick properties that exist in `U` and intersect `K`
    */
   export type SubsetIntersection<T, U, K> = {
-    [key in keyof T]: key extends keyof U ? T[key] : never
-  } &
-    K
+    [key in keyof T]: key extends keyof U ? T[key] : never;
+  } & K;
 
   type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 
@@ -529,33 +586,31 @@ export namespace Prisma {
    * XOR is needed to have a real mutually exclusive union type
    * https://stackoverflow.com/questions/42123407/does-typescript-support-mutually-exclusive-types
    */
-  type XOR<T, U> =
-    T extends object ?
-    U extends object ?
-      (Without<T, U> & U) | (Without<U, T> & T)
-    : U : T
-
+  type XOR<T, U> = T extends object
+    ? U extends object
+      ? (Without<T, U> & U) | (Without<U, T> & T)
+      : U
+    : T;
 
   /**
    * Is T a Record?
    */
   type IsObject<T extends any> = T extends Array<any>
-  ? False
-  : T extends Date
-  ? False
-  : T extends Uint8Array
-  ? False
-  : T extends BigInt
-  ? False
-  : T extends object
-  ? True
-  : False
-
+    ? False
+    : T extends Date
+    ? False
+    : T extends Uint8Array
+    ? False
+    : T extends BigInt
+    ? False
+    : T extends object
+    ? True
+    : False;
 
   /**
    * If it's T[], return T
    */
-  export type UnEnumerate<T extends unknown> = T extends Array<infer U> ? U : T
+  export type UnEnumerate<T extends unknown> = T extends Array<infer U> ? U : T;
 
   /**
    * From ts-toolbelt
@@ -564,61 +619,74 @@ export namespace Prisma {
   type __Either<O extends object, K extends Key> = Omit<O, K> &
     {
       // Merge all but K
-      [P in K]: Prisma__Pick<O, P & keyof O> // With K possibilities
-    }[K]
+      [P in K]: Prisma__Pick<O, P & keyof O>; // With K possibilities
+    }[K];
 
-  type EitherStrict<O extends object, K extends Key> = Strict<__Either<O, K>>
+  type EitherStrict<O extends object, K extends Key> = Strict<__Either<O, K>>;
 
-  type EitherLoose<O extends object, K extends Key> = ComputeRaw<__Either<O, K>>
+  type EitherLoose<O extends object, K extends Key> = ComputeRaw<
+    __Either<O, K>
+  >;
 
-  type _Either<
-    O extends object,
-    K extends Key,
-    strict extends Boolean
-  > = {
-    1: EitherStrict<O, K>
-    0: EitherLoose<O, K>
-  }[strict]
+  type _Either<O extends object, K extends Key, strict extends Boolean> = {
+    1: EitherStrict<O, K>;
+    0: EitherLoose<O, K>;
+  }[strict];
 
   type Either<
     O extends object,
     K extends Key,
-    strict extends Boolean = 1
-  > = O extends unknown ? _Either<O, K, strict> : never
+    strict extends Boolean = 1,
+  > = O extends unknown ? _Either<O, K, strict> : never;
 
-  export type Union = any
+  export type Union = any;
 
   type PatchUndefined<O extends object, O1 extends object> = {
-    [K in keyof O]: O[K] extends undefined ? At<O1, K> : O[K]
-  } & {}
+    [K in keyof O]: O[K] extends undefined ? At<O1, K> : O[K];
+  } & {};
 
   /** Helper Types for "Merge" **/
   export type IntersectOf<U extends Union> = (
     U extends unknown ? (k: U) => void : never
   ) extends (k: infer I) => void
     ? I
-    : never
+    : never;
 
   export type Overwrite<O extends object, O1 extends object> = {
-      [K in keyof O]: K extends keyof O1 ? O1[K] : O[K];
+    [K in keyof O]: K extends keyof O1 ? O1[K] : O[K];
   } & {};
 
-  type _Merge<U extends object> = IntersectOf<Overwrite<U, {
-      [K in keyof U]-?: At<U, K>;
-  }>>;
+  type _Merge<U extends object> = IntersectOf<
+    Overwrite<
+      U,
+      {
+        [K in keyof U]-?: At<U, K>;
+      }
+    >
+  >;
 
   type Key = string | number | symbol;
-  type AtBasic<O extends object, K extends Key> = K extends keyof O ? O[K] : never;
+  type AtBasic<O extends object, K extends Key> = K extends keyof O
+    ? O[K]
+    : never;
   type AtStrict<O extends object, K extends Key> = O[K & keyof O];
-  type AtLoose<O extends object, K extends Key> = O extends unknown ? AtStrict<O, K> : never;
-  export type At<O extends object, K extends Key, strict extends Boolean = 1> = {
-      1: AtStrict<O, K>;
-      0: AtLoose<O, K>;
+  type AtLoose<O extends object, K extends Key> = O extends unknown
+    ? AtStrict<O, K>
+    : never;
+  export type At<
+    O extends object,
+    K extends Key,
+    strict extends Boolean = 1,
+  > = {
+    1: AtStrict<O, K>;
+    0: AtLoose<O, K>;
   }[strict];
 
-  export type ComputeRaw<A extends any> = A extends Function ? A : {
-    [K in keyof A]: A[K];
-  } & {};
+  export type ComputeRaw<A extends any> = A extends Function
+    ? A
+    : {
+        [K in keyof A]: A[K];
+      } & {};
 
   export type OptionalFlat<O> = {
     [K in keyof O]?: O[K];
@@ -634,11 +702,15 @@ export namespace Prisma {
   // this type assumes the passed object is entirely optional
   type AtLeast<O extends object, K extends string> = NoExpand<
     O extends unknown
-    ? | (K extends keyof O ? { [P in K]: O[P] } & O : O)
-      | {[P in keyof O as P extends K ? K : never]-?: O[P]} & O
-    : never>;
+      ?
+          | (K extends keyof O ? { [P in K]: O[P] } & O : O)
+          | ({ [P in keyof O as P extends K ? K : never]-?: O[P] } & O)
+      : never
+  >;
 
-  type _Strict<U, _U = U> = U extends unknown ? U & OptionalFlat<_Record<Exclude<Keys<_U>, keyof U>, never>> : never;
+  type _Strict<U, _U = U> = U extends unknown
+    ? U & OptionalFlat<_Record<Exclude<Keys<_U>, keyof U>, never>>
+    : never;
 
   export type Strict<U extends object> = ComputeRaw<_Strict<U>>;
   /** End Helper Types for "Merge" **/
@@ -648,66 +720,68 @@ export namespace Prisma {
   /**
   A [[Boolean]]
   */
-  export type Boolean = True | False
+  export type Boolean = True | False;
 
   // /**
   // 1
   // */
-  export type True = 1
+  export type True = 1;
 
   /**
   0
   */
-  export type False = 0
+  export type False = 0;
 
   export type Not<B extends Boolean> = {
-    0: 1
-    1: 0
-  }[B]
+    0: 1;
+    1: 0;
+  }[B];
 
   export type Extends<A1 extends any, A2 extends any> = [A1] extends [never]
     ? 0 // anything `never` is false
     : A1 extends A2
     ? 1
-    : 0
+    : 0;
 
   export type Has<U extends Union, U1 extends Union> = Not<
     Extends<Exclude<U1, U>, U1>
-  >
+  >;
 
   export type Or<B1 extends Boolean, B2 extends Boolean> = {
     0: {
-      0: 0
-      1: 1
-    }
+      0: 0;
+      1: 1;
+    };
     1: {
-      0: 1
-      1: 1
-    }
-  }[B1][B2]
+      0: 1;
+      1: 1;
+    };
+  }[B1][B2];
 
-  export type Keys<U extends Union> = U extends unknown ? keyof U : never
+  export type Keys<U extends Union> = U extends unknown ? keyof U : never;
 
   type Cast<A, B> = A extends B ? A : B;
 
   export const type: unique symbol;
 
-  export function validator<V>(): <S>(select: runtime.Types.Utils.LegacyExact<S, V>) => S;
+  export function validator<V>(): <S>(
+    select: runtime.Types.Utils.LegacyExact<S, V>,
+  ) => S;
 
   /**
    * Used by group by
    */
 
-  export type GetScalarType<T, O> = O extends object ? {
-    [P in keyof T]: P extends keyof O
-      ? O[P]
-      : never
-  } : never
+  export type GetScalarType<T, O> = O extends object
+    ? {
+        [P in keyof T]: P extends keyof O ? O[P] : never;
+      }
+    : never;
 
   type FieldPaths<
     T,
-    U = Omit<T, '_avg' | '_sum' | '_count' | '_min' | '_max'>
-  > = IsObject<T> extends True ? U : T
+    U = Omit<T, '_avg' | '_sum' | '_count' | '_min' | '_max'>,
+  > = IsObject<T> extends True ? U : T;
 
   type GetHavingFields<T> = {
     [K in keyof T]: Or<
@@ -718,72 +792,102 @@ export namespace Prisma {
         // based on the brilliant idea of Pierre-Antoine Mills
         // https://github.com/microsoft/TypeScript/issues/30188#issuecomment-478938437
         T[K] extends infer TK
-        ? GetHavingFields<UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never>
+        ? GetHavingFields<
+            UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never
+          >
         : never
       : {} extends FieldPaths<T[K]>
       ? never
-      : K
-  }[keyof T]
+      : K;
+  }[keyof T];
 
   /**
    * Convert tuple to union
    */
-  type _TupleToUnion<T> = T extends (infer E)[] ? E : never
-  type TupleToUnion<K extends readonly any[]> = _TupleToUnion<K>
-  type MaybeTupleToUnion<T> = T extends any[] ? TupleToUnion<T> : T
+  type _TupleToUnion<T> = T extends (infer E)[] ? E : never;
+  type TupleToUnion<K extends readonly any[]> = _TupleToUnion<K>;
+  type MaybeTupleToUnion<T> = T extends any[] ? TupleToUnion<T> : T;
 
   /**
    * Like `Pick`, but with an array
    */
-  type PickArray<T, K extends Array<keyof T>> = Prisma__Pick<T, TupleToUnion<K>>
+  type PickArray<T, K extends Array<keyof T>> = Prisma__Pick<
+    T,
+    TupleToUnion<K>
+  >;
 
   /**
    * Exclude all keys with underscores
    */
-  type ExcludeUnderscoreKeys<T extends string> = T extends `_${string}` ? never : T
+  type ExcludeUnderscoreKeys<T extends string> = T extends `_${string}`
+    ? never
+    : T;
 
+  export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 
-  export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>
-
-  type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>
+  type FieldRefInputType<Model, FieldType> = Model extends never
+    ? never
+    : FieldRef<Model, FieldType>;
 
   class PrismaClientFetcher {
     private readonly prisma;
     private readonly debug;
     private readonly hooks?;
-    constructor(prisma: PrismaClient<any, any>, debug?: boolean, hooks?: Hooks | undefined);
-    request<T>(document: any, dataPath?: string[], rootField?: string, typeName?: string, isList?: boolean, callsite?: string): Promise<T>;
+    constructor(
+      prisma: PrismaClient<any, any>,
+      debug?: boolean,
+      hooks?: Hooks | undefined,
+    );
+    request<T>(
+      document: any,
+      dataPath?: string[],
+      rootField?: string,
+      typeName?: string,
+      isList?: boolean,
+      callsite?: string,
+    ): Promise<T>;
     sanitizeMessage(message: string): string;
-    protected unpack(document: any, data: any, path: string[], rootField?: string, isList?: boolean): any;
+    protected unpack(
+      document: any,
+      data: any,
+      path: string[],
+      rootField?: string,
+      isList?: boolean,
+    ): any;
   }
 
   export const ModelName: {
-    Article: 'Article',
-    Category: 'Category',
-    User: 'User',
-    FollowerMap: 'FollowerMap',
-    FocuserMap: 'FocuserMap',
-    Comment: 'Comment',
-    Carousel: 'Carousel'
+    Article: 'Article';
+    Category: 'Category';
+    User: 'User';
+    FollowerMap: 'FollowerMap';
+    FocuserMap: 'FocuserMap';
+    Comment: 'Comment';
+    Carousel: 'Carousel';
   };
 
-  export type ModelName = (typeof ModelName)[keyof typeof ModelName]
-
+  export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 
   export type Datasources = {
-    db?: Datasource
-  }
+    db?: Datasource;
+  };
 
-  export type DefaultPrismaClient = PrismaClient
-  export type RejectOnNotFound = boolean | ((error: Error) => Error)
-  export type RejectPerModel = { [P in ModelName]?: RejectOnNotFound }
-  export type RejectPerOperation =  { [P in "findUnique" | "findFirst"]?: RejectPerModel | RejectOnNotFound } 
-  type IsReject<T> = T extends true ? True : T extends (err: Error) => Error ? True : False
+  export type DefaultPrismaClient = PrismaClient;
+  export type RejectOnNotFound = boolean | ((error: Error) => Error);
+  export type RejectPerModel = { [P in ModelName]?: RejectOnNotFound };
+  export type RejectPerOperation = {
+    [P in 'findUnique' | 'findFirst']?: RejectPerModel | RejectOnNotFound;
+  };
+  type IsReject<T> = T extends true
+    ? True
+    : T extends (err: Error) => Error
+    ? True
+    : False;
   export type HasReject<
     GlobalRejectSettings extends Prisma.PrismaClientOptions['rejectOnNotFound'],
     LocalRejectSettings,
     Action extends PrismaAction,
-    Model extends ModelName
+    Model extends ModelName,
   > = LocalRejectSettings extends RejectOnNotFound
     ? IsReject<LocalRejectSettings>
     : GlobalRejectSettings extends RejectPerOperation
@@ -796,12 +900,12 @@ export namespace Prisma {
           : False
         : False
       : False
-    : IsReject<GlobalRejectSettings>
-  export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
+    : IsReject<GlobalRejectSettings>;
+  export type ErrorFormat = 'pretty' | 'colorless' | 'minimal';
 
   export interface PrismaClientOptions {
     /**
-     * Configure findUnique/findFirst to throw an error if the query returns null. 
+     * Configure findUnique/findFirst to throw an error if the query returns null.
      * @deprecated since 4.0.0. Use `findUniqueOrThrow`/`findFirstOrThrow` methods instead.
      * @example
      * ```
@@ -813,23 +917,23 @@ export namespace Prisma {
      * rejectOnNotFound: { findUnique: {User: (err) => new Error("User not found")}}
      * ```
      */
-    rejectOnNotFound?: RejectOnNotFound | RejectPerOperation
+    rejectOnNotFound?: RejectOnNotFound | RejectPerOperation;
     /**
      * Overwrites the datasource url from your schema.prisma file
      */
-    datasources?: Datasources
+    datasources?: Datasources;
 
     /**
      * @default "colorless"
      */
-    errorFormat?: ErrorFormat
+    errorFormat?: ErrorFormat;
 
     /**
      * @example
      * ```
      * // Defaults to stdout
      * log: ['query', 'info', 'warn', 'error']
-     * 
+     *
      * // Emit as events
      * log: [
      *  { emit: 'stdout', level: 'query' },
@@ -840,40 +944,52 @@ export namespace Prisma {
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
-    log?: Array<LogLevel | LogDefinition>
+    log?: Array<LogLevel | LogDefinition>;
   }
 
   export type Hooks = {
-    beforeRequest?: (options: { query: string, path: string[], rootField?: string, typeName?: string, document: any }) => any
-  }
+    beforeRequest?: (options: {
+      query: string;
+      path: string[];
+      rootField?: string;
+      typeName?: string;
+      document: any;
+    }) => any;
+  };
 
   /* Types for Logging */
-  export type LogLevel = 'info' | 'query' | 'warn' | 'error'
+  export type LogLevel = 'info' | 'query' | 'warn' | 'error';
   export type LogDefinition = {
-    level: LogLevel
-    emit: 'stdout' | 'event'
-  }
+    level: LogLevel;
+    emit: 'stdout' | 'event';
+  };
 
-  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
-  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
-    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
-    : never
+  export type GetLogType<T extends LogLevel | LogDefinition> =
+    T extends LogDefinition
+      ? T['emit'] extends 'event'
+        ? T['level']
+        : never
+      : never;
+  export type GetEvents<T extends any> = T extends Array<
+    LogLevel | LogDefinition
+  >
+    ? GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
+    : never;
 
   export type QueryEvent = {
-    timestamp: Date
-    query: string
-    params: string
-    duration: number
-    target: string
-  }
+    timestamp: Date;
+    query: string;
+    params: string;
+    duration: number;
+    target: string;
+  };
 
   export type LogEvent = {
-    timestamp: Date
-    message: string
-    target: string
-  }
+    timestamp: Date;
+    message: string;
+    target: string;
+  };
   /* End Types for Logging */
-
 
   export type PrismaAction =
     | 'findUnique'
@@ -891,18 +1007,18 @@ export namespace Prisma {
     | 'aggregate'
     | 'count'
     | 'runCommandRaw'
-    | 'findRaw'
+    | 'findRaw';
 
   /**
    * These options are being passed into the middleware as "params"
    */
   export type MiddlewareParams = {
-    model?: ModelName
-    action: PrismaAction
-    args: any
-    dataPath: string[]
-    runInTransaction: boolean
-  }
+    model?: ModelName;
+    action: PrismaAction;
+    args: any;
+    dataPath: string[];
+    runInTransaction: boolean;
+  };
 
   /**
    * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
@@ -910,55 +1026,60 @@ export namespace Prisma {
   export type Middleware<T = any> = (
     params: MiddlewareParams,
     next: (params: MiddlewareParams) => Promise<T>,
-  ) => Promise<T>
+  ) => Promise<T>;
 
   // tested in getLogLevel.test.ts
-  export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
+  export function getLogLevel(
+    log: Array<LogLevel | LogDefinition>,
+  ): LogLevel | undefined;
 
   /**
    * `PrismaClient` proxy available in interactive transactions.
    */
-  export type TransactionClient = Omit<Prisma.DefaultPrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>
+  export type TransactionClient = Omit<
+    Prisma.DefaultPrismaClient,
+    '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'
+  >;
 
   export type Datasource = {
-    url?: string
-  }
+    url?: string;
+  };
 
   /**
    * Count Types
    */
 
-
   /**
    * Count Type ArticleCountOutputType
    */
 
-
   export type ArticleCountOutputType = {
-    category_list: number
-    comment_list: number
-  }
+    category_list: number;
+    comment_list: number;
+  };
 
   export type ArticleCountOutputTypeSelect = {
-    category_list?: boolean
-    comment_list?: boolean
-  }
+    category_list?: boolean;
+    comment_list?: boolean;
+  };
 
-  export type ArticleCountOutputTypeGetPayload<S extends boolean | null | undefined | ArticleCountOutputTypeArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? ArticleCountOutputType :
-    S extends undefined ? never :
-    S extends { include: any } & (ArticleCountOutputTypeArgs)
-    ? ArticleCountOutputType 
-    : S extends { select: any } & (ArticleCountOutputTypeArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof ArticleCountOutputType ? ArticleCountOutputType[P] : never
-  } 
-      : ArticleCountOutputType
-
-
-
+  export type ArticleCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | ArticleCountOutputTypeArgs,
+  > = S extends { select: any; include: any }
+    ? 'Please either choose `select` or `include`'
+    : S extends true
+    ? ArticleCountOutputType
+    : S extends undefined
+    ? never
+    : S extends { include: any } & ArticleCountOutputTypeArgs
+    ? ArticleCountOutputType
+    : S extends { select: any } & ArticleCountOutputTypeArgs
+    ? {
+        [P in TruthyKeys<S['select']>]: P extends keyof ArticleCountOutputType
+          ? ArticleCountOutputType[P]
+          : never;
+      }
+    : ArticleCountOutputType;
 
   // Custom InputTypes
 
@@ -969,39 +1090,38 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the ArticleCountOutputType
      */
-    select?: ArticleCountOutputTypeSelect | null
-  }
-
-
+    select?: ArticleCountOutputTypeSelect | null;
+  };
 
   /**
    * Count Type CategoryCountOutputType
    */
 
-
   export type CategoryCountOutputType = {
-    article_list: number
-  }
+    article_list: number;
+  };
 
   export type CategoryCountOutputTypeSelect = {
-    article_list?: boolean
-  }
+    article_list?: boolean;
+  };
 
-  export type CategoryCountOutputTypeGetPayload<S extends boolean | null | undefined | CategoryCountOutputTypeArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? CategoryCountOutputType :
-    S extends undefined ? never :
-    S extends { include: any } & (CategoryCountOutputTypeArgs)
-    ? CategoryCountOutputType 
-    : S extends { select: any } & (CategoryCountOutputTypeArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof CategoryCountOutputType ? CategoryCountOutputType[P] : never
-  } 
-      : CategoryCountOutputType
-
-
-
+  export type CategoryCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | CategoryCountOutputTypeArgs,
+  > = S extends { select: any; include: any }
+    ? 'Please either choose `select` or `include`'
+    : S extends true
+    ? CategoryCountOutputType
+    : S extends undefined
+    ? never
+    : S extends { include: any } & CategoryCountOutputTypeArgs
+    ? CategoryCountOutputType
+    : S extends { select: any } & CategoryCountOutputTypeArgs
+    ? {
+        [P in TruthyKeys<S['select']>]: P extends keyof CategoryCountOutputType
+          ? CategoryCountOutputType[P]
+          : never;
+      }
+    : CategoryCountOutputType;
 
   // Custom InputTypes
 
@@ -1012,45 +1132,44 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the CategoryCountOutputType
      */
-    select?: CategoryCountOutputTypeSelect | null
-  }
-
-
+    select?: CategoryCountOutputTypeSelect | null;
+  };
 
   /**
    * Count Type UserCountOutputType
    */
 
-
   export type UserCountOutputType = {
-    article_list: number
-    follower_list: number
-    focuser_list: number
-    comment_list: number
-  }
+    article_list: number;
+    follower_list: number;
+    focuser_list: number;
+    comment_list: number;
+  };
 
   export type UserCountOutputTypeSelect = {
-    article_list?: boolean
-    follower_list?: boolean
-    focuser_list?: boolean
-    comment_list?: boolean
-  }
+    article_list?: boolean;
+    follower_list?: boolean;
+    focuser_list?: boolean;
+    comment_list?: boolean;
+  };
 
-  export type UserCountOutputTypeGetPayload<S extends boolean | null | undefined | UserCountOutputTypeArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? UserCountOutputType :
-    S extends undefined ? never :
-    S extends { include: any } & (UserCountOutputTypeArgs)
-    ? UserCountOutputType 
-    : S extends { select: any } & (UserCountOutputTypeArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof UserCountOutputType ? UserCountOutputType[P] : never
-  } 
-      : UserCountOutputType
-
-
-
+  export type UserCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | UserCountOutputTypeArgs,
+  > = S extends { select: any; include: any }
+    ? 'Please either choose `select` or `include`'
+    : S extends true
+    ? UserCountOutputType
+    : S extends undefined
+    ? never
+    : S extends { include: any } & UserCountOutputTypeArgs
+    ? UserCountOutputType
+    : S extends { select: any } & UserCountOutputTypeArgs
+    ? {
+        [P in TruthyKeys<S['select']>]: P extends keyof UserCountOutputType
+          ? UserCountOutputType[P]
+          : never;
+      }
+    : UserCountOutputType;
 
   // Custom InputTypes
 
@@ -1061,10 +1180,8 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the UserCountOutputType
      */
-    select?: UserCountOutputTypeSelect | null
-  }
-
-
+    select?: UserCountOutputTypeSelect | null;
+  };
 
   /**
    * Models
@@ -1074,306 +1191,314 @@ export namespace Prisma {
    * Model Article
    */
 
-
   export type AggregateArticle = {
-    _count: ArticleCountAggregateOutputType | null
-    _avg: ArticleAvgAggregateOutputType | null
-    _sum: ArticleSumAggregateOutputType | null
-    _min: ArticleMinAggregateOutputType | null
-    _max: ArticleMaxAggregateOutputType | null
-  }
+    _count: ArticleCountAggregateOutputType | null;
+    _avg: ArticleAvgAggregateOutputType | null;
+    _sum: ArticleSumAggregateOutputType | null;
+    _min: ArticleMinAggregateOutputType | null;
+    _max: ArticleMaxAggregateOutputType | null;
+  };
 
   export type ArticleAvgAggregateOutputType = {
-    browse_times: number | null
-    like_times: number | null
-  }
+    browse_times: number | null;
+    like_times: number | null;
+  };
 
   export type ArticleSumAggregateOutputType = {
-    browse_times: number | null
-    like_times: number | null
-  }
+    browse_times: number | null;
+    like_times: number | null;
+  };
 
   export type ArticleMinAggregateOutputType = {
-    id: string | null
-    article_title: string | null
-    article_description: string | null
-    article_content: string | null
-    article_bigCover: string | null
-    article_cover: string | null
-    author_id: string | null
-    isExist: boolean | null
-    browse_times: number | null
-    like_times: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
+    id: string | null;
+    article_title: string | null;
+    article_description: string | null;
+    article_content: string | null;
+    article_bigCover: string | null;
+    article_cover: string | null;
+    author_id: string | null;
+    isExist: boolean | null;
+    browse_times: number | null;
+    like_times: number | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+  };
 
   export type ArticleMaxAggregateOutputType = {
-    id: string | null
-    article_title: string | null
-    article_description: string | null
-    article_content: string | null
-    article_bigCover: string | null
-    article_cover: string | null
-    author_id: string | null
-    isExist: boolean | null
-    browse_times: number | null
-    like_times: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
+    id: string | null;
+    article_title: string | null;
+    article_description: string | null;
+    article_content: string | null;
+    article_bigCover: string | null;
+    article_cover: string | null;
+    author_id: string | null;
+    isExist: boolean | null;
+    browse_times: number | null;
+    like_times: number | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+  };
 
   export type ArticleCountAggregateOutputType = {
-    id: number
-    article_title: number
-    article_description: number
-    article_content: number
-    article_bigCover: number
-    article_cover: number
-    author_id: number
-    isExist: number
-    browse_times: number
-    like_times: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
+    id: number;
+    article_title: number;
+    article_description: number;
+    article_content: number;
+    article_bigCover: number;
+    article_cover: number;
+    author_id: number;
+    isExist: number;
+    browse_times: number;
+    like_times: number;
+    createdAt: number;
+    updatedAt: number;
+    _all: number;
+  };
 
   export type ArticleAvgAggregateInputType = {
-    browse_times?: true
-    like_times?: true
-  }
+    browse_times?: true;
+    like_times?: true;
+  };
 
   export type ArticleSumAggregateInputType = {
-    browse_times?: true
-    like_times?: true
-  }
+    browse_times?: true;
+    like_times?: true;
+  };
 
   export type ArticleMinAggregateInputType = {
-    id?: true
-    article_title?: true
-    article_description?: true
-    article_content?: true
-    article_bigCover?: true
-    article_cover?: true
-    author_id?: true
-    isExist?: true
-    browse_times?: true
-    like_times?: true
-    createdAt?: true
-    updatedAt?: true
-  }
+    id?: true;
+    article_title?: true;
+    article_description?: true;
+    article_content?: true;
+    article_bigCover?: true;
+    article_cover?: true;
+    author_id?: true;
+    isExist?: true;
+    browse_times?: true;
+    like_times?: true;
+    createdAt?: true;
+    updatedAt?: true;
+  };
 
   export type ArticleMaxAggregateInputType = {
-    id?: true
-    article_title?: true
-    article_description?: true
-    article_content?: true
-    article_bigCover?: true
-    article_cover?: true
-    author_id?: true
-    isExist?: true
-    browse_times?: true
-    like_times?: true
-    createdAt?: true
-    updatedAt?: true
-  }
+    id?: true;
+    article_title?: true;
+    article_description?: true;
+    article_content?: true;
+    article_bigCover?: true;
+    article_cover?: true;
+    author_id?: true;
+    isExist?: true;
+    browse_times?: true;
+    like_times?: true;
+    createdAt?: true;
+    updatedAt?: true;
+  };
 
   export type ArticleCountAggregateInputType = {
-    id?: true
-    article_title?: true
-    article_description?: true
-    article_content?: true
-    article_bigCover?: true
-    article_cover?: true
-    author_id?: true
-    isExist?: true
-    browse_times?: true
-    like_times?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
+    id?: true;
+    article_title?: true;
+    article_description?: true;
+    article_content?: true;
+    article_bigCover?: true;
+    article_cover?: true;
+    author_id?: true;
+    isExist?: true;
+    browse_times?: true;
+    like_times?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    _all?: true;
+  };
 
   export type ArticleAggregateArgs = {
     /**
      * Filter which Article to aggregate.
      */
-    where?: ArticleWhereInput
+    where?: ArticleWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Articles to fetch.
      */
-    orderBy?: Enumerable<ArticleOrderByWithRelationInput>
+    orderBy?: Enumerable<ArticleOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
-    cursor?: ArticleWhereUniqueInput
+    cursor?: ArticleWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Articles from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Articles.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Articles
-    **/
-    _count?: true | ArticleCountAggregateInputType
+     **/
+    _count?: true | ArticleCountAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
-    **/
-    _avg?: ArticleAvgAggregateInputType
+     **/
+    _avg?: ArticleAvgAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
-    **/
-    _sum?: ArticleSumAggregateInputType
+     **/
+    _sum?: ArticleSumAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
-    **/
-    _min?: ArticleMinAggregateInputType
+     **/
+    _min?: ArticleMinAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
-    **/
-    _max?: ArticleMaxAggregateInputType
-  }
+     **/
+    _max?: ArticleMaxAggregateInputType;
+  };
 
   export type GetArticleAggregateType<T extends ArticleAggregateArgs> = {
-        [P in keyof T & keyof AggregateArticle]: P extends '_count' | 'count'
+    [P in keyof T & keyof AggregateArticle]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
         : GetScalarType<T[P], AggregateArticle[P]>
-      : GetScalarType<T[P], AggregateArticle[P]>
-  }
-
-
-
+      : GetScalarType<T[P], AggregateArticle[P]>;
+  };
 
   export type ArticleGroupByArgs = {
-    where?: ArticleWhereInput
-    orderBy?: Enumerable<ArticleOrderByWithAggregationInput>
-    by: ArticleScalarFieldEnum[]
-    having?: ArticleScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ArticleCountAggregateInputType | true
-    _avg?: ArticleAvgAggregateInputType
-    _sum?: ArticleSumAggregateInputType
-    _min?: ArticleMinAggregateInputType
-    _max?: ArticleMaxAggregateInputType
-  }
-
+    where?: ArticleWhereInput;
+    orderBy?: Enumerable<ArticleOrderByWithAggregationInput>;
+    by: ArticleScalarFieldEnum[];
+    having?: ArticleScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: ArticleCountAggregateInputType | true;
+    _avg?: ArticleAvgAggregateInputType;
+    _sum?: ArticleSumAggregateInputType;
+    _min?: ArticleMinAggregateInputType;
+    _max?: ArticleMaxAggregateInputType;
+  };
 
   export type ArticleGroupByOutputType = {
-    id: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover: string | null
-    article_cover: string | null
-    author_id: string
-    isExist: boolean
-    browse_times: number
-    like_times: number
-    createdAt: Date
-    updatedAt: Date
-    _count: ArticleCountAggregateOutputType | null
-    _avg: ArticleAvgAggregateOutputType | null
-    _sum: ArticleSumAggregateOutputType | null
-    _min: ArticleMinAggregateOutputType | null
-    _max: ArticleMaxAggregateOutputType | null
-  }
+    id: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover: string | null;
+    article_cover: string | null;
+    author_id: string;
+    isExist: boolean;
+    browse_times: number;
+    like_times: number;
+    createdAt: Date;
+    updatedAt: Date;
+    _count: ArticleCountAggregateOutputType | null;
+    _avg: ArticleAvgAggregateOutputType | null;
+    _sum: ArticleSumAggregateOutputType | null;
+    _min: ArticleMinAggregateOutputType | null;
+    _max: ArticleMaxAggregateOutputType | null;
+  };
 
   type GetArticleGroupByPayload<T extends ArticleGroupByArgs> = PrismaPromise<
     Array<
-      PickArray<ArticleGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ArticleGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ArticleGroupByOutputType[P]>
+      PickArray<ArticleGroupByOutputType, T['by']> & {
+        [P in keyof T & keyof ArticleGroupByOutputType]: P extends '_count'
+          ? T[P] extends boolean
+            ? number
             : GetScalarType<T[P], ArticleGroupByOutputType[P]>
-        }
-      >
+          : GetScalarType<T[P], ArticleGroupByOutputType[P]>;
+      }
     >
-
+  >;
 
   export type ArticleSelect = {
-    id?: boolean
-    article_title?: boolean
-    article_description?: boolean
-    article_content?: boolean
-    article_bigCover?: boolean
-    article_cover?: boolean
-    category_list?: boolean | Article$category_listArgs
-    comment_list?: boolean | Article$comment_listArgs
-    author?: boolean | UserArgs
-    author_id?: boolean
-    isExist?: boolean
-    browse_times?: boolean
-    like_times?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    _count?: boolean | ArticleCountOutputTypeArgs
-  }
-
+    id?: boolean;
+    article_title?: boolean;
+    article_description?: boolean;
+    article_content?: boolean;
+    article_bigCover?: boolean;
+    article_cover?: boolean;
+    category_list?: boolean | Article$category_listArgs;
+    comment_list?: boolean | Article$comment_listArgs;
+    author?: boolean | UserArgs;
+    author_id?: boolean;
+    isExist?: boolean;
+    browse_times?: boolean;
+    like_times?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    _count?: boolean | ArticleCountOutputTypeArgs;
+  };
 
   export type ArticleInclude = {
-    category_list?: boolean | Article$category_listArgs
-    comment_list?: boolean | Article$comment_listArgs
-    author?: boolean | UserArgs
-    _count?: boolean | ArticleCountOutputTypeArgs
-  }
+    category_list?: boolean | Article$category_listArgs;
+    comment_list?: boolean | Article$comment_listArgs;
+    author?: boolean | UserArgs;
+    _count?: boolean | ArticleCountOutputTypeArgs;
+  };
 
-  export type ArticleGetPayload<S extends boolean | null | undefined | ArticleArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? Article :
-    S extends undefined ? never :
-    S extends { include: any } & (ArticleArgs | ArticleFindManyArgs)
-    ? Article  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'category_list' ? Array < CategoryGetPayload<S['include'][P]>>  :
-        P extends 'comment_list' ? Array < CommentGetPayload<S['include'][P]>>  :
-        P extends 'author' ? UserGetPayload<S['include'][P]> :
-        P extends '_count' ? ArticleCountOutputTypeGetPayload<S['include'][P]> :  never
-  } 
+  export type ArticleGetPayload<
+    S extends boolean | null | undefined | ArticleArgs,
+  > = S extends { select: any; include: any }
+    ? 'Please either choose `select` or `include`'
+    : S extends true
+    ? Article
+    : S extends undefined
+    ? never
+    : S extends { include: any } & (ArticleArgs | ArticleFindManyArgs)
+    ? Article & {
+        [P in TruthyKeys<S['include']>]: P extends 'category_list'
+          ? Array<CategoryGetPayload<S['include'][P]>>
+          : P extends 'comment_list'
+          ? Array<CommentGetPayload<S['include'][P]>>
+          : P extends 'author'
+          ? UserGetPayload<S['include'][P]>
+          : P extends '_count'
+          ? ArticleCountOutputTypeGetPayload<S['include'][P]>
+          : never;
+      }
     : S extends { select: any } & (ArticleArgs | ArticleFindManyArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-        P extends 'category_list' ? Array < CategoryGetPayload<S['select'][P]>>  :
-        P extends 'comment_list' ? Array < CommentGetPayload<S['select'][P]>>  :
-        P extends 'author' ? UserGetPayload<S['select'][P]> :
-        P extends '_count' ? ArticleCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Article ? Article[P] : never
-  } 
-      : Article
+    ? {
+        [P in TruthyKeys<S['select']>]: P extends 'category_list'
+          ? Array<CategoryGetPayload<S['select'][P]>>
+          : P extends 'comment_list'
+          ? Array<CommentGetPayload<S['select'][P]>>
+          : P extends 'author'
+          ? UserGetPayload<S['select'][P]>
+          : P extends '_count'
+          ? ArticleCountOutputTypeGetPayload<S['select'][P]>
+          : P extends keyof Article
+          ? Article[P]
+          : never;
+      }
+    : Article;
 
+  type ArticleCountArgs = Omit<ArticleFindManyArgs, 'select' | 'include'> & {
+    select?: ArticleCountAggregateInputType | true;
+  };
 
-  type ArticleCountArgs = 
-    Omit<ArticleFindManyArgs, 'select' | 'include'> & {
-      select?: ArticleCountAggregateInputType | true
-    }
-
-  export interface ArticleDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-
+  export interface ArticleDelegate<
+    GlobalRejectSettings extends
+      | Prisma.RejectOnNotFound
+      | Prisma.RejectPerOperation
+      | false
+      | undefined,
+  > {
     /**
      * Find zero or one Article that matches the filter.
      * @param {ArticleFindUniqueArgs} args - Arguments to find a Article
@@ -1384,13 +1509,25 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findUnique<T extends ArticleFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, ArticleFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Article'> extends True ? Prisma__ArticleClient<ArticleGetPayload<T>> : Prisma__ArticleClient<ArticleGetPayload<T> | null, null>
+     **/
+    findUnique<
+      T extends ArticleFindUniqueArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args: SelectSubset<T, ArticleFindUniqueArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findUnique',
+      'Article'
+    > extends True
+      ? Prisma__ArticleClient<ArticleGetPayload<T>>
+      : Prisma__ArticleClient<ArticleGetPayload<T> | null, null>;
 
     /**
-     * Find one Article that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one Article that matches the filter or throw an error  with `error.code='P2025'`
      *     if no matches were found.
      * @param {ArticleFindUniqueOrThrowArgs} args - Arguments to find a Article
      * @example
@@ -1400,10 +1537,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findUniqueOrThrow<T extends ArticleFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, ArticleFindUniqueOrThrowArgs>
-    ): Prisma__ArticleClient<ArticleGetPayload<T>>
+      args?: SelectSubset<T, ArticleFindUniqueOrThrowArgs>,
+    ): Prisma__ArticleClient<ArticleGetPayload<T>>;
 
     /**
      * Find the first Article that matches the filter.
@@ -1417,10 +1554,22 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findFirst<T extends ArticleFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, ArticleFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Article'> extends True ? Prisma__ArticleClient<ArticleGetPayload<T>> : Prisma__ArticleClient<ArticleGetPayload<T> | null, null>
+     **/
+    findFirst<
+      T extends ArticleFindFirstArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args?: SelectSubset<T, ArticleFindFirstArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findFirst',
+      'Article'
+    > extends True
+      ? Prisma__ArticleClient<ArticleGetPayload<T>>
+      : Prisma__ArticleClient<ArticleGetPayload<T> | null, null>;
 
     /**
      * Find the first Article that matches the filter or
@@ -1435,10 +1584,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findFirstOrThrow<T extends ArticleFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, ArticleFindFirstOrThrowArgs>
-    ): Prisma__ArticleClient<ArticleGetPayload<T>>
+      args?: SelectSubset<T, ArticleFindFirstOrThrowArgs>,
+    ): Prisma__ArticleClient<ArticleGetPayload<T>>;
 
     /**
      * Find zero or more Articles that matches the filter.
@@ -1448,17 +1597,17 @@ export namespace Prisma {
      * @example
      * // Get all Articles
      * const articles = await prisma.article.findMany()
-     * 
+     *
      * // Get first 10 Articles
      * const articles = await prisma.article.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const articleWithIdOnly = await prisma.article.findMany({ select: { id: true } })
-     * 
-    **/
+     *
+     **/
     findMany<T extends ArticleFindManyArgs>(
-      args?: SelectSubset<T, ArticleFindManyArgs>
-    ): PrismaPromise<Array<ArticleGetPayload<T>>>
+      args?: SelectSubset<T, ArticleFindManyArgs>,
+    ): PrismaPromise<Array<ArticleGetPayload<T>>>;
 
     /**
      * Create a Article.
@@ -1470,11 +1619,11 @@ export namespace Prisma {
      *     // ... data to create a Article
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     create<T extends ArticleCreateArgs>(
-      args: SelectSubset<T, ArticleCreateArgs>
-    ): Prisma__ArticleClient<ArticleGetPayload<T>>
+      args: SelectSubset<T, ArticleCreateArgs>,
+    ): Prisma__ArticleClient<ArticleGetPayload<T>>;
 
     /**
      * Create many Articles.
@@ -1486,11 +1635,11 @@ export namespace Prisma {
      *         // ... provide data here
      *       }
      *     })
-     *     
-    **/
+     *
+     **/
     createMany<T extends ArticleCreateManyArgs>(
-      args?: SelectSubset<T, ArticleCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, ArticleCreateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Delete a Article.
@@ -1502,11 +1651,11 @@ export namespace Prisma {
      *     // ... filter to delete one Article
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     delete<T extends ArticleDeleteArgs>(
-      args: SelectSubset<T, ArticleDeleteArgs>
-    ): Prisma__ArticleClient<ArticleGetPayload<T>>
+      args: SelectSubset<T, ArticleDeleteArgs>,
+    ): Prisma__ArticleClient<ArticleGetPayload<T>>;
 
     /**
      * Update one Article.
@@ -1521,11 +1670,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     update<T extends ArticleUpdateArgs>(
-      args: SelectSubset<T, ArticleUpdateArgs>
-    ): Prisma__ArticleClient<ArticleGetPayload<T>>
+      args: SelectSubset<T, ArticleUpdateArgs>,
+    ): Prisma__ArticleClient<ArticleGetPayload<T>>;
 
     /**
      * Delete zero or more Articles.
@@ -1537,11 +1686,11 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     deleteMany<T extends ArticleDeleteManyArgs>(
-      args?: SelectSubset<T, ArticleDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, ArticleDeleteManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Update zero or more Articles.
@@ -1558,11 +1707,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     updateMany<T extends ArticleUpdateManyArgs>(
-      args: SelectSubset<T, ArticleUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args: SelectSubset<T, ArticleUpdateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Create or update one Article.
@@ -1580,10 +1729,10 @@ export namespace Prisma {
      *     // ... the filter for the Article we want to update
      *   }
      * })
-    **/
+     **/
     upsert<T extends ArticleUpsertArgs>(
-      args: SelectSubset<T, ArticleUpsertArgs>
-    ): Prisma__ArticleClient<ArticleGetPayload<T>>
+      args: SelectSubset<T, ArticleUpsertArgs>,
+    ): Prisma__ArticleClient<ArticleGetPayload<T>>;
 
     /**
      * Count the number of Articles.
@@ -1597,7 +1746,7 @@ export namespace Prisma {
      *     // ... the filter for the Articles we want to count
      *   }
      * })
-    **/
+     **/
     count<T extends ArticleCountArgs>(
       args?: Subset<T, ArticleCountArgs>,
     ): PrismaPromise<
@@ -1606,7 +1755,7 @@ export namespace Prisma {
           ? number
           : GetScalarType<T['select'], ArticleCountAggregateOutputType>
         : number
-    >
+    >;
 
     /**
      * Allows you to perform aggregations operations on a Article.
@@ -1631,8 +1780,10 @@ export namespace Prisma {
      *   },
      *   take: 10,
      * })
-    **/
-    aggregate<T extends ArticleAggregateArgs>(args: Subset<T, ArticleAggregateArgs>): PrismaPromise<GetArticleAggregateType<T>>
+     **/
+    aggregate<T extends ArticleAggregateArgs>(
+      args: Subset<T, ArticleAggregateArgs>,
+    ): PrismaPromise<GetArticleAggregateType<T>>;
 
     /**
      * Group by Article.
@@ -1650,8 +1801,8 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
-    **/
+     *
+     **/
     groupBy<
       T extends ArticleGroupByArgs,
       HasSelectOrTake extends Or<
@@ -1661,56 +1812,61 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: ArticleGroupByArgs['orderBy'] }
         : { orderBy?: ArticleGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      OrderFields extends ExcludeUnderscoreKeys<
+        Keys<MaybeTupleToUnion<T['orderBy']>>
+      >,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
       HavingValid extends Has<ByFields, HavingFields>,
       ByEmpty extends T['by'] extends never[] ? True : False,
       InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ArticleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArticleGroupByPayload<T> : PrismaPromise<InputErrors>
-
+        ? `Error: "by" must not be empty.`
+        : HavingValid extends False
+        ? {
+            [P in HavingFields]: P extends ByFields
+              ? never
+              : P extends string
+              ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+              : [
+                  Error,
+                  'Field ',
+                  P,
+                  ` in "having" needs to be provided in "by"`,
+                ];
+          }[HavingFields]
+        : 'take' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "take", you also need to provide "orderBy"'
+        : 'skip' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        : ByValid extends True
+        ? {}
+        : {
+            [P in OrderFields]: P extends ByFields
+              ? never
+              : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+          }[OrderFields],
+    >(
+      args: SubsetIntersection<T, ArticleGroupByArgs, OrderByArg> & InputErrors,
+    ): {} extends InputErrors
+      ? GetArticleGroupByPayload<T>
+      : PrismaPromise<InputErrors>;
   }
 
   /**
@@ -1719,7 +1875,9 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__ArticleClient<T, Null = never> implements PrismaPromise<T> {
+  export class Prisma__ArticleClient<T, Null = never>
+    implements PrismaPromise<T>
+  {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -1733,14 +1891,31 @@ export namespace Prisma {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    constructor(
+      _dmmf: runtime.DMMFClass,
+      _fetcher: PrismaClientFetcher,
+      _queryType: 'query' | 'mutation',
+      _rootField: string,
+      _clientMethod: string,
+      _args: any,
+      _dataPath: string[],
+      _errorFormat: ErrorFormat,
+      _measurePerformance?: boolean | undefined,
+      _isList?: boolean,
+    );
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    category_list<T extends Article$category_listArgs= {}>(args?: Subset<T, Article$category_listArgs>): PrismaPromise<Array<CategoryGetPayload<T>>| Null>;
+    category_list<T extends Article$category_listArgs = {}>(
+      args?: Subset<T, Article$category_listArgs>,
+    ): PrismaPromise<Array<CategoryGetPayload<T>> | Null>;
 
-    comment_list<T extends Article$comment_listArgs= {}>(args?: Subset<T, Article$comment_listArgs>): PrismaPromise<Array<CommentGetPayload<T>>| Null>;
+    comment_list<T extends Article$comment_listArgs = {}>(
+      args?: Subset<T, Article$comment_listArgs>,
+    ): PrismaPromise<Array<CommentGetPayload<T>> | Null>;
 
-    author<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
+    author<T extends UserArgs = {}>(
+      args?: Subset<T, UserArgs>,
+    ): Prisma__UserClient<UserGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -1749,13 +1924,27 @@ export namespace Prisma {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    then<TResult1 = T, TResult2 = never>(
+      onfulfilled?:
+        | ((value: T) => TResult1 | PromiseLike<TResult1>)
+        | undefined
+        | null,
+      onrejected?:
+        | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+        | undefined
+        | null,
+    ): Promise<TResult1 | TResult2>;
     /**
      * Attaches a callback for only the rejection of the Promise.
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    catch<TResult = never>(
+      onrejected?:
+        | ((reason: any) => TResult | PromiseLike<TResult>)
+        | undefined
+        | null,
+    ): Promise<T | TResult>;
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
@@ -1764,8 +1953,6 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
-
-
 
   // Custom InputTypes
 
@@ -1776,28 +1963,27 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
+    include?: ArticleInclude | null;
     /**
      * Filter, which Article to fetch.
      */
-    where: ArticleWhereUniqueInput
-  }
+    where: ArticleWhereUniqueInput;
+  };
 
   /**
    * Article findUnique
    */
   export interface ArticleFindUniqueArgs extends ArticleFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * Article findUniqueOrThrow
@@ -1806,17 +1992,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
+    include?: ArticleInclude | null;
     /**
      * Filter, which Article to fetch.
      */
-    where: ArticleWhereUniqueInput
-  }
-
+    where: ArticleWhereUniqueInput;
+  };
 
   /**
    * Article base type for findFirst actions
@@ -1825,58 +2010,57 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
+    include?: ArticleInclude | null;
     /**
      * Filter, which Article to fetch.
      */
-    where?: ArticleWhereInput
+    where?: ArticleWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Articles to fetch.
      */
-    orderBy?: Enumerable<ArticleOrderByWithRelationInput>
+    orderBy?: Enumerable<ArticleOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Articles.
      */
-    cursor?: ArticleWhereUniqueInput
+    cursor?: ArticleWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Articles from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Articles.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Articles.
      */
-    distinct?: Enumerable<ArticleScalarFieldEnum>
-  }
+    distinct?: Enumerable<ArticleScalarFieldEnum>;
+  };
 
   /**
    * Article findFirst
    */
   export interface ArticleFindFirstArgs extends ArticleFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * Article findFirstOrThrow
@@ -1885,47 +2069,46 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
+    include?: ArticleInclude | null;
     /**
      * Filter, which Article to fetch.
      */
-    where?: ArticleWhereInput
+    where?: ArticleWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Articles to fetch.
      */
-    orderBy?: Enumerable<ArticleOrderByWithRelationInput>
+    orderBy?: Enumerable<ArticleOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Articles.
      */
-    cursor?: ArticleWhereUniqueInput
+    cursor?: ArticleWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Articles from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Articles.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Articles.
      */
-    distinct?: Enumerable<ArticleScalarFieldEnum>
-  }
-
+    distinct?: Enumerable<ArticleScalarFieldEnum>;
+  };
 
   /**
    * Article findMany
@@ -1934,42 +2117,41 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
+    include?: ArticleInclude | null;
     /**
      * Filter, which Articles to fetch.
      */
-    where?: ArticleWhereInput
+    where?: ArticleWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Articles to fetch.
      */
-    orderBy?: Enumerable<ArticleOrderByWithRelationInput>
+    orderBy?: Enumerable<ArticleOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Articles.
      */
-    cursor?: ArticleWhereUniqueInput
+    cursor?: ArticleWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Articles from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Articles.
      */
-    skip?: number
-    distinct?: Enumerable<ArticleScalarFieldEnum>
-  }
-
+    skip?: number;
+    distinct?: Enumerable<ArticleScalarFieldEnum>;
+  };
 
   /**
    * Article create
@@ -1978,17 +2160,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
+    include?: ArticleInclude | null;
     /**
      * The data needed to create a Article.
      */
-    data: XOR<ArticleCreateInput, ArticleUncheckedCreateInput>
-  }
-
+    data: XOR<ArticleCreateInput, ArticleUncheckedCreateInput>;
+  };
 
   /**
    * Article createMany
@@ -1997,10 +2178,9 @@ export namespace Prisma {
     /**
      * The data used to create many Articles.
      */
-    data: Enumerable<ArticleCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
+    data: Enumerable<ArticleCreateManyInput>;
+    skipDuplicates?: boolean;
+  };
 
   /**
    * Article update
@@ -2009,21 +2189,20 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
+    include?: ArticleInclude | null;
     /**
      * The data needed to update a Article.
      */
-    data: XOR<ArticleUpdateInput, ArticleUncheckedUpdateInput>
+    data: XOR<ArticleUpdateInput, ArticleUncheckedUpdateInput>;
     /**
      * Choose, which Article to update.
      */
-    where: ArticleWhereUniqueInput
-  }
-
+    where: ArticleWhereUniqueInput;
+  };
 
   /**
    * Article updateMany
@@ -2032,13 +2211,12 @@ export namespace Prisma {
     /**
      * The data used to update Articles.
      */
-    data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyInput>
+    data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyInput>;
     /**
      * Filter which Articles to update
      */
-    where?: ArticleWhereInput
-  }
-
+    where?: ArticleWhereInput;
+  };
 
   /**
    * Article upsert
@@ -2047,25 +2225,24 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
+    include?: ArticleInclude | null;
     /**
      * The filter to search for the Article to update in case it exists.
      */
-    where: ArticleWhereUniqueInput
+    where: ArticleWhereUniqueInput;
     /**
      * In case the Article found by the `where` argument doesn't exist, create a new Article with this data.
      */
-    create: XOR<ArticleCreateInput, ArticleUncheckedCreateInput>
+    create: XOR<ArticleCreateInput, ArticleUncheckedCreateInput>;
     /**
      * In case the Article was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<ArticleUpdateInput, ArticleUncheckedUpdateInput>
-  }
-
+    update: XOR<ArticleUpdateInput, ArticleUncheckedUpdateInput>;
+  };
 
   /**
    * Article delete
@@ -2074,17 +2251,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
+    include?: ArticleInclude | null;
     /**
      * Filter which Article to delete.
      */
-    where: ArticleWhereUniqueInput
-  }
-
+    where: ArticleWhereUniqueInput;
+  };
 
   /**
    * Article deleteMany
@@ -2093,9 +2269,8 @@ export namespace Prisma {
     /**
      * Filter which Articles to delete
      */
-    where?: ArticleWhereInput
-  }
-
+    where?: ArticleWhereInput;
+  };
 
   /**
    * Article.category_list
@@ -2104,19 +2279,18 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
-    where?: CategoryWhereInput
-    orderBy?: Enumerable<CategoryOrderByWithRelationInput>
-    cursor?: CategoryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<CategoryScalarFieldEnum>
-  }
-
+    include?: CategoryInclude | null;
+    where?: CategoryWhereInput;
+    orderBy?: Enumerable<CategoryOrderByWithRelationInput>;
+    cursor?: CategoryWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Enumerable<CategoryScalarFieldEnum>;
+  };
 
   /**
    * Article.comment_list
@@ -2125,19 +2299,18 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
-    where?: CommentWhereInput
-    orderBy?: Enumerable<CommentOrderByWithRelationInput>
-    cursor?: CommentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<CommentScalarFieldEnum>
-  }
-
+    include?: CommentInclude | null;
+    where?: CommentWhereInput;
+    orderBy?: Enumerable<CommentOrderByWithRelationInput>;
+    cursor?: CommentWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Enumerable<CommentScalarFieldEnum>;
+  };
 
   /**
    * Article without action
@@ -2146,209 +2319,211 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
-  }
-
-
+    include?: ArticleInclude | null;
+  };
 
   /**
    * Model Category
    */
 
-
   export type AggregateCategory = {
-    _count: CategoryCountAggregateOutputType | null
-    _min: CategoryMinAggregateOutputType | null
-    _max: CategoryMaxAggregateOutputType | null
-  }
+    _count: CategoryCountAggregateOutputType | null;
+    _min: CategoryMinAggregateOutputType | null;
+    _max: CategoryMaxAggregateOutputType | null;
+  };
 
   export type CategoryMinAggregateOutputType = {
-    id: string | null
-    cate_name: string | null
-    background: string | null
-    cate_pic: string | null
-  }
+    id: string | null;
+    cate_name: string | null;
+    background: string | null;
+    cate_pic: string | null;
+  };
 
   export type CategoryMaxAggregateOutputType = {
-    id: string | null
-    cate_name: string | null
-    background: string | null
-    cate_pic: string | null
-  }
+    id: string | null;
+    cate_name: string | null;
+    background: string | null;
+    cate_pic: string | null;
+  };
 
   export type CategoryCountAggregateOutputType = {
-    id: number
-    cate_name: number
-    background: number
-    cate_pic: number
-    _all: number
-  }
-
+    id: number;
+    cate_name: number;
+    background: number;
+    cate_pic: number;
+    _all: number;
+  };
 
   export type CategoryMinAggregateInputType = {
-    id?: true
-    cate_name?: true
-    background?: true
-    cate_pic?: true
-  }
+    id?: true;
+    cate_name?: true;
+    background?: true;
+    cate_pic?: true;
+  };
 
   export type CategoryMaxAggregateInputType = {
-    id?: true
-    cate_name?: true
-    background?: true
-    cate_pic?: true
-  }
+    id?: true;
+    cate_name?: true;
+    background?: true;
+    cate_pic?: true;
+  };
 
   export type CategoryCountAggregateInputType = {
-    id?: true
-    cate_name?: true
-    background?: true
-    cate_pic?: true
-    _all?: true
-  }
+    id?: true;
+    cate_name?: true;
+    background?: true;
+    cate_pic?: true;
+    _all?: true;
+  };
 
   export type CategoryAggregateArgs = {
     /**
      * Filter which Category to aggregate.
      */
-    where?: CategoryWhereInput
+    where?: CategoryWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Categories to fetch.
      */
-    orderBy?: Enumerable<CategoryOrderByWithRelationInput>
+    orderBy?: Enumerable<CategoryOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
-    cursor?: CategoryWhereUniqueInput
+    cursor?: CategoryWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Categories from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Categories.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Categories
-    **/
-    _count?: true | CategoryCountAggregateInputType
+     **/
+    _count?: true | CategoryCountAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
-    **/
-    _min?: CategoryMinAggregateInputType
+     **/
+    _min?: CategoryMinAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
-    **/
-    _max?: CategoryMaxAggregateInputType
-  }
+     **/
+    _max?: CategoryMaxAggregateInputType;
+  };
 
   export type GetCategoryAggregateType<T extends CategoryAggregateArgs> = {
-        [P in keyof T & keyof AggregateCategory]: P extends '_count' | 'count'
+    [P in keyof T & keyof AggregateCategory]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
         : GetScalarType<T[P], AggregateCategory[P]>
-      : GetScalarType<T[P], AggregateCategory[P]>
-  }
-
-
-
+      : GetScalarType<T[P], AggregateCategory[P]>;
+  };
 
   export type CategoryGroupByArgs = {
-    where?: CategoryWhereInput
-    orderBy?: Enumerable<CategoryOrderByWithAggregationInput>
-    by: CategoryScalarFieldEnum[]
-    having?: CategoryScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CategoryCountAggregateInputType | true
-    _min?: CategoryMinAggregateInputType
-    _max?: CategoryMaxAggregateInputType
-  }
-
+    where?: CategoryWhereInput;
+    orderBy?: Enumerable<CategoryOrderByWithAggregationInput>;
+    by: CategoryScalarFieldEnum[];
+    having?: CategoryScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: CategoryCountAggregateInputType | true;
+    _min?: CategoryMinAggregateInputType;
+    _max?: CategoryMaxAggregateInputType;
+  };
 
   export type CategoryGroupByOutputType = {
-    id: string
-    cate_name: string
-    background: string
-    cate_pic: string
-    _count: CategoryCountAggregateOutputType | null
-    _min: CategoryMinAggregateOutputType | null
-    _max: CategoryMaxAggregateOutputType | null
-  }
+    id: string;
+    cate_name: string;
+    background: string;
+    cate_pic: string;
+    _count: CategoryCountAggregateOutputType | null;
+    _min: CategoryMinAggregateOutputType | null;
+    _max: CategoryMaxAggregateOutputType | null;
+  };
 
   type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = PrismaPromise<
     Array<
-      PickArray<CategoryGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CategoryGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CategoryGroupByOutputType[P]>
+      PickArray<CategoryGroupByOutputType, T['by']> & {
+        [P in keyof T & keyof CategoryGroupByOutputType]: P extends '_count'
+          ? T[P] extends boolean
+            ? number
             : GetScalarType<T[P], CategoryGroupByOutputType[P]>
-        }
-      >
+          : GetScalarType<T[P], CategoryGroupByOutputType[P]>;
+      }
     >
-
+  >;
 
   export type CategorySelect = {
-    id?: boolean
-    cate_name?: boolean
-    background?: boolean
-    cate_pic?: boolean
-    article_list?: boolean | Category$article_listArgs
-    _count?: boolean | CategoryCountOutputTypeArgs
-  }
-
+    id?: boolean;
+    cate_name?: boolean;
+    background?: boolean;
+    cate_pic?: boolean;
+    article_list?: boolean | Category$article_listArgs;
+    _count?: boolean | CategoryCountOutputTypeArgs;
+  };
 
   export type CategoryInclude = {
-    article_list?: boolean | Category$article_listArgs
-    _count?: boolean | CategoryCountOutputTypeArgs
-  }
+    article_list?: boolean | Category$article_listArgs;
+    _count?: boolean | CategoryCountOutputTypeArgs;
+  };
 
-  export type CategoryGetPayload<S extends boolean | null | undefined | CategoryArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? Category :
-    S extends undefined ? never :
-    S extends { include: any } & (CategoryArgs | CategoryFindManyArgs)
-    ? Category  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'article_list' ? Array < ArticleGetPayload<S['include'][P]>>  :
-        P extends '_count' ? CategoryCountOutputTypeGetPayload<S['include'][P]> :  never
-  } 
+  export type CategoryGetPayload<
+    S extends boolean | null | undefined | CategoryArgs,
+  > = S extends { select: any; include: any }
+    ? 'Please either choose `select` or `include`'
+    : S extends true
+    ? Category
+    : S extends undefined
+    ? never
+    : S extends { include: any } & (CategoryArgs | CategoryFindManyArgs)
+    ? Category & {
+        [P in TruthyKeys<S['include']>]: P extends 'article_list'
+          ? Array<ArticleGetPayload<S['include'][P]>>
+          : P extends '_count'
+          ? CategoryCountOutputTypeGetPayload<S['include'][P]>
+          : never;
+      }
     : S extends { select: any } & (CategoryArgs | CategoryFindManyArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-        P extends 'article_list' ? Array < ArticleGetPayload<S['select'][P]>>  :
-        P extends '_count' ? CategoryCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Category ? Category[P] : never
-  } 
-      : Category
+    ? {
+        [P in TruthyKeys<S['select']>]: P extends 'article_list'
+          ? Array<ArticleGetPayload<S['select'][P]>>
+          : P extends '_count'
+          ? CategoryCountOutputTypeGetPayload<S['select'][P]>
+          : P extends keyof Category
+          ? Category[P]
+          : never;
+      }
+    : Category;
 
+  type CategoryCountArgs = Omit<CategoryFindManyArgs, 'select' | 'include'> & {
+    select?: CategoryCountAggregateInputType | true;
+  };
 
-  type CategoryCountArgs = 
-    Omit<CategoryFindManyArgs, 'select' | 'include'> & {
-      select?: CategoryCountAggregateInputType | true
-    }
-
-  export interface CategoryDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-
+  export interface CategoryDelegate<
+    GlobalRejectSettings extends
+      | Prisma.RejectOnNotFound
+      | Prisma.RejectPerOperation
+      | false
+      | undefined,
+  > {
     /**
      * Find zero or one Category that matches the filter.
      * @param {CategoryFindUniqueArgs} args - Arguments to find a Category
@@ -2359,13 +2534,25 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findUnique<T extends CategoryFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, CategoryFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Category'> extends True ? Prisma__CategoryClient<CategoryGetPayload<T>> : Prisma__CategoryClient<CategoryGetPayload<T> | null, null>
+     **/
+    findUnique<
+      T extends CategoryFindUniqueArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args: SelectSubset<T, CategoryFindUniqueArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findUnique',
+      'Category'
+    > extends True
+      ? Prisma__CategoryClient<CategoryGetPayload<T>>
+      : Prisma__CategoryClient<CategoryGetPayload<T> | null, null>;
 
     /**
-     * Find one Category that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one Category that matches the filter or throw an error  with `error.code='P2025'`
      *     if no matches were found.
      * @param {CategoryFindUniqueOrThrowArgs} args - Arguments to find a Category
      * @example
@@ -2375,10 +2562,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findUniqueOrThrow<T extends CategoryFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, CategoryFindUniqueOrThrowArgs>
-    ): Prisma__CategoryClient<CategoryGetPayload<T>>
+      args?: SelectSubset<T, CategoryFindUniqueOrThrowArgs>,
+    ): Prisma__CategoryClient<CategoryGetPayload<T>>;
 
     /**
      * Find the first Category that matches the filter.
@@ -2392,10 +2579,22 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findFirst<T extends CategoryFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, CategoryFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Category'> extends True ? Prisma__CategoryClient<CategoryGetPayload<T>> : Prisma__CategoryClient<CategoryGetPayload<T> | null, null>
+     **/
+    findFirst<
+      T extends CategoryFindFirstArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args?: SelectSubset<T, CategoryFindFirstArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findFirst',
+      'Category'
+    > extends True
+      ? Prisma__CategoryClient<CategoryGetPayload<T>>
+      : Prisma__CategoryClient<CategoryGetPayload<T> | null, null>;
 
     /**
      * Find the first Category that matches the filter or
@@ -2410,10 +2609,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findFirstOrThrow<T extends CategoryFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, CategoryFindFirstOrThrowArgs>
-    ): Prisma__CategoryClient<CategoryGetPayload<T>>
+      args?: SelectSubset<T, CategoryFindFirstOrThrowArgs>,
+    ): Prisma__CategoryClient<CategoryGetPayload<T>>;
 
     /**
      * Find zero or more Categories that matches the filter.
@@ -2423,17 +2622,17 @@ export namespace Prisma {
      * @example
      * // Get all Categories
      * const categories = await prisma.category.findMany()
-     * 
+     *
      * // Get first 10 Categories
      * const categories = await prisma.category.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const categoryWithIdOnly = await prisma.category.findMany({ select: { id: true } })
-     * 
-    **/
+     *
+     **/
     findMany<T extends CategoryFindManyArgs>(
-      args?: SelectSubset<T, CategoryFindManyArgs>
-    ): PrismaPromise<Array<CategoryGetPayload<T>>>
+      args?: SelectSubset<T, CategoryFindManyArgs>,
+    ): PrismaPromise<Array<CategoryGetPayload<T>>>;
 
     /**
      * Create a Category.
@@ -2445,11 +2644,11 @@ export namespace Prisma {
      *     // ... data to create a Category
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     create<T extends CategoryCreateArgs>(
-      args: SelectSubset<T, CategoryCreateArgs>
-    ): Prisma__CategoryClient<CategoryGetPayload<T>>
+      args: SelectSubset<T, CategoryCreateArgs>,
+    ): Prisma__CategoryClient<CategoryGetPayload<T>>;
 
     /**
      * Create many Categories.
@@ -2461,11 +2660,11 @@ export namespace Prisma {
      *         // ... provide data here
      *       }
      *     })
-     *     
-    **/
+     *
+     **/
     createMany<T extends CategoryCreateManyArgs>(
-      args?: SelectSubset<T, CategoryCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, CategoryCreateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Delete a Category.
@@ -2477,11 +2676,11 @@ export namespace Prisma {
      *     // ... filter to delete one Category
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     delete<T extends CategoryDeleteArgs>(
-      args: SelectSubset<T, CategoryDeleteArgs>
-    ): Prisma__CategoryClient<CategoryGetPayload<T>>
+      args: SelectSubset<T, CategoryDeleteArgs>,
+    ): Prisma__CategoryClient<CategoryGetPayload<T>>;
 
     /**
      * Update one Category.
@@ -2496,11 +2695,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     update<T extends CategoryUpdateArgs>(
-      args: SelectSubset<T, CategoryUpdateArgs>
-    ): Prisma__CategoryClient<CategoryGetPayload<T>>
+      args: SelectSubset<T, CategoryUpdateArgs>,
+    ): Prisma__CategoryClient<CategoryGetPayload<T>>;
 
     /**
      * Delete zero or more Categories.
@@ -2512,11 +2711,11 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     deleteMany<T extends CategoryDeleteManyArgs>(
-      args?: SelectSubset<T, CategoryDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, CategoryDeleteManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Update zero or more Categories.
@@ -2533,11 +2732,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     updateMany<T extends CategoryUpdateManyArgs>(
-      args: SelectSubset<T, CategoryUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args: SelectSubset<T, CategoryUpdateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Create or update one Category.
@@ -2555,10 +2754,10 @@ export namespace Prisma {
      *     // ... the filter for the Category we want to update
      *   }
      * })
-    **/
+     **/
     upsert<T extends CategoryUpsertArgs>(
-      args: SelectSubset<T, CategoryUpsertArgs>
-    ): Prisma__CategoryClient<CategoryGetPayload<T>>
+      args: SelectSubset<T, CategoryUpsertArgs>,
+    ): Prisma__CategoryClient<CategoryGetPayload<T>>;
 
     /**
      * Count the number of Categories.
@@ -2572,7 +2771,7 @@ export namespace Prisma {
      *     // ... the filter for the Categories we want to count
      *   }
      * })
-    **/
+     **/
     count<T extends CategoryCountArgs>(
       args?: Subset<T, CategoryCountArgs>,
     ): PrismaPromise<
@@ -2581,7 +2780,7 @@ export namespace Prisma {
           ? number
           : GetScalarType<T['select'], CategoryCountAggregateOutputType>
         : number
-    >
+    >;
 
     /**
      * Allows you to perform aggregations operations on a Category.
@@ -2606,8 +2805,10 @@ export namespace Prisma {
      *   },
      *   take: 10,
      * })
-    **/
-    aggregate<T extends CategoryAggregateArgs>(args: Subset<T, CategoryAggregateArgs>): PrismaPromise<GetCategoryAggregateType<T>>
+     **/
+    aggregate<T extends CategoryAggregateArgs>(
+      args: Subset<T, CategoryAggregateArgs>,
+    ): PrismaPromise<GetCategoryAggregateType<T>>;
 
     /**
      * Group by Category.
@@ -2625,8 +2826,8 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
-    **/
+     *
+     **/
     groupBy<
       T extends CategoryGroupByArgs,
       HasSelectOrTake extends Or<
@@ -2636,56 +2837,62 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: CategoryGroupByArgs['orderBy'] }
         : { orderBy?: CategoryGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      OrderFields extends ExcludeUnderscoreKeys<
+        Keys<MaybeTupleToUnion<T['orderBy']>>
+      >,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
       HavingValid extends Has<ByFields, HavingFields>,
       ByEmpty extends T['by'] extends never[] ? True : False,
       InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCategoryGroupByPayload<T> : PrismaPromise<InputErrors>
-
+        ? `Error: "by" must not be empty.`
+        : HavingValid extends False
+        ? {
+            [P in HavingFields]: P extends ByFields
+              ? never
+              : P extends string
+              ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+              : [
+                  Error,
+                  'Field ',
+                  P,
+                  ` in "having" needs to be provided in "by"`,
+                ];
+          }[HavingFields]
+        : 'take' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "take", you also need to provide "orderBy"'
+        : 'skip' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        : ByValid extends True
+        ? {}
+        : {
+            [P in OrderFields]: P extends ByFields
+              ? never
+              : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+          }[OrderFields],
+    >(
+      args: SubsetIntersection<T, CategoryGroupByArgs, OrderByArg> &
+        InputErrors,
+    ): {} extends InputErrors
+      ? GetCategoryGroupByPayload<T>
+      : PrismaPromise<InputErrors>;
   }
 
   /**
@@ -2694,7 +2901,9 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__CategoryClient<T, Null = never> implements PrismaPromise<T> {
+  export class Prisma__CategoryClient<T, Null = never>
+    implements PrismaPromise<T>
+  {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -2708,10 +2917,23 @@ export namespace Prisma {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    constructor(
+      _dmmf: runtime.DMMFClass,
+      _fetcher: PrismaClientFetcher,
+      _queryType: 'query' | 'mutation',
+      _rootField: string,
+      _clientMethod: string,
+      _args: any,
+      _dataPath: string[],
+      _errorFormat: ErrorFormat,
+      _measurePerformance?: boolean | undefined,
+      _isList?: boolean,
+    );
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    article_list<T extends Category$article_listArgs= {}>(args?: Subset<T, Category$article_listArgs>): PrismaPromise<Array<ArticleGetPayload<T>>| Null>;
+    article_list<T extends Category$article_listArgs = {}>(
+      args?: Subset<T, Category$article_listArgs>,
+    ): PrismaPromise<Array<ArticleGetPayload<T>> | Null>;
 
     private get _document();
     /**
@@ -2720,13 +2942,27 @@ export namespace Prisma {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    then<TResult1 = T, TResult2 = never>(
+      onfulfilled?:
+        | ((value: T) => TResult1 | PromiseLike<TResult1>)
+        | undefined
+        | null,
+      onrejected?:
+        | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+        | undefined
+        | null,
+    ): Promise<TResult1 | TResult2>;
     /**
      * Attaches a callback for only the rejection of the Promise.
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    catch<TResult = never>(
+      onrejected?:
+        | ((reason: any) => TResult | PromiseLike<TResult>)
+        | undefined
+        | null,
+    ): Promise<T | TResult>;
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
@@ -2735,8 +2971,6 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
-
-
 
   // Custom InputTypes
 
@@ -2747,28 +2981,27 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
+    include?: CategoryInclude | null;
     /**
      * Filter, which Category to fetch.
      */
-    where: CategoryWhereUniqueInput
-  }
+    where: CategoryWhereUniqueInput;
+  };
 
   /**
    * Category findUnique
    */
   export interface CategoryFindUniqueArgs extends CategoryFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * Category findUniqueOrThrow
@@ -2777,17 +3010,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
+    include?: CategoryInclude | null;
     /**
      * Filter, which Category to fetch.
      */
-    where: CategoryWhereUniqueInput
-  }
-
+    where: CategoryWhereUniqueInput;
+  };
 
   /**
    * Category base type for findFirst actions
@@ -2796,58 +3028,57 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
+    include?: CategoryInclude | null;
     /**
      * Filter, which Category to fetch.
      */
-    where?: CategoryWhereInput
+    where?: CategoryWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Categories to fetch.
      */
-    orderBy?: Enumerable<CategoryOrderByWithRelationInput>
+    orderBy?: Enumerable<CategoryOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Categories.
      */
-    cursor?: CategoryWhereUniqueInput
+    cursor?: CategoryWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Categories from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Categories.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Categories.
      */
-    distinct?: Enumerable<CategoryScalarFieldEnum>
-  }
+    distinct?: Enumerable<CategoryScalarFieldEnum>;
+  };
 
   /**
    * Category findFirst
    */
   export interface CategoryFindFirstArgs extends CategoryFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * Category findFirstOrThrow
@@ -2856,47 +3087,46 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
+    include?: CategoryInclude | null;
     /**
      * Filter, which Category to fetch.
      */
-    where?: CategoryWhereInput
+    where?: CategoryWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Categories to fetch.
      */
-    orderBy?: Enumerable<CategoryOrderByWithRelationInput>
+    orderBy?: Enumerable<CategoryOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Categories.
      */
-    cursor?: CategoryWhereUniqueInput
+    cursor?: CategoryWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Categories from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Categories.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Categories.
      */
-    distinct?: Enumerable<CategoryScalarFieldEnum>
-  }
-
+    distinct?: Enumerable<CategoryScalarFieldEnum>;
+  };
 
   /**
    * Category findMany
@@ -2905,42 +3135,41 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
+    include?: CategoryInclude | null;
     /**
      * Filter, which Categories to fetch.
      */
-    where?: CategoryWhereInput
+    where?: CategoryWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Categories to fetch.
      */
-    orderBy?: Enumerable<CategoryOrderByWithRelationInput>
+    orderBy?: Enumerable<CategoryOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Categories.
      */
-    cursor?: CategoryWhereUniqueInput
+    cursor?: CategoryWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Categories from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Categories.
      */
-    skip?: number
-    distinct?: Enumerable<CategoryScalarFieldEnum>
-  }
-
+    skip?: number;
+    distinct?: Enumerable<CategoryScalarFieldEnum>;
+  };
 
   /**
    * Category create
@@ -2949,17 +3178,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
+    include?: CategoryInclude | null;
     /**
      * The data needed to create a Category.
      */
-    data: XOR<CategoryCreateInput, CategoryUncheckedCreateInput>
-  }
-
+    data: XOR<CategoryCreateInput, CategoryUncheckedCreateInput>;
+  };
 
   /**
    * Category createMany
@@ -2968,10 +3196,9 @@ export namespace Prisma {
     /**
      * The data used to create many Categories.
      */
-    data: Enumerable<CategoryCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
+    data: Enumerable<CategoryCreateManyInput>;
+    skipDuplicates?: boolean;
+  };
 
   /**
    * Category update
@@ -2980,21 +3207,20 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
+    include?: CategoryInclude | null;
     /**
      * The data needed to update a Category.
      */
-    data: XOR<CategoryUpdateInput, CategoryUncheckedUpdateInput>
+    data: XOR<CategoryUpdateInput, CategoryUncheckedUpdateInput>;
     /**
      * Choose, which Category to update.
      */
-    where: CategoryWhereUniqueInput
-  }
-
+    where: CategoryWhereUniqueInput;
+  };
 
   /**
    * Category updateMany
@@ -3003,13 +3229,15 @@ export namespace Prisma {
     /**
      * The data used to update Categories.
      */
-    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyInput>
+    data: XOR<
+      CategoryUpdateManyMutationInput,
+      CategoryUncheckedUpdateManyInput
+    >;
     /**
      * Filter which Categories to update
      */
-    where?: CategoryWhereInput
-  }
-
+    where?: CategoryWhereInput;
+  };
 
   /**
    * Category upsert
@@ -3018,25 +3246,24 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
+    include?: CategoryInclude | null;
     /**
      * The filter to search for the Category to update in case it exists.
      */
-    where: CategoryWhereUniqueInput
+    where: CategoryWhereUniqueInput;
     /**
      * In case the Category found by the `where` argument doesn't exist, create a new Category with this data.
      */
-    create: XOR<CategoryCreateInput, CategoryUncheckedCreateInput>
+    create: XOR<CategoryCreateInput, CategoryUncheckedCreateInput>;
     /**
      * In case the Category was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<CategoryUpdateInput, CategoryUncheckedUpdateInput>
-  }
-
+    update: XOR<CategoryUpdateInput, CategoryUncheckedUpdateInput>;
+  };
 
   /**
    * Category delete
@@ -3045,17 +3272,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
+    include?: CategoryInclude | null;
     /**
      * Filter which Category to delete.
      */
-    where: CategoryWhereUniqueInput
-  }
-
+    where: CategoryWhereUniqueInput;
+  };
 
   /**
    * Category deleteMany
@@ -3064,9 +3290,8 @@ export namespace Prisma {
     /**
      * Filter which Categories to delete
      */
-    where?: CategoryWhereInput
-  }
-
+    where?: CategoryWhereInput;
+  };
 
   /**
    * Category.article_list
@@ -3075,19 +3300,18 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
-    where?: ArticleWhereInput
-    orderBy?: Enumerable<ArticleOrderByWithRelationInput>
-    cursor?: ArticleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<ArticleScalarFieldEnum>
-  }
-
+    include?: ArticleInclude | null;
+    where?: ArticleWhereInput;
+    orderBy?: Enumerable<ArticleOrderByWithRelationInput>;
+    cursor?: ArticleWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Enumerable<ArticleScalarFieldEnum>;
+  };
 
   /**
    * Category without action
@@ -3096,221 +3320,228 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Category
      */
-    select?: CategorySelect | null
+    select?: CategorySelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CategoryInclude | null
-  }
-
-
+    include?: CategoryInclude | null;
+  };
 
   /**
    * Model User
    */
 
-
   export type AggregateUser = {
-    _count: UserCountAggregateOutputType | null
-    _min: UserMinAggregateOutputType | null
-    _max: UserMaxAggregateOutputType | null
-  }
+    _count: UserCountAggregateOutputType | null;
+    _min: UserMinAggregateOutputType | null;
+    _max: UserMaxAggregateOutputType | null;
+  };
 
   export type UserMinAggregateOutputType = {
-    id: string | null
-    user_name: string | null
-    avatar: string | null
-    isExist: boolean | null
-  }
+    id: string | null;
+    user_name: string | null;
+    avatar: string | null;
+    isExist: boolean | null;
+  };
 
   export type UserMaxAggregateOutputType = {
-    id: string | null
-    user_name: string | null
-    avatar: string | null
-    isExist: boolean | null
-  }
+    id: string | null;
+    user_name: string | null;
+    avatar: string | null;
+    isExist: boolean | null;
+  };
 
   export type UserCountAggregateOutputType = {
-    id: number
-    user_name: number
-    avatar: number
-    isExist: number
-    _all: number
-  }
-
+    id: number;
+    user_name: number;
+    avatar: number;
+    isExist: number;
+    _all: number;
+  };
 
   export type UserMinAggregateInputType = {
-    id?: true
-    user_name?: true
-    avatar?: true
-    isExist?: true
-  }
+    id?: true;
+    user_name?: true;
+    avatar?: true;
+    isExist?: true;
+  };
 
   export type UserMaxAggregateInputType = {
-    id?: true
-    user_name?: true
-    avatar?: true
-    isExist?: true
-  }
+    id?: true;
+    user_name?: true;
+    avatar?: true;
+    isExist?: true;
+  };
 
   export type UserCountAggregateInputType = {
-    id?: true
-    user_name?: true
-    avatar?: true
-    isExist?: true
-    _all?: true
-  }
+    id?: true;
+    user_name?: true;
+    avatar?: true;
+    isExist?: true;
+    _all?: true;
+  };
 
   export type UserAggregateArgs = {
     /**
      * Filter which User to aggregate.
      */
-    where?: UserWhereInput
+    where?: UserWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
-    orderBy?: Enumerable<UserOrderByWithRelationInput>
+    orderBy?: Enumerable<UserOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
-    cursor?: UserWhereUniqueInput
+    cursor?: UserWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Users
-    **/
-    _count?: true | UserCountAggregateInputType
+     **/
+    _count?: true | UserCountAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
-    **/
-    _min?: UserMinAggregateInputType
+     **/
+    _min?: UserMinAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
-    **/
-    _max?: UserMaxAggregateInputType
-  }
+     **/
+    _max?: UserMaxAggregateInputType;
+  };
 
   export type GetUserAggregateType<T extends UserAggregateArgs> = {
-        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
+    [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
         : GetScalarType<T[P], AggregateUser[P]>
-      : GetScalarType<T[P], AggregateUser[P]>
-  }
-
-
-
+      : GetScalarType<T[P], AggregateUser[P]>;
+  };
 
   export type UserGroupByArgs = {
-    where?: UserWhereInput
-    orderBy?: Enumerable<UserOrderByWithAggregationInput>
-    by: UserScalarFieldEnum[]
-    having?: UserScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: UserCountAggregateInputType | true
-    _min?: UserMinAggregateInputType
-    _max?: UserMaxAggregateInputType
-  }
-
+    where?: UserWhereInput;
+    orderBy?: Enumerable<UserOrderByWithAggregationInput>;
+    by: UserScalarFieldEnum[];
+    having?: UserScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: UserCountAggregateInputType | true;
+    _min?: UserMinAggregateInputType;
+    _max?: UserMaxAggregateInputType;
+  };
 
   export type UserGroupByOutputType = {
-    id: string
-    user_name: string
-    avatar: string
-    isExist: boolean
-    _count: UserCountAggregateOutputType | null
-    _min: UserMinAggregateOutputType | null
-    _max: UserMaxAggregateOutputType | null
-  }
+    id: string;
+    user_name: string;
+    avatar: string;
+    isExist: boolean;
+    _count: UserCountAggregateOutputType | null;
+    _min: UserMinAggregateOutputType | null;
+    _max: UserMaxAggregateOutputType | null;
+  };
 
   type GetUserGroupByPayload<T extends UserGroupByArgs> = PrismaPromise<
     Array<
-      PickArray<UserGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], UserGroupByOutputType[P]>
+      PickArray<UserGroupByOutputType, T['by']> & {
+        [P in keyof T & keyof UserGroupByOutputType]: P extends '_count'
+          ? T[P] extends boolean
+            ? number
             : GetScalarType<T[P], UserGroupByOutputType[P]>
-        }
-      >
+          : GetScalarType<T[P], UserGroupByOutputType[P]>;
+      }
     >
-
+  >;
 
   export type UserSelect = {
-    id?: boolean
-    user_name?: boolean
-    avatar?: boolean
-    article_list?: boolean | User$article_listArgs
-    follower_list?: boolean | User$follower_listArgs
-    focuser_list?: boolean | User$focuser_listArgs
-    comment_list?: boolean | User$comment_listArgs
-    isExist?: boolean
-    _count?: boolean | UserCountOutputTypeArgs
-  }
-
+    id?: boolean;
+    user_name?: boolean;
+    avatar?: boolean;
+    article_list?: boolean | User$article_listArgs;
+    follower_list?: boolean | User$follower_listArgs;
+    focuser_list?: boolean | User$focuser_listArgs;
+    comment_list?: boolean | User$comment_listArgs;
+    isExist?: boolean;
+    _count?: boolean | UserCountOutputTypeArgs;
+  };
 
   export type UserInclude = {
-    article_list?: boolean | User$article_listArgs
-    follower_list?: boolean | User$follower_listArgs
-    focuser_list?: boolean | User$focuser_listArgs
-    comment_list?: boolean | User$comment_listArgs
-    _count?: boolean | UserCountOutputTypeArgs
-  }
+    article_list?: boolean | User$article_listArgs;
+    follower_list?: boolean | User$follower_listArgs;
+    focuser_list?: boolean | User$focuser_listArgs;
+    comment_list?: boolean | User$comment_listArgs;
+    _count?: boolean | UserCountOutputTypeArgs;
+  };
 
   export type UserGetPayload<S extends boolean | null | undefined | UserArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? User :
-    S extends undefined ? never :
-    S extends { include: any } & (UserArgs | UserFindManyArgs)
-    ? User  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'article_list' ? Array < ArticleGetPayload<S['include'][P]>>  :
-        P extends 'follower_list' ? Array < FollowerMapGetPayload<S['include'][P]>>  :
-        P extends 'focuser_list' ? Array < FocuserMapGetPayload<S['include'][P]>>  :
-        P extends 'comment_list' ? Array < CommentGetPayload<S['include'][P]>>  :
-        P extends '_count' ? UserCountOutputTypeGetPayload<S['include'][P]> :  never
-  } 
-    : S extends { select: any } & (UserArgs | UserFindManyArgs)
+    S extends { select: any; include: any }
+      ? 'Please either choose `select` or `include`'
+      : S extends true
+      ? User
+      : S extends undefined
+      ? never
+      : S extends { include: any } & (UserArgs | UserFindManyArgs)
+      ? User & {
+          [P in TruthyKeys<S['include']>]: P extends 'article_list'
+            ? Array<ArticleGetPayload<S['include'][P]>>
+            : P extends 'follower_list'
+            ? Array<FollowerMapGetPayload<S['include'][P]>>
+            : P extends 'focuser_list'
+            ? Array<FocuserMapGetPayload<S['include'][P]>>
+            : P extends 'comment_list'
+            ? Array<CommentGetPayload<S['include'][P]>>
+            : P extends '_count'
+            ? UserCountOutputTypeGetPayload<S['include'][P]>
+            : never;
+        }
+      : S extends { select: any } & (UserArgs | UserFindManyArgs)
       ? {
-    [P in TruthyKeys<S['select']>]:
-        P extends 'article_list' ? Array < ArticleGetPayload<S['select'][P]>>  :
-        P extends 'follower_list' ? Array < FollowerMapGetPayload<S['select'][P]>>  :
-        P extends 'focuser_list' ? Array < FocuserMapGetPayload<S['select'][P]>>  :
-        P extends 'comment_list' ? Array < CommentGetPayload<S['select'][P]>>  :
-        P extends '_count' ? UserCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof User ? User[P] : never
-  } 
-      : User
+          [P in TruthyKeys<S['select']>]: P extends 'article_list'
+            ? Array<ArticleGetPayload<S['select'][P]>>
+            : P extends 'follower_list'
+            ? Array<FollowerMapGetPayload<S['select'][P]>>
+            : P extends 'focuser_list'
+            ? Array<FocuserMapGetPayload<S['select'][P]>>
+            : P extends 'comment_list'
+            ? Array<CommentGetPayload<S['select'][P]>>
+            : P extends '_count'
+            ? UserCountOutputTypeGetPayload<S['select'][P]>
+            : P extends keyof User
+            ? User[P]
+            : never;
+        }
+      : User;
 
+  type UserCountArgs = Omit<UserFindManyArgs, 'select' | 'include'> & {
+    select?: UserCountAggregateInputType | true;
+  };
 
-  type UserCountArgs = 
-    Omit<UserFindManyArgs, 'select' | 'include'> & {
-      select?: UserCountAggregateInputType | true
-    }
-
-  export interface UserDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-
+  export interface UserDelegate<
+    GlobalRejectSettings extends
+      | Prisma.RejectOnNotFound
+      | Prisma.RejectPerOperation
+      | false
+      | undefined,
+  > {
     /**
      * Find zero or one User that matches the filter.
      * @param {UserFindUniqueArgs} args - Arguments to find a User
@@ -3321,13 +3552,25 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findUnique<T extends UserFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, UserFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'User'> extends True ? Prisma__UserClient<UserGetPayload<T>> : Prisma__UserClient<UserGetPayload<T> | null, null>
+     **/
+    findUnique<
+      T extends UserFindUniqueArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args: SelectSubset<T, UserFindUniqueArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findUnique',
+      'User'
+    > extends True
+      ? Prisma__UserClient<UserGetPayload<T>>
+      : Prisma__UserClient<UserGetPayload<T> | null, null>;
 
     /**
-     * Find one User that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one User that matches the filter or throw an error  with `error.code='P2025'`
      *     if no matches were found.
      * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
      * @example
@@ -3337,10 +3580,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, UserFindUniqueOrThrowArgs>
-    ): Prisma__UserClient<UserGetPayload<T>>
+      args?: SelectSubset<T, UserFindUniqueOrThrowArgs>,
+    ): Prisma__UserClient<UserGetPayload<T>>;
 
     /**
      * Find the first User that matches the filter.
@@ -3354,10 +3597,22 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findFirst<T extends UserFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, UserFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'User'> extends True ? Prisma__UserClient<UserGetPayload<T>> : Prisma__UserClient<UserGetPayload<T> | null, null>
+     **/
+    findFirst<
+      T extends UserFindFirstArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args?: SelectSubset<T, UserFindFirstArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findFirst',
+      'User'
+    > extends True
+      ? Prisma__UserClient<UserGetPayload<T>>
+      : Prisma__UserClient<UserGetPayload<T> | null, null>;
 
     /**
      * Find the first User that matches the filter or
@@ -3372,10 +3627,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, UserFindFirstOrThrowArgs>
-    ): Prisma__UserClient<UserGetPayload<T>>
+      args?: SelectSubset<T, UserFindFirstOrThrowArgs>,
+    ): Prisma__UserClient<UserGetPayload<T>>;
 
     /**
      * Find zero or more Users that matches the filter.
@@ -3385,17 +3640,17 @@ export namespace Prisma {
      * @example
      * // Get all Users
      * const users = await prisma.user.findMany()
-     * 
+     *
      * // Get first 10 Users
      * const users = await prisma.user.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
-     * 
-    **/
+     *
+     **/
     findMany<T extends UserFindManyArgs>(
-      args?: SelectSubset<T, UserFindManyArgs>
-    ): PrismaPromise<Array<UserGetPayload<T>>>
+      args?: SelectSubset<T, UserFindManyArgs>,
+    ): PrismaPromise<Array<UserGetPayload<T>>>;
 
     /**
      * Create a User.
@@ -3407,11 +3662,11 @@ export namespace Prisma {
      *     // ... data to create a User
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     create<T extends UserCreateArgs>(
-      args: SelectSubset<T, UserCreateArgs>
-    ): Prisma__UserClient<UserGetPayload<T>>
+      args: SelectSubset<T, UserCreateArgs>,
+    ): Prisma__UserClient<UserGetPayload<T>>;
 
     /**
      * Create many Users.
@@ -3423,11 +3678,11 @@ export namespace Prisma {
      *         // ... provide data here
      *       }
      *     })
-     *     
-    **/
+     *
+     **/
     createMany<T extends UserCreateManyArgs>(
-      args?: SelectSubset<T, UserCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, UserCreateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Delete a User.
@@ -3439,11 +3694,11 @@ export namespace Prisma {
      *     // ... filter to delete one User
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     delete<T extends UserDeleteArgs>(
-      args: SelectSubset<T, UserDeleteArgs>
-    ): Prisma__UserClient<UserGetPayload<T>>
+      args: SelectSubset<T, UserDeleteArgs>,
+    ): Prisma__UserClient<UserGetPayload<T>>;
 
     /**
      * Update one User.
@@ -3458,11 +3713,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     update<T extends UserUpdateArgs>(
-      args: SelectSubset<T, UserUpdateArgs>
-    ): Prisma__UserClient<UserGetPayload<T>>
+      args: SelectSubset<T, UserUpdateArgs>,
+    ): Prisma__UserClient<UserGetPayload<T>>;
 
     /**
      * Delete zero or more Users.
@@ -3474,11 +3729,11 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     deleteMany<T extends UserDeleteManyArgs>(
-      args?: SelectSubset<T, UserDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, UserDeleteManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Update zero or more Users.
@@ -3495,11 +3750,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     updateMany<T extends UserUpdateManyArgs>(
-      args: SelectSubset<T, UserUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args: SelectSubset<T, UserUpdateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Create or update one User.
@@ -3517,10 +3772,10 @@ export namespace Prisma {
      *     // ... the filter for the User we want to update
      *   }
      * })
-    **/
+     **/
     upsert<T extends UserUpsertArgs>(
-      args: SelectSubset<T, UserUpsertArgs>
-    ): Prisma__UserClient<UserGetPayload<T>>
+      args: SelectSubset<T, UserUpsertArgs>,
+    ): Prisma__UserClient<UserGetPayload<T>>;
 
     /**
      * Count the number of Users.
@@ -3534,7 +3789,7 @@ export namespace Prisma {
      *     // ... the filter for the Users we want to count
      *   }
      * })
-    **/
+     **/
     count<T extends UserCountArgs>(
       args?: Subset<T, UserCountArgs>,
     ): PrismaPromise<
@@ -3543,7 +3798,7 @@ export namespace Prisma {
           ? number
           : GetScalarType<T['select'], UserCountAggregateOutputType>
         : number
-    >
+    >;
 
     /**
      * Allows you to perform aggregations operations on a User.
@@ -3568,8 +3823,10 @@ export namespace Prisma {
      *   },
      *   take: 10,
      * })
-    **/
-    aggregate<T extends UserAggregateArgs>(args: Subset<T, UserAggregateArgs>): PrismaPromise<GetUserAggregateType<T>>
+     **/
+    aggregate<T extends UserAggregateArgs>(
+      args: Subset<T, UserAggregateArgs>,
+    ): PrismaPromise<GetUserAggregateType<T>>;
 
     /**
      * Group by User.
@@ -3587,8 +3844,8 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
-    **/
+     *
+     **/
     groupBy<
       T extends UserGroupByArgs,
       HasSelectOrTake extends Or<
@@ -3598,56 +3855,61 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: UserGroupByArgs['orderBy'] }
         : { orderBy?: UserGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      OrderFields extends ExcludeUnderscoreKeys<
+        Keys<MaybeTupleToUnion<T['orderBy']>>
+      >,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
       HavingValid extends Has<ByFields, HavingFields>,
       ByEmpty extends T['by'] extends never[] ? True : False,
       InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : PrismaPromise<InputErrors>
-
+        ? `Error: "by" must not be empty.`
+        : HavingValid extends False
+        ? {
+            [P in HavingFields]: P extends ByFields
+              ? never
+              : P extends string
+              ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+              : [
+                  Error,
+                  'Field ',
+                  P,
+                  ` in "having" needs to be provided in "by"`,
+                ];
+          }[HavingFields]
+        : 'take' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "take", you also need to provide "orderBy"'
+        : 'skip' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        : ByValid extends True
+        ? {}
+        : {
+            [P in OrderFields]: P extends ByFields
+              ? never
+              : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+          }[OrderFields],
+    >(
+      args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors,
+    ): {} extends InputErrors
+      ? GetUserGroupByPayload<T>
+      : PrismaPromise<InputErrors>;
   }
 
   /**
@@ -3670,16 +3932,35 @@ export namespace Prisma {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    constructor(
+      _dmmf: runtime.DMMFClass,
+      _fetcher: PrismaClientFetcher,
+      _queryType: 'query' | 'mutation',
+      _rootField: string,
+      _clientMethod: string,
+      _args: any,
+      _dataPath: string[],
+      _errorFormat: ErrorFormat,
+      _measurePerformance?: boolean | undefined,
+      _isList?: boolean,
+    );
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    article_list<T extends User$article_listArgs= {}>(args?: Subset<T, User$article_listArgs>): PrismaPromise<Array<ArticleGetPayload<T>>| Null>;
+    article_list<T extends User$article_listArgs = {}>(
+      args?: Subset<T, User$article_listArgs>,
+    ): PrismaPromise<Array<ArticleGetPayload<T>> | Null>;
 
-    follower_list<T extends User$follower_listArgs= {}>(args?: Subset<T, User$follower_listArgs>): PrismaPromise<Array<FollowerMapGetPayload<T>>| Null>;
+    follower_list<T extends User$follower_listArgs = {}>(
+      args?: Subset<T, User$follower_listArgs>,
+    ): PrismaPromise<Array<FollowerMapGetPayload<T>> | Null>;
 
-    focuser_list<T extends User$focuser_listArgs= {}>(args?: Subset<T, User$focuser_listArgs>): PrismaPromise<Array<FocuserMapGetPayload<T>>| Null>;
+    focuser_list<T extends User$focuser_listArgs = {}>(
+      args?: Subset<T, User$focuser_listArgs>,
+    ): PrismaPromise<Array<FocuserMapGetPayload<T>> | Null>;
 
-    comment_list<T extends User$comment_listArgs= {}>(args?: Subset<T, User$comment_listArgs>): PrismaPromise<Array<CommentGetPayload<T>>| Null>;
+    comment_list<T extends User$comment_listArgs = {}>(
+      args?: Subset<T, User$comment_listArgs>,
+    ): PrismaPromise<Array<CommentGetPayload<T>> | Null>;
 
     private get _document();
     /**
@@ -3688,13 +3969,27 @@ export namespace Prisma {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    then<TResult1 = T, TResult2 = never>(
+      onfulfilled?:
+        | ((value: T) => TResult1 | PromiseLike<TResult1>)
+        | undefined
+        | null,
+      onrejected?:
+        | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+        | undefined
+        | null,
+    ): Promise<TResult1 | TResult2>;
     /**
      * Attaches a callback for only the rejection of the Promise.
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    catch<TResult = never>(
+      onrejected?:
+        | ((reason: any) => TResult | PromiseLike<TResult>)
+        | undefined
+        | null,
+    ): Promise<T | TResult>;
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
@@ -3703,8 +3998,6 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
-
-
 
   // Custom InputTypes
 
@@ -3715,28 +4008,27 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
+    include?: UserInclude | null;
     /**
      * Filter, which User to fetch.
      */
-    where: UserWhereUniqueInput
-  }
+    where: UserWhereUniqueInput;
+  };
 
   /**
    * User findUnique
    */
   export interface UserFindUniqueArgs extends UserFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * User findUniqueOrThrow
@@ -3745,17 +4037,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
+    include?: UserInclude | null;
     /**
      * Filter, which User to fetch.
      */
-    where: UserWhereUniqueInput
-  }
-
+    where: UserWhereUniqueInput;
+  };
 
   /**
    * User base type for findFirst actions
@@ -3764,58 +4055,57 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
+    include?: UserInclude | null;
     /**
      * Filter, which User to fetch.
      */
-    where?: UserWhereInput
+    where?: UserWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
-    orderBy?: Enumerable<UserOrderByWithRelationInput>
+    orderBy?: Enumerable<UserOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Users.
      */
-    cursor?: UserWhereUniqueInput
+    cursor?: UserWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Users.
      */
-    distinct?: Enumerable<UserScalarFieldEnum>
-  }
+    distinct?: Enumerable<UserScalarFieldEnum>;
+  };
 
   /**
    * User findFirst
    */
   export interface UserFindFirstArgs extends UserFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * User findFirstOrThrow
@@ -3824,47 +4114,46 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
+    include?: UserInclude | null;
     /**
      * Filter, which User to fetch.
      */
-    where?: UserWhereInput
+    where?: UserWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
-    orderBy?: Enumerable<UserOrderByWithRelationInput>
+    orderBy?: Enumerable<UserOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Users.
      */
-    cursor?: UserWhereUniqueInput
+    cursor?: UserWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Users.
      */
-    distinct?: Enumerable<UserScalarFieldEnum>
-  }
-
+    distinct?: Enumerable<UserScalarFieldEnum>;
+  };
 
   /**
    * User findMany
@@ -3873,42 +4162,41 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
+    include?: UserInclude | null;
     /**
      * Filter, which Users to fetch.
      */
-    where?: UserWhereInput
+    where?: UserWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
-    orderBy?: Enumerable<UserOrderByWithRelationInput>
+    orderBy?: Enumerable<UserOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Users.
      */
-    cursor?: UserWhereUniqueInput
+    cursor?: UserWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
-    skip?: number
-    distinct?: Enumerable<UserScalarFieldEnum>
-  }
-
+    skip?: number;
+    distinct?: Enumerable<UserScalarFieldEnum>;
+  };
 
   /**
    * User create
@@ -3917,17 +4205,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
+    include?: UserInclude | null;
     /**
      * The data needed to create a User.
      */
-    data: XOR<UserCreateInput, UserUncheckedCreateInput>
-  }
-
+    data: XOR<UserCreateInput, UserUncheckedCreateInput>;
+  };
 
   /**
    * User createMany
@@ -3936,10 +4223,9 @@ export namespace Prisma {
     /**
      * The data used to create many Users.
      */
-    data: Enumerable<UserCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
+    data: Enumerable<UserCreateManyInput>;
+    skipDuplicates?: boolean;
+  };
 
   /**
    * User update
@@ -3948,21 +4234,20 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
+    include?: UserInclude | null;
     /**
      * The data needed to update a User.
      */
-    data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+    data: XOR<UserUpdateInput, UserUncheckedUpdateInput>;
     /**
      * Choose, which User to update.
      */
-    where: UserWhereUniqueInput
-  }
-
+    where: UserWhereUniqueInput;
+  };
 
   /**
    * User updateMany
@@ -3971,13 +4256,12 @@ export namespace Prisma {
     /**
      * The data used to update Users.
      */
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>;
     /**
      * Filter which Users to update
      */
-    where?: UserWhereInput
-  }
-
+    where?: UserWhereInput;
+  };
 
   /**
    * User upsert
@@ -3986,25 +4270,24 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
+    include?: UserInclude | null;
     /**
      * The filter to search for the User to update in case it exists.
      */
-    where: UserWhereUniqueInput
+    where: UserWhereUniqueInput;
     /**
      * In case the User found by the `where` argument doesn't exist, create a new User with this data.
      */
-    create: XOR<UserCreateInput, UserUncheckedCreateInput>
+    create: XOR<UserCreateInput, UserUncheckedCreateInput>;
     /**
      * In case the User was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
-  }
-
+    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>;
+  };
 
   /**
    * User delete
@@ -4013,17 +4296,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
+    include?: UserInclude | null;
     /**
      * Filter which User to delete.
      */
-    where: UserWhereUniqueInput
-  }
-
+    where: UserWhereUniqueInput;
+  };
 
   /**
    * User deleteMany
@@ -4032,9 +4314,8 @@ export namespace Prisma {
     /**
      * Filter which Users to delete
      */
-    where?: UserWhereInput
-  }
-
+    where?: UserWhereInput;
+  };
 
   /**
    * User.article_list
@@ -4043,19 +4324,18 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Article
      */
-    select?: ArticleSelect | null
+    select?: ArticleSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArticleInclude | null
-    where?: ArticleWhereInput
-    orderBy?: Enumerable<ArticleOrderByWithRelationInput>
-    cursor?: ArticleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<ArticleScalarFieldEnum>
-  }
-
+    include?: ArticleInclude | null;
+    where?: ArticleWhereInput;
+    orderBy?: Enumerable<ArticleOrderByWithRelationInput>;
+    cursor?: ArticleWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Enumerable<ArticleScalarFieldEnum>;
+  };
 
   /**
    * User.follower_list
@@ -4064,19 +4344,18 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
-    where?: FollowerMapWhereInput
-    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
-    cursor?: FollowerMapWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<FollowerMapScalarFieldEnum>
-  }
-
+    include?: FollowerMapInclude | null;
+    where?: FollowerMapWhereInput;
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>;
+    cursor?: FollowerMapWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Enumerable<FollowerMapScalarFieldEnum>;
+  };
 
   /**
    * User.focuser_list
@@ -4085,19 +4364,18 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
-    where?: FocuserMapWhereInput
-    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
-    cursor?: FocuserMapWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<FocuserMapScalarFieldEnum>
-  }
-
+    include?: FocuserMapInclude | null;
+    where?: FocuserMapWhereInput;
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>;
+    cursor?: FocuserMapWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Enumerable<FocuserMapScalarFieldEnum>;
+  };
 
   /**
    * User.comment_list
@@ -4106,19 +4384,18 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
-    where?: CommentWhereInput
-    orderBy?: Enumerable<CommentOrderByWithRelationInput>
-    cursor?: CommentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<CommentScalarFieldEnum>
-  }
-
+    include?: CommentInclude | null;
+    where?: CommentWhereInput;
+    orderBy?: Enumerable<CommentOrderByWithRelationInput>;
+    cursor?: CommentWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Enumerable<CommentScalarFieldEnum>;
+  };
 
   /**
    * User without action
@@ -4127,189 +4404,195 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect | null
+    select?: UserSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserInclude | null
-  }
-
-
+    include?: UserInclude | null;
+  };
 
   /**
    * Model FollowerMap
    */
 
-
   export type AggregateFollowerMap = {
-    _count: FollowerMapCountAggregateOutputType | null
-    _min: FollowerMapMinAggregateOutputType | null
-    _max: FollowerMapMaxAggregateOutputType | null
-  }
+    _count: FollowerMapCountAggregateOutputType | null;
+    _min: FollowerMapMinAggregateOutputType | null;
+    _max: FollowerMapMaxAggregateOutputType | null;
+  };
 
   export type FollowerMapMinAggregateOutputType = {
-    id: string | null
-    master_id: string | null
-  }
+    id: string | null;
+    master_id: string | null;
+  };
 
   export type FollowerMapMaxAggregateOutputType = {
-    id: string | null
-    master_id: string | null
-  }
+    id: string | null;
+    master_id: string | null;
+  };
 
   export type FollowerMapCountAggregateOutputType = {
-    id: number
-    master_id: number
-    _all: number
-  }
-
+    id: number;
+    master_id: number;
+    _all: number;
+  };
 
   export type FollowerMapMinAggregateInputType = {
-    id?: true
-    master_id?: true
-  }
+    id?: true;
+    master_id?: true;
+  };
 
   export type FollowerMapMaxAggregateInputType = {
-    id?: true
-    master_id?: true
-  }
+    id?: true;
+    master_id?: true;
+  };
 
   export type FollowerMapCountAggregateInputType = {
-    id?: true
-    master_id?: true
-    _all?: true
-  }
+    id?: true;
+    master_id?: true;
+    _all?: true;
+  };
 
   export type FollowerMapAggregateArgs = {
     /**
      * Filter which FollowerMap to aggregate.
      */
-    where?: FollowerMapWhereInput
+    where?: FollowerMapWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of FollowerMaps to fetch.
      */
-    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
-    cursor?: FollowerMapWhereUniqueInput
+    cursor?: FollowerMapWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` FollowerMaps from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` FollowerMaps.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned FollowerMaps
-    **/
-    _count?: true | FollowerMapCountAggregateInputType
+     **/
+    _count?: true | FollowerMapCountAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
-    **/
-    _min?: FollowerMapMinAggregateInputType
+     **/
+    _min?: FollowerMapMinAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
-    **/
-    _max?: FollowerMapMaxAggregateInputType
-  }
+     **/
+    _max?: FollowerMapMaxAggregateInputType;
+  };
 
-  export type GetFollowerMapAggregateType<T extends FollowerMapAggregateArgs> = {
-        [P in keyof T & keyof AggregateFollowerMap]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateFollowerMap[P]>
-      : GetScalarType<T[P], AggregateFollowerMap[P]>
-  }
-
-
-
+  export type GetFollowerMapAggregateType<T extends FollowerMapAggregateArgs> =
+    {
+      [P in keyof T & keyof AggregateFollowerMap]: P extends '_count' | 'count'
+        ? T[P] extends true
+          ? number
+          : GetScalarType<T[P], AggregateFollowerMap[P]>
+        : GetScalarType<T[P], AggregateFollowerMap[P]>;
+    };
 
   export type FollowerMapGroupByArgs = {
-    where?: FollowerMapWhereInput
-    orderBy?: Enumerable<FollowerMapOrderByWithAggregationInput>
-    by: FollowerMapScalarFieldEnum[]
-    having?: FollowerMapScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: FollowerMapCountAggregateInputType | true
-    _min?: FollowerMapMinAggregateInputType
-    _max?: FollowerMapMaxAggregateInputType
-  }
-
+    where?: FollowerMapWhereInput;
+    orderBy?: Enumerable<FollowerMapOrderByWithAggregationInput>;
+    by: FollowerMapScalarFieldEnum[];
+    having?: FollowerMapScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: FollowerMapCountAggregateInputType | true;
+    _min?: FollowerMapMinAggregateInputType;
+    _max?: FollowerMapMaxAggregateInputType;
+  };
 
   export type FollowerMapGroupByOutputType = {
-    id: string
-    master_id: string
-    _count: FollowerMapCountAggregateOutputType | null
-    _min: FollowerMapMinAggregateOutputType | null
-    _max: FollowerMapMaxAggregateOutputType | null
-  }
+    id: string;
+    master_id: string;
+    _count: FollowerMapCountAggregateOutputType | null;
+    _min: FollowerMapMinAggregateOutputType | null;
+    _max: FollowerMapMaxAggregateOutputType | null;
+  };
 
-  type GetFollowerMapGroupByPayload<T extends FollowerMapGroupByArgs> = PrismaPromise<
-    Array<
-      PickArray<FollowerMapGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof FollowerMapGroupByOutputType))]: P extends '_count'
+  type GetFollowerMapGroupByPayload<T extends FollowerMapGroupByArgs> =
+    PrismaPromise<
+      Array<
+        PickArray<FollowerMapGroupByOutputType, T['by']> & {
+          [P in keyof T &
+            keyof FollowerMapGroupByOutputType]: P extends '_count'
             ? T[P] extends boolean
               ? number
               : GetScalarType<T[P], FollowerMapGroupByOutputType[P]>
-            : GetScalarType<T[P], FollowerMapGroupByOutputType[P]>
+            : GetScalarType<T[P], FollowerMapGroupByOutputType[P]>;
         }
       >
-    >
-
+    >;
 
   export type FollowerMapSelect = {
-    id?: boolean
-    master?: boolean | UserArgs
-    master_id?: boolean
-  }
-
+    id?: boolean;
+    master?: boolean | UserArgs;
+    master_id?: boolean;
+  };
 
   export type FollowerMapInclude = {
-    master?: boolean | UserArgs
-  }
+    master?: boolean | UserArgs;
+  };
 
-  export type FollowerMapGetPayload<S extends boolean | null | undefined | FollowerMapArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? FollowerMap :
-    S extends undefined ? never :
-    S extends { include: any } & (FollowerMapArgs | FollowerMapFindManyArgs)
-    ? FollowerMap  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'master' ? UserGetPayload<S['include'][P]> :  never
-  } 
+  export type FollowerMapGetPayload<
+    S extends boolean | null | undefined | FollowerMapArgs,
+  > = S extends { select: any; include: any }
+    ? 'Please either choose `select` or `include`'
+    : S extends true
+    ? FollowerMap
+    : S extends undefined
+    ? never
+    : S extends { include: any } & (FollowerMapArgs | FollowerMapFindManyArgs)
+    ? FollowerMap & {
+        [P in TruthyKeys<S['include']>]: P extends 'master'
+          ? UserGetPayload<S['include'][P]>
+          : never;
+      }
     : S extends { select: any } & (FollowerMapArgs | FollowerMapFindManyArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-        P extends 'master' ? UserGetPayload<S['select'][P]> :  P extends keyof FollowerMap ? FollowerMap[P] : never
-  } 
-      : FollowerMap
+    ? {
+        [P in TruthyKeys<S['select']>]: P extends 'master'
+          ? UserGetPayload<S['select'][P]>
+          : P extends keyof FollowerMap
+          ? FollowerMap[P]
+          : never;
+      }
+    : FollowerMap;
 
+  type FollowerMapCountArgs = Omit<
+    FollowerMapFindManyArgs,
+    'select' | 'include'
+  > & {
+    select?: FollowerMapCountAggregateInputType | true;
+  };
 
-  type FollowerMapCountArgs = 
-    Omit<FollowerMapFindManyArgs, 'select' | 'include'> & {
-      select?: FollowerMapCountAggregateInputType | true
-    }
-
-  export interface FollowerMapDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-
+  export interface FollowerMapDelegate<
+    GlobalRejectSettings extends
+      | Prisma.RejectOnNotFound
+      | Prisma.RejectPerOperation
+      | false
+      | undefined,
+  > {
     /**
      * Find zero or one FollowerMap that matches the filter.
      * @param {FollowerMapFindUniqueArgs} args - Arguments to find a FollowerMap
@@ -4320,13 +4603,25 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findUnique<T extends FollowerMapFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, FollowerMapFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'FollowerMap'> extends True ? Prisma__FollowerMapClient<FollowerMapGetPayload<T>> : Prisma__FollowerMapClient<FollowerMapGetPayload<T> | null, null>
+     **/
+    findUnique<
+      T extends FollowerMapFindUniqueArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args: SelectSubset<T, FollowerMapFindUniqueArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findUnique',
+      'FollowerMap'
+    > extends True
+      ? Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
+      : Prisma__FollowerMapClient<FollowerMapGetPayload<T> | null, null>;
 
     /**
-     * Find one FollowerMap that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one FollowerMap that matches the filter or throw an error  with `error.code='P2025'`
      *     if no matches were found.
      * @param {FollowerMapFindUniqueOrThrowArgs} args - Arguments to find a FollowerMap
      * @example
@@ -4336,10 +4631,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findUniqueOrThrow<T extends FollowerMapFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, FollowerMapFindUniqueOrThrowArgs>
-    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
+      args?: SelectSubset<T, FollowerMapFindUniqueOrThrowArgs>,
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>;
 
     /**
      * Find the first FollowerMap that matches the filter.
@@ -4353,10 +4648,22 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findFirst<T extends FollowerMapFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, FollowerMapFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'FollowerMap'> extends True ? Prisma__FollowerMapClient<FollowerMapGetPayload<T>> : Prisma__FollowerMapClient<FollowerMapGetPayload<T> | null, null>
+     **/
+    findFirst<
+      T extends FollowerMapFindFirstArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args?: SelectSubset<T, FollowerMapFindFirstArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findFirst',
+      'FollowerMap'
+    > extends True
+      ? Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
+      : Prisma__FollowerMapClient<FollowerMapGetPayload<T> | null, null>;
 
     /**
      * Find the first FollowerMap that matches the filter or
@@ -4371,10 +4678,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findFirstOrThrow<T extends FollowerMapFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, FollowerMapFindFirstOrThrowArgs>
-    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
+      args?: SelectSubset<T, FollowerMapFindFirstOrThrowArgs>,
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>;
 
     /**
      * Find zero or more FollowerMaps that matches the filter.
@@ -4384,17 +4691,17 @@ export namespace Prisma {
      * @example
      * // Get all FollowerMaps
      * const followerMaps = await prisma.followerMap.findMany()
-     * 
+     *
      * // Get first 10 FollowerMaps
      * const followerMaps = await prisma.followerMap.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const followerMapWithIdOnly = await prisma.followerMap.findMany({ select: { id: true } })
-     * 
-    **/
+     *
+     **/
     findMany<T extends FollowerMapFindManyArgs>(
-      args?: SelectSubset<T, FollowerMapFindManyArgs>
-    ): PrismaPromise<Array<FollowerMapGetPayload<T>>>
+      args?: SelectSubset<T, FollowerMapFindManyArgs>,
+    ): PrismaPromise<Array<FollowerMapGetPayload<T>>>;
 
     /**
      * Create a FollowerMap.
@@ -4406,11 +4713,11 @@ export namespace Prisma {
      *     // ... data to create a FollowerMap
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     create<T extends FollowerMapCreateArgs>(
-      args: SelectSubset<T, FollowerMapCreateArgs>
-    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
+      args: SelectSubset<T, FollowerMapCreateArgs>,
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>;
 
     /**
      * Create many FollowerMaps.
@@ -4422,11 +4729,11 @@ export namespace Prisma {
      *         // ... provide data here
      *       }
      *     })
-     *     
-    **/
+     *
+     **/
     createMany<T extends FollowerMapCreateManyArgs>(
-      args?: SelectSubset<T, FollowerMapCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, FollowerMapCreateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Delete a FollowerMap.
@@ -4438,11 +4745,11 @@ export namespace Prisma {
      *     // ... filter to delete one FollowerMap
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     delete<T extends FollowerMapDeleteArgs>(
-      args: SelectSubset<T, FollowerMapDeleteArgs>
-    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
+      args: SelectSubset<T, FollowerMapDeleteArgs>,
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>;
 
     /**
      * Update one FollowerMap.
@@ -4457,11 +4764,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     update<T extends FollowerMapUpdateArgs>(
-      args: SelectSubset<T, FollowerMapUpdateArgs>
-    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
+      args: SelectSubset<T, FollowerMapUpdateArgs>,
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>;
 
     /**
      * Delete zero or more FollowerMaps.
@@ -4473,11 +4780,11 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     deleteMany<T extends FollowerMapDeleteManyArgs>(
-      args?: SelectSubset<T, FollowerMapDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, FollowerMapDeleteManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Update zero or more FollowerMaps.
@@ -4494,11 +4801,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     updateMany<T extends FollowerMapUpdateManyArgs>(
-      args: SelectSubset<T, FollowerMapUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args: SelectSubset<T, FollowerMapUpdateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Create or update one FollowerMap.
@@ -4516,10 +4823,10 @@ export namespace Prisma {
      *     // ... the filter for the FollowerMap we want to update
      *   }
      * })
-    **/
+     **/
     upsert<T extends FollowerMapUpsertArgs>(
-      args: SelectSubset<T, FollowerMapUpsertArgs>
-    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>
+      args: SelectSubset<T, FollowerMapUpsertArgs>,
+    ): Prisma__FollowerMapClient<FollowerMapGetPayload<T>>;
 
     /**
      * Count the number of FollowerMaps.
@@ -4533,7 +4840,7 @@ export namespace Prisma {
      *     // ... the filter for the FollowerMaps we want to count
      *   }
      * })
-    **/
+     **/
     count<T extends FollowerMapCountArgs>(
       args?: Subset<T, FollowerMapCountArgs>,
     ): PrismaPromise<
@@ -4542,7 +4849,7 @@ export namespace Prisma {
           ? number
           : GetScalarType<T['select'], FollowerMapCountAggregateOutputType>
         : number
-    >
+    >;
 
     /**
      * Allows you to perform aggregations operations on a FollowerMap.
@@ -4567,8 +4874,10 @@ export namespace Prisma {
      *   },
      *   take: 10,
      * })
-    **/
-    aggregate<T extends FollowerMapAggregateArgs>(args: Subset<T, FollowerMapAggregateArgs>): PrismaPromise<GetFollowerMapAggregateType<T>>
+     **/
+    aggregate<T extends FollowerMapAggregateArgs>(
+      args: Subset<T, FollowerMapAggregateArgs>,
+    ): PrismaPromise<GetFollowerMapAggregateType<T>>;
 
     /**
      * Group by FollowerMap.
@@ -4586,8 +4895,8 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
-    **/
+     *
+     **/
     groupBy<
       T extends FollowerMapGroupByArgs,
       HasSelectOrTake extends Or<
@@ -4597,56 +4906,62 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: FollowerMapGroupByArgs['orderBy'] }
         : { orderBy?: FollowerMapGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      OrderFields extends ExcludeUnderscoreKeys<
+        Keys<MaybeTupleToUnion<T['orderBy']>>
+      >,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
       HavingValid extends Has<ByFields, HavingFields>,
       ByEmpty extends T['by'] extends never[] ? True : False,
       InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, FollowerMapGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFollowerMapGroupByPayload<T> : PrismaPromise<InputErrors>
-
+        ? `Error: "by" must not be empty.`
+        : HavingValid extends False
+        ? {
+            [P in HavingFields]: P extends ByFields
+              ? never
+              : P extends string
+              ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+              : [
+                  Error,
+                  'Field ',
+                  P,
+                  ` in "having" needs to be provided in "by"`,
+                ];
+          }[HavingFields]
+        : 'take' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "take", you also need to provide "orderBy"'
+        : 'skip' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        : ByValid extends True
+        ? {}
+        : {
+            [P in OrderFields]: P extends ByFields
+              ? never
+              : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+          }[OrderFields],
+    >(
+      args: SubsetIntersection<T, FollowerMapGroupByArgs, OrderByArg> &
+        InputErrors,
+    ): {} extends InputErrors
+      ? GetFollowerMapGroupByPayload<T>
+      : PrismaPromise<InputErrors>;
   }
 
   /**
@@ -4655,7 +4970,9 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__FollowerMapClient<T, Null = never> implements PrismaPromise<T> {
+  export class Prisma__FollowerMapClient<T, Null = never>
+    implements PrismaPromise<T>
+  {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -4669,10 +4986,23 @@ export namespace Prisma {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    constructor(
+      _dmmf: runtime.DMMFClass,
+      _fetcher: PrismaClientFetcher,
+      _queryType: 'query' | 'mutation',
+      _rootField: string,
+      _clientMethod: string,
+      _args: any,
+      _dataPath: string[],
+      _errorFormat: ErrorFormat,
+      _measurePerformance?: boolean | undefined,
+      _isList?: boolean,
+    );
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    master<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
+    master<T extends UserArgs = {}>(
+      args?: Subset<T, UserArgs>,
+    ): Prisma__UserClient<UserGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -4681,13 +5011,27 @@ export namespace Prisma {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    then<TResult1 = T, TResult2 = never>(
+      onfulfilled?:
+        | ((value: T) => TResult1 | PromiseLike<TResult1>)
+        | undefined
+        | null,
+      onrejected?:
+        | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+        | undefined
+        | null,
+    ): Promise<TResult1 | TResult2>;
     /**
      * Attaches a callback for only the rejection of the Promise.
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    catch<TResult = never>(
+      onrejected?:
+        | ((reason: any) => TResult | PromiseLike<TResult>)
+        | undefined
+        | null,
+    ): Promise<T | TResult>;
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
@@ -4696,8 +5040,6 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
-
-
 
   // Custom InputTypes
 
@@ -4708,28 +5050,28 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
+    include?: FollowerMapInclude | null;
     /**
      * Filter, which FollowerMap to fetch.
      */
-    where: FollowerMapWhereUniqueInput
-  }
+    where: FollowerMapWhereUniqueInput;
+  };
 
   /**
    * FollowerMap findUnique
    */
-  export interface FollowerMapFindUniqueArgs extends FollowerMapFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+  export interface FollowerMapFindUniqueArgs
+    extends FollowerMapFindUniqueArgsBase {
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * FollowerMap findUniqueOrThrow
@@ -4738,17 +5080,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
+    include?: FollowerMapInclude | null;
     /**
      * Filter, which FollowerMap to fetch.
      */
-    where: FollowerMapWhereUniqueInput
-  }
-
+    where: FollowerMapWhereUniqueInput;
+  };
 
   /**
    * FollowerMap base type for findFirst actions
@@ -4757,58 +5098,58 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
+    include?: FollowerMapInclude | null;
     /**
      * Filter, which FollowerMap to fetch.
      */
-    where?: FollowerMapWhereInput
+    where?: FollowerMapWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of FollowerMaps to fetch.
      */
-    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for FollowerMaps.
      */
-    cursor?: FollowerMapWhereUniqueInput
+    cursor?: FollowerMapWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` FollowerMaps from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` FollowerMaps.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of FollowerMaps.
      */
-    distinct?: Enumerable<FollowerMapScalarFieldEnum>
-  }
+    distinct?: Enumerable<FollowerMapScalarFieldEnum>;
+  };
 
   /**
    * FollowerMap findFirst
    */
-  export interface FollowerMapFindFirstArgs extends FollowerMapFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+  export interface FollowerMapFindFirstArgs
+    extends FollowerMapFindFirstArgsBase {
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * FollowerMap findFirstOrThrow
@@ -4817,47 +5158,46 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
+    include?: FollowerMapInclude | null;
     /**
      * Filter, which FollowerMap to fetch.
      */
-    where?: FollowerMapWhereInput
+    where?: FollowerMapWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of FollowerMaps to fetch.
      */
-    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for FollowerMaps.
      */
-    cursor?: FollowerMapWhereUniqueInput
+    cursor?: FollowerMapWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` FollowerMaps from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` FollowerMaps.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of FollowerMaps.
      */
-    distinct?: Enumerable<FollowerMapScalarFieldEnum>
-  }
-
+    distinct?: Enumerable<FollowerMapScalarFieldEnum>;
+  };
 
   /**
    * FollowerMap findMany
@@ -4866,42 +5206,41 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
+    include?: FollowerMapInclude | null;
     /**
      * Filter, which FollowerMaps to fetch.
      */
-    where?: FollowerMapWhereInput
+    where?: FollowerMapWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of FollowerMaps to fetch.
      */
-    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>
+    orderBy?: Enumerable<FollowerMapOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing FollowerMaps.
      */
-    cursor?: FollowerMapWhereUniqueInput
+    cursor?: FollowerMapWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` FollowerMaps from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` FollowerMaps.
      */
-    skip?: number
-    distinct?: Enumerable<FollowerMapScalarFieldEnum>
-  }
-
+    skip?: number;
+    distinct?: Enumerable<FollowerMapScalarFieldEnum>;
+  };
 
   /**
    * FollowerMap create
@@ -4910,17 +5249,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
+    include?: FollowerMapInclude | null;
     /**
      * The data needed to create a FollowerMap.
      */
-    data: XOR<FollowerMapCreateInput, FollowerMapUncheckedCreateInput>
-  }
-
+    data: XOR<FollowerMapCreateInput, FollowerMapUncheckedCreateInput>;
+  };
 
   /**
    * FollowerMap createMany
@@ -4929,10 +5267,9 @@ export namespace Prisma {
     /**
      * The data used to create many FollowerMaps.
      */
-    data: Enumerable<FollowerMapCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
+    data: Enumerable<FollowerMapCreateManyInput>;
+    skipDuplicates?: boolean;
+  };
 
   /**
    * FollowerMap update
@@ -4941,21 +5278,20 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
+    include?: FollowerMapInclude | null;
     /**
      * The data needed to update a FollowerMap.
      */
-    data: XOR<FollowerMapUpdateInput, FollowerMapUncheckedUpdateInput>
+    data: XOR<FollowerMapUpdateInput, FollowerMapUncheckedUpdateInput>;
     /**
      * Choose, which FollowerMap to update.
      */
-    where: FollowerMapWhereUniqueInput
-  }
-
+    where: FollowerMapWhereUniqueInput;
+  };
 
   /**
    * FollowerMap updateMany
@@ -4964,13 +5300,15 @@ export namespace Prisma {
     /**
      * The data used to update FollowerMaps.
      */
-    data: XOR<FollowerMapUpdateManyMutationInput, FollowerMapUncheckedUpdateManyInput>
+    data: XOR<
+      FollowerMapUpdateManyMutationInput,
+      FollowerMapUncheckedUpdateManyInput
+    >;
     /**
      * Filter which FollowerMaps to update
      */
-    where?: FollowerMapWhereInput
-  }
-
+    where?: FollowerMapWhereInput;
+  };
 
   /**
    * FollowerMap upsert
@@ -4979,25 +5317,24 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
+    include?: FollowerMapInclude | null;
     /**
      * The filter to search for the FollowerMap to update in case it exists.
      */
-    where: FollowerMapWhereUniqueInput
+    where: FollowerMapWhereUniqueInput;
     /**
      * In case the FollowerMap found by the `where` argument doesn't exist, create a new FollowerMap with this data.
      */
-    create: XOR<FollowerMapCreateInput, FollowerMapUncheckedCreateInput>
+    create: XOR<FollowerMapCreateInput, FollowerMapUncheckedCreateInput>;
     /**
      * In case the FollowerMap was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<FollowerMapUpdateInput, FollowerMapUncheckedUpdateInput>
-  }
-
+    update: XOR<FollowerMapUpdateInput, FollowerMapUncheckedUpdateInput>;
+  };
 
   /**
    * FollowerMap delete
@@ -5006,17 +5343,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
+    include?: FollowerMapInclude | null;
     /**
      * Filter which FollowerMap to delete.
      */
-    where: FollowerMapWhereUniqueInput
-  }
-
+    where: FollowerMapWhereUniqueInput;
+  };
 
   /**
    * FollowerMap deleteMany
@@ -5025,9 +5361,8 @@ export namespace Prisma {
     /**
      * Filter which FollowerMaps to delete
      */
-    where?: FollowerMapWhereInput
-  }
-
+    where?: FollowerMapWhereInput;
+  };
 
   /**
    * FollowerMap without action
@@ -5036,189 +5371,193 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FollowerMap
      */
-    select?: FollowerMapSelect | null
+    select?: FollowerMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FollowerMapInclude | null
-  }
-
-
+    include?: FollowerMapInclude | null;
+  };
 
   /**
    * Model FocuserMap
    */
 
-
   export type AggregateFocuserMap = {
-    _count: FocuserMapCountAggregateOutputType | null
-    _min: FocuserMapMinAggregateOutputType | null
-    _max: FocuserMapMaxAggregateOutputType | null
-  }
+    _count: FocuserMapCountAggregateOutputType | null;
+    _min: FocuserMapMinAggregateOutputType | null;
+    _max: FocuserMapMaxAggregateOutputType | null;
+  };
 
   export type FocuserMapMinAggregateOutputType = {
-    id: string | null
-    follower_id: string | null
-  }
+    id: string | null;
+    follower_id: string | null;
+  };
 
   export type FocuserMapMaxAggregateOutputType = {
-    id: string | null
-    follower_id: string | null
-  }
+    id: string | null;
+    follower_id: string | null;
+  };
 
   export type FocuserMapCountAggregateOutputType = {
-    id: number
-    follower_id: number
-    _all: number
-  }
-
+    id: number;
+    follower_id: number;
+    _all: number;
+  };
 
   export type FocuserMapMinAggregateInputType = {
-    id?: true
-    follower_id?: true
-  }
+    id?: true;
+    follower_id?: true;
+  };
 
   export type FocuserMapMaxAggregateInputType = {
-    id?: true
-    follower_id?: true
-  }
+    id?: true;
+    follower_id?: true;
+  };
 
   export type FocuserMapCountAggregateInputType = {
-    id?: true
-    follower_id?: true
-    _all?: true
-  }
+    id?: true;
+    follower_id?: true;
+    _all?: true;
+  };
 
   export type FocuserMapAggregateArgs = {
     /**
      * Filter which FocuserMap to aggregate.
      */
-    where?: FocuserMapWhereInput
+    where?: FocuserMapWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of FocuserMaps to fetch.
      */
-    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
-    cursor?: FocuserMapWhereUniqueInput
+    cursor?: FocuserMapWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` FocuserMaps from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` FocuserMaps.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned FocuserMaps
-    **/
-    _count?: true | FocuserMapCountAggregateInputType
+     **/
+    _count?: true | FocuserMapCountAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
-    **/
-    _min?: FocuserMapMinAggregateInputType
+     **/
+    _min?: FocuserMapMinAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
-    **/
-    _max?: FocuserMapMaxAggregateInputType
-  }
+     **/
+    _max?: FocuserMapMaxAggregateInputType;
+  };
 
   export type GetFocuserMapAggregateType<T extends FocuserMapAggregateArgs> = {
-        [P in keyof T & keyof AggregateFocuserMap]: P extends '_count' | 'count'
+    [P in keyof T & keyof AggregateFocuserMap]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
         : GetScalarType<T[P], AggregateFocuserMap[P]>
-      : GetScalarType<T[P], AggregateFocuserMap[P]>
-  }
-
-
-
+      : GetScalarType<T[P], AggregateFocuserMap[P]>;
+  };
 
   export type FocuserMapGroupByArgs = {
-    where?: FocuserMapWhereInput
-    orderBy?: Enumerable<FocuserMapOrderByWithAggregationInput>
-    by: FocuserMapScalarFieldEnum[]
-    having?: FocuserMapScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: FocuserMapCountAggregateInputType | true
-    _min?: FocuserMapMinAggregateInputType
-    _max?: FocuserMapMaxAggregateInputType
-  }
-
+    where?: FocuserMapWhereInput;
+    orderBy?: Enumerable<FocuserMapOrderByWithAggregationInput>;
+    by: FocuserMapScalarFieldEnum[];
+    having?: FocuserMapScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: FocuserMapCountAggregateInputType | true;
+    _min?: FocuserMapMinAggregateInputType;
+    _max?: FocuserMapMaxAggregateInputType;
+  };
 
   export type FocuserMapGroupByOutputType = {
-    id: string
-    follower_id: string
-    _count: FocuserMapCountAggregateOutputType | null
-    _min: FocuserMapMinAggregateOutputType | null
-    _max: FocuserMapMaxAggregateOutputType | null
-  }
+    id: string;
+    follower_id: string;
+    _count: FocuserMapCountAggregateOutputType | null;
+    _min: FocuserMapMinAggregateOutputType | null;
+    _max: FocuserMapMaxAggregateOutputType | null;
+  };
 
-  type GetFocuserMapGroupByPayload<T extends FocuserMapGroupByArgs> = PrismaPromise<
-    Array<
-      PickArray<FocuserMapGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof FocuserMapGroupByOutputType))]: P extends '_count'
+  type GetFocuserMapGroupByPayload<T extends FocuserMapGroupByArgs> =
+    PrismaPromise<
+      Array<
+        PickArray<FocuserMapGroupByOutputType, T['by']> & {
+          [P in keyof T & keyof FocuserMapGroupByOutputType]: P extends '_count'
             ? T[P] extends boolean
               ? number
               : GetScalarType<T[P], FocuserMapGroupByOutputType[P]>
-            : GetScalarType<T[P], FocuserMapGroupByOutputType[P]>
+            : GetScalarType<T[P], FocuserMapGroupByOutputType[P]>;
         }
       >
-    >
-
+    >;
 
   export type FocuserMapSelect = {
-    id?: boolean
-    follower?: boolean | UserArgs
-    follower_id?: boolean
-  }
-
+    id?: boolean;
+    follower?: boolean | UserArgs;
+    follower_id?: boolean;
+  };
 
   export type FocuserMapInclude = {
-    follower?: boolean | UserArgs
-  }
+    follower?: boolean | UserArgs;
+  };
 
-  export type FocuserMapGetPayload<S extends boolean | null | undefined | FocuserMapArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? FocuserMap :
-    S extends undefined ? never :
-    S extends { include: any } & (FocuserMapArgs | FocuserMapFindManyArgs)
-    ? FocuserMap  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'follower' ? UserGetPayload<S['include'][P]> :  never
-  } 
+  export type FocuserMapGetPayload<
+    S extends boolean | null | undefined | FocuserMapArgs,
+  > = S extends { select: any; include: any }
+    ? 'Please either choose `select` or `include`'
+    : S extends true
+    ? FocuserMap
+    : S extends undefined
+    ? never
+    : S extends { include: any } & (FocuserMapArgs | FocuserMapFindManyArgs)
+    ? FocuserMap & {
+        [P in TruthyKeys<S['include']>]: P extends 'follower'
+          ? UserGetPayload<S['include'][P]>
+          : never;
+      }
     : S extends { select: any } & (FocuserMapArgs | FocuserMapFindManyArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-        P extends 'follower' ? UserGetPayload<S['select'][P]> :  P extends keyof FocuserMap ? FocuserMap[P] : never
-  } 
-      : FocuserMap
+    ? {
+        [P in TruthyKeys<S['select']>]: P extends 'follower'
+          ? UserGetPayload<S['select'][P]>
+          : P extends keyof FocuserMap
+          ? FocuserMap[P]
+          : never;
+      }
+    : FocuserMap;
 
+  type FocuserMapCountArgs = Omit<
+    FocuserMapFindManyArgs,
+    'select' | 'include'
+  > & {
+    select?: FocuserMapCountAggregateInputType | true;
+  };
 
-  type FocuserMapCountArgs = 
-    Omit<FocuserMapFindManyArgs, 'select' | 'include'> & {
-      select?: FocuserMapCountAggregateInputType | true
-    }
-
-  export interface FocuserMapDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-
+  export interface FocuserMapDelegate<
+    GlobalRejectSettings extends
+      | Prisma.RejectOnNotFound
+      | Prisma.RejectPerOperation
+      | false
+      | undefined,
+  > {
     /**
      * Find zero or one FocuserMap that matches the filter.
      * @param {FocuserMapFindUniqueArgs} args - Arguments to find a FocuserMap
@@ -5229,13 +5568,25 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findUnique<T extends FocuserMapFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, FocuserMapFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'FocuserMap'> extends True ? Prisma__FocuserMapClient<FocuserMapGetPayload<T>> : Prisma__FocuserMapClient<FocuserMapGetPayload<T> | null, null>
+     **/
+    findUnique<
+      T extends FocuserMapFindUniqueArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args: SelectSubset<T, FocuserMapFindUniqueArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findUnique',
+      'FocuserMap'
+    > extends True
+      ? Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+      : Prisma__FocuserMapClient<FocuserMapGetPayload<T> | null, null>;
 
     /**
-     * Find one FocuserMap that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one FocuserMap that matches the filter or throw an error  with `error.code='P2025'`
      *     if no matches were found.
      * @param {FocuserMapFindUniqueOrThrowArgs} args - Arguments to find a FocuserMap
      * @example
@@ -5245,10 +5596,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findUniqueOrThrow<T extends FocuserMapFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, FocuserMapFindUniqueOrThrowArgs>
-    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+      args?: SelectSubset<T, FocuserMapFindUniqueOrThrowArgs>,
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>;
 
     /**
      * Find the first FocuserMap that matches the filter.
@@ -5262,10 +5613,22 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findFirst<T extends FocuserMapFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, FocuserMapFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'FocuserMap'> extends True ? Prisma__FocuserMapClient<FocuserMapGetPayload<T>> : Prisma__FocuserMapClient<FocuserMapGetPayload<T> | null, null>
+     **/
+    findFirst<
+      T extends FocuserMapFindFirstArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args?: SelectSubset<T, FocuserMapFindFirstArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findFirst',
+      'FocuserMap'
+    > extends True
+      ? Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+      : Prisma__FocuserMapClient<FocuserMapGetPayload<T> | null, null>;
 
     /**
      * Find the first FocuserMap that matches the filter or
@@ -5280,10 +5643,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findFirstOrThrow<T extends FocuserMapFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, FocuserMapFindFirstOrThrowArgs>
-    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+      args?: SelectSubset<T, FocuserMapFindFirstOrThrowArgs>,
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>;
 
     /**
      * Find zero or more FocuserMaps that matches the filter.
@@ -5293,17 +5656,17 @@ export namespace Prisma {
      * @example
      * // Get all FocuserMaps
      * const focuserMaps = await prisma.focuserMap.findMany()
-     * 
+     *
      * // Get first 10 FocuserMaps
      * const focuserMaps = await prisma.focuserMap.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const focuserMapWithIdOnly = await prisma.focuserMap.findMany({ select: { id: true } })
-     * 
-    **/
+     *
+     **/
     findMany<T extends FocuserMapFindManyArgs>(
-      args?: SelectSubset<T, FocuserMapFindManyArgs>
-    ): PrismaPromise<Array<FocuserMapGetPayload<T>>>
+      args?: SelectSubset<T, FocuserMapFindManyArgs>,
+    ): PrismaPromise<Array<FocuserMapGetPayload<T>>>;
 
     /**
      * Create a FocuserMap.
@@ -5315,11 +5678,11 @@ export namespace Prisma {
      *     // ... data to create a FocuserMap
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     create<T extends FocuserMapCreateArgs>(
-      args: SelectSubset<T, FocuserMapCreateArgs>
-    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+      args: SelectSubset<T, FocuserMapCreateArgs>,
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>;
 
     /**
      * Create many FocuserMaps.
@@ -5331,11 +5694,11 @@ export namespace Prisma {
      *         // ... provide data here
      *       }
      *     })
-     *     
-    **/
+     *
+     **/
     createMany<T extends FocuserMapCreateManyArgs>(
-      args?: SelectSubset<T, FocuserMapCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, FocuserMapCreateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Delete a FocuserMap.
@@ -5347,11 +5710,11 @@ export namespace Prisma {
      *     // ... filter to delete one FocuserMap
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     delete<T extends FocuserMapDeleteArgs>(
-      args: SelectSubset<T, FocuserMapDeleteArgs>
-    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+      args: SelectSubset<T, FocuserMapDeleteArgs>,
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>;
 
     /**
      * Update one FocuserMap.
@@ -5366,11 +5729,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     update<T extends FocuserMapUpdateArgs>(
-      args: SelectSubset<T, FocuserMapUpdateArgs>
-    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+      args: SelectSubset<T, FocuserMapUpdateArgs>,
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>;
 
     /**
      * Delete zero or more FocuserMaps.
@@ -5382,11 +5745,11 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     deleteMany<T extends FocuserMapDeleteManyArgs>(
-      args?: SelectSubset<T, FocuserMapDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, FocuserMapDeleteManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Update zero or more FocuserMaps.
@@ -5403,11 +5766,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     updateMany<T extends FocuserMapUpdateManyArgs>(
-      args: SelectSubset<T, FocuserMapUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args: SelectSubset<T, FocuserMapUpdateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Create or update one FocuserMap.
@@ -5425,10 +5788,10 @@ export namespace Prisma {
      *     // ... the filter for the FocuserMap we want to update
      *   }
      * })
-    **/
+     **/
     upsert<T extends FocuserMapUpsertArgs>(
-      args: SelectSubset<T, FocuserMapUpsertArgs>
-    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>
+      args: SelectSubset<T, FocuserMapUpsertArgs>,
+    ): Prisma__FocuserMapClient<FocuserMapGetPayload<T>>;
 
     /**
      * Count the number of FocuserMaps.
@@ -5442,7 +5805,7 @@ export namespace Prisma {
      *     // ... the filter for the FocuserMaps we want to count
      *   }
      * })
-    **/
+     **/
     count<T extends FocuserMapCountArgs>(
       args?: Subset<T, FocuserMapCountArgs>,
     ): PrismaPromise<
@@ -5451,7 +5814,7 @@ export namespace Prisma {
           ? number
           : GetScalarType<T['select'], FocuserMapCountAggregateOutputType>
         : number
-    >
+    >;
 
     /**
      * Allows you to perform aggregations operations on a FocuserMap.
@@ -5476,8 +5839,10 @@ export namespace Prisma {
      *   },
      *   take: 10,
      * })
-    **/
-    aggregate<T extends FocuserMapAggregateArgs>(args: Subset<T, FocuserMapAggregateArgs>): PrismaPromise<GetFocuserMapAggregateType<T>>
+     **/
+    aggregate<T extends FocuserMapAggregateArgs>(
+      args: Subset<T, FocuserMapAggregateArgs>,
+    ): PrismaPromise<GetFocuserMapAggregateType<T>>;
 
     /**
      * Group by FocuserMap.
@@ -5495,8 +5860,8 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
-    **/
+     *
+     **/
     groupBy<
       T extends FocuserMapGroupByArgs,
       HasSelectOrTake extends Or<
@@ -5506,56 +5871,62 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: FocuserMapGroupByArgs['orderBy'] }
         : { orderBy?: FocuserMapGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      OrderFields extends ExcludeUnderscoreKeys<
+        Keys<MaybeTupleToUnion<T['orderBy']>>
+      >,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
       HavingValid extends Has<ByFields, HavingFields>,
       ByEmpty extends T['by'] extends never[] ? True : False,
       InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, FocuserMapGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFocuserMapGroupByPayload<T> : PrismaPromise<InputErrors>
-
+        ? `Error: "by" must not be empty.`
+        : HavingValid extends False
+        ? {
+            [P in HavingFields]: P extends ByFields
+              ? never
+              : P extends string
+              ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+              : [
+                  Error,
+                  'Field ',
+                  P,
+                  ` in "having" needs to be provided in "by"`,
+                ];
+          }[HavingFields]
+        : 'take' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "take", you also need to provide "orderBy"'
+        : 'skip' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        : ByValid extends True
+        ? {}
+        : {
+            [P in OrderFields]: P extends ByFields
+              ? never
+              : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+          }[OrderFields],
+    >(
+      args: SubsetIntersection<T, FocuserMapGroupByArgs, OrderByArg> &
+        InputErrors,
+    ): {} extends InputErrors
+      ? GetFocuserMapGroupByPayload<T>
+      : PrismaPromise<InputErrors>;
   }
 
   /**
@@ -5564,7 +5935,9 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__FocuserMapClient<T, Null = never> implements PrismaPromise<T> {
+  export class Prisma__FocuserMapClient<T, Null = never>
+    implements PrismaPromise<T>
+  {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -5578,10 +5951,23 @@ export namespace Prisma {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    constructor(
+      _dmmf: runtime.DMMFClass,
+      _fetcher: PrismaClientFetcher,
+      _queryType: 'query' | 'mutation',
+      _rootField: string,
+      _clientMethod: string,
+      _args: any,
+      _dataPath: string[],
+      _errorFormat: ErrorFormat,
+      _measurePerformance?: boolean | undefined,
+      _isList?: boolean,
+    );
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    follower<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
+    follower<T extends UserArgs = {}>(
+      args?: Subset<T, UserArgs>,
+    ): Prisma__UserClient<UserGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -5590,13 +5976,27 @@ export namespace Prisma {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    then<TResult1 = T, TResult2 = never>(
+      onfulfilled?:
+        | ((value: T) => TResult1 | PromiseLike<TResult1>)
+        | undefined
+        | null,
+      onrejected?:
+        | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+        | undefined
+        | null,
+    ): Promise<TResult1 | TResult2>;
     /**
      * Attaches a callback for only the rejection of the Promise.
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    catch<TResult = never>(
+      onrejected?:
+        | ((reason: any) => TResult | PromiseLike<TResult>)
+        | undefined
+        | null,
+    ): Promise<T | TResult>;
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
@@ -5605,8 +6005,6 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
-
-
 
   // Custom InputTypes
 
@@ -5617,28 +6015,28 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
+    include?: FocuserMapInclude | null;
     /**
      * Filter, which FocuserMap to fetch.
      */
-    where: FocuserMapWhereUniqueInput
-  }
+    where: FocuserMapWhereUniqueInput;
+  };
 
   /**
    * FocuserMap findUnique
    */
-  export interface FocuserMapFindUniqueArgs extends FocuserMapFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+  export interface FocuserMapFindUniqueArgs
+    extends FocuserMapFindUniqueArgsBase {
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * FocuserMap findUniqueOrThrow
@@ -5647,17 +6045,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
+    include?: FocuserMapInclude | null;
     /**
      * Filter, which FocuserMap to fetch.
      */
-    where: FocuserMapWhereUniqueInput
-  }
-
+    where: FocuserMapWhereUniqueInput;
+  };
 
   /**
    * FocuserMap base type for findFirst actions
@@ -5666,58 +6063,57 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
+    include?: FocuserMapInclude | null;
     /**
      * Filter, which FocuserMap to fetch.
      */
-    where?: FocuserMapWhereInput
+    where?: FocuserMapWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of FocuserMaps to fetch.
      */
-    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for FocuserMaps.
      */
-    cursor?: FocuserMapWhereUniqueInput
+    cursor?: FocuserMapWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` FocuserMaps from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` FocuserMaps.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of FocuserMaps.
      */
-    distinct?: Enumerable<FocuserMapScalarFieldEnum>
-  }
+    distinct?: Enumerable<FocuserMapScalarFieldEnum>;
+  };
 
   /**
    * FocuserMap findFirst
    */
   export interface FocuserMapFindFirstArgs extends FocuserMapFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * FocuserMap findFirstOrThrow
@@ -5726,47 +6122,46 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
+    include?: FocuserMapInclude | null;
     /**
      * Filter, which FocuserMap to fetch.
      */
-    where?: FocuserMapWhereInput
+    where?: FocuserMapWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of FocuserMaps to fetch.
      */
-    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for FocuserMaps.
      */
-    cursor?: FocuserMapWhereUniqueInput
+    cursor?: FocuserMapWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` FocuserMaps from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` FocuserMaps.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of FocuserMaps.
      */
-    distinct?: Enumerable<FocuserMapScalarFieldEnum>
-  }
-
+    distinct?: Enumerable<FocuserMapScalarFieldEnum>;
+  };
 
   /**
    * FocuserMap findMany
@@ -5775,42 +6170,41 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
+    include?: FocuserMapInclude | null;
     /**
      * Filter, which FocuserMaps to fetch.
      */
-    where?: FocuserMapWhereInput
+    where?: FocuserMapWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of FocuserMaps to fetch.
      */
-    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>
+    orderBy?: Enumerable<FocuserMapOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing FocuserMaps.
      */
-    cursor?: FocuserMapWhereUniqueInput
+    cursor?: FocuserMapWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` FocuserMaps from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` FocuserMaps.
      */
-    skip?: number
-    distinct?: Enumerable<FocuserMapScalarFieldEnum>
-  }
-
+    skip?: number;
+    distinct?: Enumerable<FocuserMapScalarFieldEnum>;
+  };
 
   /**
    * FocuserMap create
@@ -5819,17 +6213,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
+    include?: FocuserMapInclude | null;
     /**
      * The data needed to create a FocuserMap.
      */
-    data: XOR<FocuserMapCreateInput, FocuserMapUncheckedCreateInput>
-  }
-
+    data: XOR<FocuserMapCreateInput, FocuserMapUncheckedCreateInput>;
+  };
 
   /**
    * FocuserMap createMany
@@ -5838,10 +6231,9 @@ export namespace Prisma {
     /**
      * The data used to create many FocuserMaps.
      */
-    data: Enumerable<FocuserMapCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
+    data: Enumerable<FocuserMapCreateManyInput>;
+    skipDuplicates?: boolean;
+  };
 
   /**
    * FocuserMap update
@@ -5850,21 +6242,20 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
+    include?: FocuserMapInclude | null;
     /**
      * The data needed to update a FocuserMap.
      */
-    data: XOR<FocuserMapUpdateInput, FocuserMapUncheckedUpdateInput>
+    data: XOR<FocuserMapUpdateInput, FocuserMapUncheckedUpdateInput>;
     /**
      * Choose, which FocuserMap to update.
      */
-    where: FocuserMapWhereUniqueInput
-  }
-
+    where: FocuserMapWhereUniqueInput;
+  };
 
   /**
    * FocuserMap updateMany
@@ -5873,13 +6264,15 @@ export namespace Prisma {
     /**
      * The data used to update FocuserMaps.
      */
-    data: XOR<FocuserMapUpdateManyMutationInput, FocuserMapUncheckedUpdateManyInput>
+    data: XOR<
+      FocuserMapUpdateManyMutationInput,
+      FocuserMapUncheckedUpdateManyInput
+    >;
     /**
      * Filter which FocuserMaps to update
      */
-    where?: FocuserMapWhereInput
-  }
-
+    where?: FocuserMapWhereInput;
+  };
 
   /**
    * FocuserMap upsert
@@ -5888,25 +6281,24 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
+    include?: FocuserMapInclude | null;
     /**
      * The filter to search for the FocuserMap to update in case it exists.
      */
-    where: FocuserMapWhereUniqueInput
+    where: FocuserMapWhereUniqueInput;
     /**
      * In case the FocuserMap found by the `where` argument doesn't exist, create a new FocuserMap with this data.
      */
-    create: XOR<FocuserMapCreateInput, FocuserMapUncheckedCreateInput>
+    create: XOR<FocuserMapCreateInput, FocuserMapUncheckedCreateInput>;
     /**
      * In case the FocuserMap was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<FocuserMapUpdateInput, FocuserMapUncheckedUpdateInput>
-  }
-
+    update: XOR<FocuserMapUpdateInput, FocuserMapUncheckedUpdateInput>;
+  };
 
   /**
    * FocuserMap delete
@@ -5915,17 +6307,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
+    include?: FocuserMapInclude | null;
     /**
      * Filter which FocuserMap to delete.
      */
-    where: FocuserMapWhereUniqueInput
-  }
-
+    where: FocuserMapWhereUniqueInput;
+  };
 
   /**
    * FocuserMap deleteMany
@@ -5934,9 +6325,8 @@ export namespace Prisma {
     /**
      * Filter which FocuserMaps to delete
      */
-    where?: FocuserMapWhereInput
-  }
-
+    where?: FocuserMapWhereInput;
+  };
 
   /**
    * FocuserMap without action
@@ -5945,279 +6335,281 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the FocuserMap
      */
-    select?: FocuserMapSelect | null
+    select?: FocuserMapSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: FocuserMapInclude | null
-  }
-
-
+    include?: FocuserMapInclude | null;
+  };
 
   /**
    * Model Comment
    */
 
-
   export type AggregateComment = {
-    _count: CommentCountAggregateOutputType | null
-    _avg: CommentAvgAggregateOutputType | null
-    _sum: CommentSumAggregateOutputType | null
-    _min: CommentMinAggregateOutputType | null
-    _max: CommentMaxAggregateOutputType | null
-  }
+    _count: CommentCountAggregateOutputType | null;
+    _avg: CommentAvgAggregateOutputType | null;
+    _sum: CommentSumAggregateOutputType | null;
+    _min: CommentMinAggregateOutputType | null;
+    _max: CommentMaxAggregateOutputType | null;
+  };
 
   export type CommentAvgAggregateOutputType = {
-    like_times: number | null
-    dislike_times: number | null
-  }
+    like_times: number | null;
+    dislike_times: number | null;
+  };
 
   export type CommentSumAggregateOutputType = {
-    like_times: number | null
-    dislike_times: number | null
-  }
+    like_times: number | null;
+    dislike_times: number | null;
+  };
 
   export type CommentMinAggregateOutputType = {
-    id: string | null
-    parent_id: string | null
-    comment: string | null
-    user_id: string | null
-    like_times: number | null
-    dislike_times: number | null
-    createdAt: Date | null
-    article_id: string | null
-  }
+    id: string | null;
+    parent_id: string | null;
+    comment: string | null;
+    user_id: string | null;
+    like_times: number | null;
+    dislike_times: number | null;
+    createdAt: Date | null;
+    article_id: string | null;
+  };
 
   export type CommentMaxAggregateOutputType = {
-    id: string | null
-    parent_id: string | null
-    comment: string | null
-    user_id: string | null
-    like_times: number | null
-    dislike_times: number | null
-    createdAt: Date | null
-    article_id: string | null
-  }
+    id: string | null;
+    parent_id: string | null;
+    comment: string | null;
+    user_id: string | null;
+    like_times: number | null;
+    dislike_times: number | null;
+    createdAt: Date | null;
+    article_id: string | null;
+  };
 
   export type CommentCountAggregateOutputType = {
-    id: number
-    parent_id: number
-    comment: number
-    user_id: number
-    like_times: number
-    dislike_times: number
-    createdAt: number
-    article_id: number
-    _all: number
-  }
-
+    id: number;
+    parent_id: number;
+    comment: number;
+    user_id: number;
+    like_times: number;
+    dislike_times: number;
+    createdAt: number;
+    article_id: number;
+    _all: number;
+  };
 
   export type CommentAvgAggregateInputType = {
-    like_times?: true
-    dislike_times?: true
-  }
+    like_times?: true;
+    dislike_times?: true;
+  };
 
   export type CommentSumAggregateInputType = {
-    like_times?: true
-    dislike_times?: true
-  }
+    like_times?: true;
+    dislike_times?: true;
+  };
 
   export type CommentMinAggregateInputType = {
-    id?: true
-    parent_id?: true
-    comment?: true
-    user_id?: true
-    like_times?: true
-    dislike_times?: true
-    createdAt?: true
-    article_id?: true
-  }
+    id?: true;
+    parent_id?: true;
+    comment?: true;
+    user_id?: true;
+    like_times?: true;
+    dislike_times?: true;
+    createdAt?: true;
+    article_id?: true;
+  };
 
   export type CommentMaxAggregateInputType = {
-    id?: true
-    parent_id?: true
-    comment?: true
-    user_id?: true
-    like_times?: true
-    dislike_times?: true
-    createdAt?: true
-    article_id?: true
-  }
+    id?: true;
+    parent_id?: true;
+    comment?: true;
+    user_id?: true;
+    like_times?: true;
+    dislike_times?: true;
+    createdAt?: true;
+    article_id?: true;
+  };
 
   export type CommentCountAggregateInputType = {
-    id?: true
-    parent_id?: true
-    comment?: true
-    user_id?: true
-    like_times?: true
-    dislike_times?: true
-    createdAt?: true
-    article_id?: true
-    _all?: true
-  }
+    id?: true;
+    parent_id?: true;
+    comment?: true;
+    user_id?: true;
+    like_times?: true;
+    dislike_times?: true;
+    createdAt?: true;
+    article_id?: true;
+    _all?: true;
+  };
 
   export type CommentAggregateArgs = {
     /**
      * Filter which Comment to aggregate.
      */
-    where?: CommentWhereInput
+    where?: CommentWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Comments to fetch.
      */
-    orderBy?: Enumerable<CommentOrderByWithRelationInput>
+    orderBy?: Enumerable<CommentOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
-    cursor?: CommentWhereUniqueInput
+    cursor?: CommentWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Comments from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Comments.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Comments
-    **/
-    _count?: true | CommentCountAggregateInputType
+     **/
+    _count?: true | CommentCountAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
-    **/
-    _avg?: CommentAvgAggregateInputType
+     **/
+    _avg?: CommentAvgAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
-    **/
-    _sum?: CommentSumAggregateInputType
+     **/
+    _sum?: CommentSumAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
-    **/
-    _min?: CommentMinAggregateInputType
+     **/
+    _min?: CommentMinAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
-    **/
-    _max?: CommentMaxAggregateInputType
-  }
+     **/
+    _max?: CommentMaxAggregateInputType;
+  };
 
   export type GetCommentAggregateType<T extends CommentAggregateArgs> = {
-        [P in keyof T & keyof AggregateComment]: P extends '_count' | 'count'
+    [P in keyof T & keyof AggregateComment]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
         : GetScalarType<T[P], AggregateComment[P]>
-      : GetScalarType<T[P], AggregateComment[P]>
-  }
-
-
-
+      : GetScalarType<T[P], AggregateComment[P]>;
+  };
 
   export type CommentGroupByArgs = {
-    where?: CommentWhereInput
-    orderBy?: Enumerable<CommentOrderByWithAggregationInput>
-    by: CommentScalarFieldEnum[]
-    having?: CommentScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CommentCountAggregateInputType | true
-    _avg?: CommentAvgAggregateInputType
-    _sum?: CommentSumAggregateInputType
-    _min?: CommentMinAggregateInputType
-    _max?: CommentMaxAggregateInputType
-  }
-
+    where?: CommentWhereInput;
+    orderBy?: Enumerable<CommentOrderByWithAggregationInput>;
+    by: CommentScalarFieldEnum[];
+    having?: CommentScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: CommentCountAggregateInputType | true;
+    _avg?: CommentAvgAggregateInputType;
+    _sum?: CommentSumAggregateInputType;
+    _min?: CommentMinAggregateInputType;
+    _max?: CommentMaxAggregateInputType;
+  };
 
   export type CommentGroupByOutputType = {
-    id: string
-    parent_id: string
-    comment: string
-    user_id: string
-    like_times: number
-    dislike_times: number
-    createdAt: Date
-    article_id: string
-    _count: CommentCountAggregateOutputType | null
-    _avg: CommentAvgAggregateOutputType | null
-    _sum: CommentSumAggregateOutputType | null
-    _min: CommentMinAggregateOutputType | null
-    _max: CommentMaxAggregateOutputType | null
-  }
+    id: string;
+    parent_id: string;
+    comment: string;
+    user_id: string;
+    like_times: number;
+    dislike_times: number;
+    createdAt: Date;
+    article_id: string;
+    _count: CommentCountAggregateOutputType | null;
+    _avg: CommentAvgAggregateOutputType | null;
+    _sum: CommentSumAggregateOutputType | null;
+    _min: CommentMinAggregateOutputType | null;
+    _max: CommentMaxAggregateOutputType | null;
+  };
 
   type GetCommentGroupByPayload<T extends CommentGroupByArgs> = PrismaPromise<
     Array<
-      PickArray<CommentGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CommentGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CommentGroupByOutputType[P]>
+      PickArray<CommentGroupByOutputType, T['by']> & {
+        [P in keyof T & keyof CommentGroupByOutputType]: P extends '_count'
+          ? T[P] extends boolean
+            ? number
             : GetScalarType<T[P], CommentGroupByOutputType[P]>
-        }
-      >
+          : GetScalarType<T[P], CommentGroupByOutputType[P]>;
+      }
     >
-
+  >;
 
   export type CommentSelect = {
-    id?: boolean
-    parent_id?: boolean
-    comment?: boolean
-    commentBy?: boolean | UserArgs
-    user_id?: boolean
-    like_times?: boolean
-    dislike_times?: boolean
-    createdAt?: boolean
-    article?: boolean | ArticleArgs
-    article_id?: boolean
-  }
-
+    id?: boolean;
+    parent_id?: boolean;
+    comment?: boolean;
+    commentBy?: boolean | UserArgs;
+    user_id?: boolean;
+    like_times?: boolean;
+    dislike_times?: boolean;
+    createdAt?: boolean;
+    article?: boolean | ArticleArgs;
+    article_id?: boolean;
+  };
 
   export type CommentInclude = {
-    commentBy?: boolean | UserArgs
-    article?: boolean | ArticleArgs
-  }
+    commentBy?: boolean | UserArgs;
+    article?: boolean | ArticleArgs;
+  };
 
-  export type CommentGetPayload<S extends boolean | null | undefined | CommentArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? Comment :
-    S extends undefined ? never :
-    S extends { include: any } & (CommentArgs | CommentFindManyArgs)
-    ? Comment  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'commentBy' ? UserGetPayload<S['include'][P]> :
-        P extends 'article' ? ArticleGetPayload<S['include'][P]> :  never
-  } 
+  export type CommentGetPayload<
+    S extends boolean | null | undefined | CommentArgs,
+  > = S extends { select: any; include: any }
+    ? 'Please either choose `select` or `include`'
+    : S extends true
+    ? Comment
+    : S extends undefined
+    ? never
+    : S extends { include: any } & (CommentArgs | CommentFindManyArgs)
+    ? Comment & {
+        [P in TruthyKeys<S['include']>]: P extends 'commentBy'
+          ? UserGetPayload<S['include'][P]>
+          : P extends 'article'
+          ? ArticleGetPayload<S['include'][P]>
+          : never;
+      }
     : S extends { select: any } & (CommentArgs | CommentFindManyArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-        P extends 'commentBy' ? UserGetPayload<S['select'][P]> :
-        P extends 'article' ? ArticleGetPayload<S['select'][P]> :  P extends keyof Comment ? Comment[P] : never
-  } 
-      : Comment
+    ? {
+        [P in TruthyKeys<S['select']>]: P extends 'commentBy'
+          ? UserGetPayload<S['select'][P]>
+          : P extends 'article'
+          ? ArticleGetPayload<S['select'][P]>
+          : P extends keyof Comment
+          ? Comment[P]
+          : never;
+      }
+    : Comment;
 
+  type CommentCountArgs = Omit<CommentFindManyArgs, 'select' | 'include'> & {
+    select?: CommentCountAggregateInputType | true;
+  };
 
-  type CommentCountArgs = 
-    Omit<CommentFindManyArgs, 'select' | 'include'> & {
-      select?: CommentCountAggregateInputType | true
-    }
-
-  export interface CommentDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-
+  export interface CommentDelegate<
+    GlobalRejectSettings extends
+      | Prisma.RejectOnNotFound
+      | Prisma.RejectPerOperation
+      | false
+      | undefined,
+  > {
     /**
      * Find zero or one Comment that matches the filter.
      * @param {CommentFindUniqueArgs} args - Arguments to find a Comment
@@ -6228,13 +6620,25 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findUnique<T extends CommentFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, CommentFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Comment'> extends True ? Prisma__CommentClient<CommentGetPayload<T>> : Prisma__CommentClient<CommentGetPayload<T> | null, null>
+     **/
+    findUnique<
+      T extends CommentFindUniqueArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args: SelectSubset<T, CommentFindUniqueArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findUnique',
+      'Comment'
+    > extends True
+      ? Prisma__CommentClient<CommentGetPayload<T>>
+      : Prisma__CommentClient<CommentGetPayload<T> | null, null>;
 
     /**
-     * Find one Comment that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one Comment that matches the filter or throw an error  with `error.code='P2025'`
      *     if no matches were found.
      * @param {CommentFindUniqueOrThrowArgs} args - Arguments to find a Comment
      * @example
@@ -6244,10 +6648,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findUniqueOrThrow<T extends CommentFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, CommentFindUniqueOrThrowArgs>
-    ): Prisma__CommentClient<CommentGetPayload<T>>
+      args?: SelectSubset<T, CommentFindUniqueOrThrowArgs>,
+    ): Prisma__CommentClient<CommentGetPayload<T>>;
 
     /**
      * Find the first Comment that matches the filter.
@@ -6261,10 +6665,22 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findFirst<T extends CommentFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, CommentFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Comment'> extends True ? Prisma__CommentClient<CommentGetPayload<T>> : Prisma__CommentClient<CommentGetPayload<T> | null, null>
+     **/
+    findFirst<
+      T extends CommentFindFirstArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args?: SelectSubset<T, CommentFindFirstArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findFirst',
+      'Comment'
+    > extends True
+      ? Prisma__CommentClient<CommentGetPayload<T>>
+      : Prisma__CommentClient<CommentGetPayload<T> | null, null>;
 
     /**
      * Find the first Comment that matches the filter or
@@ -6279,10 +6695,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findFirstOrThrow<T extends CommentFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, CommentFindFirstOrThrowArgs>
-    ): Prisma__CommentClient<CommentGetPayload<T>>
+      args?: SelectSubset<T, CommentFindFirstOrThrowArgs>,
+    ): Prisma__CommentClient<CommentGetPayload<T>>;
 
     /**
      * Find zero or more Comments that matches the filter.
@@ -6292,17 +6708,17 @@ export namespace Prisma {
      * @example
      * // Get all Comments
      * const comments = await prisma.comment.findMany()
-     * 
+     *
      * // Get first 10 Comments
      * const comments = await prisma.comment.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const commentWithIdOnly = await prisma.comment.findMany({ select: { id: true } })
-     * 
-    **/
+     *
+     **/
     findMany<T extends CommentFindManyArgs>(
-      args?: SelectSubset<T, CommentFindManyArgs>
-    ): PrismaPromise<Array<CommentGetPayload<T>>>
+      args?: SelectSubset<T, CommentFindManyArgs>,
+    ): PrismaPromise<Array<CommentGetPayload<T>>>;
 
     /**
      * Create a Comment.
@@ -6314,11 +6730,11 @@ export namespace Prisma {
      *     // ... data to create a Comment
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     create<T extends CommentCreateArgs>(
-      args: SelectSubset<T, CommentCreateArgs>
-    ): Prisma__CommentClient<CommentGetPayload<T>>
+      args: SelectSubset<T, CommentCreateArgs>,
+    ): Prisma__CommentClient<CommentGetPayload<T>>;
 
     /**
      * Create many Comments.
@@ -6330,11 +6746,11 @@ export namespace Prisma {
      *         // ... provide data here
      *       }
      *     })
-     *     
-    **/
+     *
+     **/
     createMany<T extends CommentCreateManyArgs>(
-      args?: SelectSubset<T, CommentCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, CommentCreateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Delete a Comment.
@@ -6346,11 +6762,11 @@ export namespace Prisma {
      *     // ... filter to delete one Comment
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     delete<T extends CommentDeleteArgs>(
-      args: SelectSubset<T, CommentDeleteArgs>
-    ): Prisma__CommentClient<CommentGetPayload<T>>
+      args: SelectSubset<T, CommentDeleteArgs>,
+    ): Prisma__CommentClient<CommentGetPayload<T>>;
 
     /**
      * Update one Comment.
@@ -6365,11 +6781,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     update<T extends CommentUpdateArgs>(
-      args: SelectSubset<T, CommentUpdateArgs>
-    ): Prisma__CommentClient<CommentGetPayload<T>>
+      args: SelectSubset<T, CommentUpdateArgs>,
+    ): Prisma__CommentClient<CommentGetPayload<T>>;
 
     /**
      * Delete zero or more Comments.
@@ -6381,11 +6797,11 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     deleteMany<T extends CommentDeleteManyArgs>(
-      args?: SelectSubset<T, CommentDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, CommentDeleteManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Update zero or more Comments.
@@ -6402,11 +6818,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     updateMany<T extends CommentUpdateManyArgs>(
-      args: SelectSubset<T, CommentUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args: SelectSubset<T, CommentUpdateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Create or update one Comment.
@@ -6424,10 +6840,10 @@ export namespace Prisma {
      *     // ... the filter for the Comment we want to update
      *   }
      * })
-    **/
+     **/
     upsert<T extends CommentUpsertArgs>(
-      args: SelectSubset<T, CommentUpsertArgs>
-    ): Prisma__CommentClient<CommentGetPayload<T>>
+      args: SelectSubset<T, CommentUpsertArgs>,
+    ): Prisma__CommentClient<CommentGetPayload<T>>;
 
     /**
      * Count the number of Comments.
@@ -6441,7 +6857,7 @@ export namespace Prisma {
      *     // ... the filter for the Comments we want to count
      *   }
      * })
-    **/
+     **/
     count<T extends CommentCountArgs>(
       args?: Subset<T, CommentCountArgs>,
     ): PrismaPromise<
@@ -6450,7 +6866,7 @@ export namespace Prisma {
           ? number
           : GetScalarType<T['select'], CommentCountAggregateOutputType>
         : number
-    >
+    >;
 
     /**
      * Allows you to perform aggregations operations on a Comment.
@@ -6475,8 +6891,10 @@ export namespace Prisma {
      *   },
      *   take: 10,
      * })
-    **/
-    aggregate<T extends CommentAggregateArgs>(args: Subset<T, CommentAggregateArgs>): PrismaPromise<GetCommentAggregateType<T>>
+     **/
+    aggregate<T extends CommentAggregateArgs>(
+      args: Subset<T, CommentAggregateArgs>,
+    ): PrismaPromise<GetCommentAggregateType<T>>;
 
     /**
      * Group by Comment.
@@ -6494,8 +6912,8 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
-    **/
+     *
+     **/
     groupBy<
       T extends CommentGroupByArgs,
       HasSelectOrTake extends Or<
@@ -6505,56 +6923,61 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: CommentGroupByArgs['orderBy'] }
         : { orderBy?: CommentGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      OrderFields extends ExcludeUnderscoreKeys<
+        Keys<MaybeTupleToUnion<T['orderBy']>>
+      >,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
       HavingValid extends Has<ByFields, HavingFields>,
       ByEmpty extends T['by'] extends never[] ? True : False,
       InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCommentGroupByPayload<T> : PrismaPromise<InputErrors>
-
+        ? `Error: "by" must not be empty.`
+        : HavingValid extends False
+        ? {
+            [P in HavingFields]: P extends ByFields
+              ? never
+              : P extends string
+              ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+              : [
+                  Error,
+                  'Field ',
+                  P,
+                  ` in "having" needs to be provided in "by"`,
+                ];
+          }[HavingFields]
+        : 'take' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "take", you also need to provide "orderBy"'
+        : 'skip' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        : ByValid extends True
+        ? {}
+        : {
+            [P in OrderFields]: P extends ByFields
+              ? never
+              : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+          }[OrderFields],
+    >(
+      args: SubsetIntersection<T, CommentGroupByArgs, OrderByArg> & InputErrors,
+    ): {} extends InputErrors
+      ? GetCommentGroupByPayload<T>
+      : PrismaPromise<InputErrors>;
   }
 
   /**
@@ -6563,7 +6986,9 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__CommentClient<T, Null = never> implements PrismaPromise<T> {
+  export class Prisma__CommentClient<T, Null = never>
+    implements PrismaPromise<T>
+  {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -6577,12 +7002,27 @@ export namespace Prisma {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    constructor(
+      _dmmf: runtime.DMMFClass,
+      _fetcher: PrismaClientFetcher,
+      _queryType: 'query' | 'mutation',
+      _rootField: string,
+      _clientMethod: string,
+      _args: any,
+      _dataPath: string[],
+      _errorFormat: ErrorFormat,
+      _measurePerformance?: boolean | undefined,
+      _isList?: boolean,
+    );
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    commentBy<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
+    commentBy<T extends UserArgs = {}>(
+      args?: Subset<T, UserArgs>,
+    ): Prisma__UserClient<UserGetPayload<T> | Null>;
 
-    article<T extends ArticleArgs= {}>(args?: Subset<T, ArticleArgs>): Prisma__ArticleClient<ArticleGetPayload<T> | Null>;
+    article<T extends ArticleArgs = {}>(
+      args?: Subset<T, ArticleArgs>,
+    ): Prisma__ArticleClient<ArticleGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -6591,13 +7031,27 @@ export namespace Prisma {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    then<TResult1 = T, TResult2 = never>(
+      onfulfilled?:
+        | ((value: T) => TResult1 | PromiseLike<TResult1>)
+        | undefined
+        | null,
+      onrejected?:
+        | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+        | undefined
+        | null,
+    ): Promise<TResult1 | TResult2>;
     /**
      * Attaches a callback for only the rejection of the Promise.
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    catch<TResult = never>(
+      onrejected?:
+        | ((reason: any) => TResult | PromiseLike<TResult>)
+        | undefined
+        | null,
+    ): Promise<T | TResult>;
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
@@ -6606,8 +7060,6 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
-
-
 
   // Custom InputTypes
 
@@ -6618,28 +7070,27 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
+    include?: CommentInclude | null;
     /**
      * Filter, which Comment to fetch.
      */
-    where: CommentWhereUniqueInput
-  }
+    where: CommentWhereUniqueInput;
+  };
 
   /**
    * Comment findUnique
    */
   export interface CommentFindUniqueArgs extends CommentFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * Comment findUniqueOrThrow
@@ -6648,17 +7099,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
+    include?: CommentInclude | null;
     /**
      * Filter, which Comment to fetch.
      */
-    where: CommentWhereUniqueInput
-  }
-
+    where: CommentWhereUniqueInput;
+  };
 
   /**
    * Comment base type for findFirst actions
@@ -6667,58 +7117,57 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
+    include?: CommentInclude | null;
     /**
      * Filter, which Comment to fetch.
      */
-    where?: CommentWhereInput
+    where?: CommentWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Comments to fetch.
      */
-    orderBy?: Enumerable<CommentOrderByWithRelationInput>
+    orderBy?: Enumerable<CommentOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Comments.
      */
-    cursor?: CommentWhereUniqueInput
+    cursor?: CommentWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Comments from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Comments.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Comments.
      */
-    distinct?: Enumerable<CommentScalarFieldEnum>
-  }
+    distinct?: Enumerable<CommentScalarFieldEnum>;
+  };
 
   /**
    * Comment findFirst
    */
   export interface CommentFindFirstArgs extends CommentFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * Comment findFirstOrThrow
@@ -6727,47 +7176,46 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
+    include?: CommentInclude | null;
     /**
      * Filter, which Comment to fetch.
      */
-    where?: CommentWhereInput
+    where?: CommentWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Comments to fetch.
      */
-    orderBy?: Enumerable<CommentOrderByWithRelationInput>
+    orderBy?: Enumerable<CommentOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Comments.
      */
-    cursor?: CommentWhereUniqueInput
+    cursor?: CommentWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Comments from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Comments.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Comments.
      */
-    distinct?: Enumerable<CommentScalarFieldEnum>
-  }
-
+    distinct?: Enumerable<CommentScalarFieldEnum>;
+  };
 
   /**
    * Comment findMany
@@ -6776,42 +7224,41 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
+    include?: CommentInclude | null;
     /**
      * Filter, which Comments to fetch.
      */
-    where?: CommentWhereInput
+    where?: CommentWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Comments to fetch.
      */
-    orderBy?: Enumerable<CommentOrderByWithRelationInput>
+    orderBy?: Enumerable<CommentOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Comments.
      */
-    cursor?: CommentWhereUniqueInput
+    cursor?: CommentWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Comments from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Comments.
      */
-    skip?: number
-    distinct?: Enumerable<CommentScalarFieldEnum>
-  }
-
+    skip?: number;
+    distinct?: Enumerable<CommentScalarFieldEnum>;
+  };
 
   /**
    * Comment create
@@ -6820,17 +7267,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
+    include?: CommentInclude | null;
     /**
      * The data needed to create a Comment.
      */
-    data: XOR<CommentCreateInput, CommentUncheckedCreateInput>
-  }
-
+    data: XOR<CommentCreateInput, CommentUncheckedCreateInput>;
+  };
 
   /**
    * Comment createMany
@@ -6839,10 +7285,9 @@ export namespace Prisma {
     /**
      * The data used to create many Comments.
      */
-    data: Enumerable<CommentCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
+    data: Enumerable<CommentCreateManyInput>;
+    skipDuplicates?: boolean;
+  };
 
   /**
    * Comment update
@@ -6851,21 +7296,20 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
+    include?: CommentInclude | null;
     /**
      * The data needed to update a Comment.
      */
-    data: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
+    data: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>;
     /**
      * Choose, which Comment to update.
      */
-    where: CommentWhereUniqueInput
-  }
-
+    where: CommentWhereUniqueInput;
+  };
 
   /**
    * Comment updateMany
@@ -6874,13 +7318,12 @@ export namespace Prisma {
     /**
      * The data used to update Comments.
      */
-    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyInput>
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyInput>;
     /**
      * Filter which Comments to update
      */
-    where?: CommentWhereInput
-  }
-
+    where?: CommentWhereInput;
+  };
 
   /**
    * Comment upsert
@@ -6889,25 +7332,24 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
+    include?: CommentInclude | null;
     /**
      * The filter to search for the Comment to update in case it exists.
      */
-    where: CommentWhereUniqueInput
+    where: CommentWhereUniqueInput;
     /**
      * In case the Comment found by the `where` argument doesn't exist, create a new Comment with this data.
      */
-    create: XOR<CommentCreateInput, CommentUncheckedCreateInput>
+    create: XOR<CommentCreateInput, CommentUncheckedCreateInput>;
     /**
      * In case the Comment was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
-  }
-
+    update: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>;
+  };
 
   /**
    * Comment delete
@@ -6916,17 +7358,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
+    include?: CommentInclude | null;
     /**
      * Filter which Comment to delete.
      */
-    where: CommentWhereUniqueInput
-  }
-
+    where: CommentWhereUniqueInput;
+  };
 
   /**
    * Comment deleteMany
@@ -6935,9 +7376,8 @@ export namespace Prisma {
     /**
      * Filter which Comments to delete
      */
-    where?: CommentWhereInput
-  }
-
+    where?: CommentWhereInput;
+  };
 
   /**
    * Comment without action
@@ -6946,181 +7386,178 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Comment
      */
-    select?: CommentSelect | null
+    select?: CommentSelect | null;
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: CommentInclude | null
-  }
-
-
+    include?: CommentInclude | null;
+  };
 
   /**
    * Model Carousel
    */
 
-
   export type AggregateCarousel = {
-    _count: CarouselCountAggregateOutputType | null
-    _min: CarouselMinAggregateOutputType | null
-    _max: CarouselMaxAggregateOutputType | null
-  }
+    _count: CarouselCountAggregateOutputType | null;
+    _min: CarouselMinAggregateOutputType | null;
+    _max: CarouselMaxAggregateOutputType | null;
+  };
 
   export type CarouselMinAggregateOutputType = {
-    id: string | null
-    img_url: string | null
-  }
+    id: string | null;
+    img_url: string | null;
+  };
 
   export type CarouselMaxAggregateOutputType = {
-    id: string | null
-    img_url: string | null
-  }
+    id: string | null;
+    img_url: string | null;
+  };
 
   export type CarouselCountAggregateOutputType = {
-    id: number
-    img_url: number
-    _all: number
-  }
-
+    id: number;
+    img_url: number;
+    _all: number;
+  };
 
   export type CarouselMinAggregateInputType = {
-    id?: true
-    img_url?: true
-  }
+    id?: true;
+    img_url?: true;
+  };
 
   export type CarouselMaxAggregateInputType = {
-    id?: true
-    img_url?: true
-  }
+    id?: true;
+    img_url?: true;
+  };
 
   export type CarouselCountAggregateInputType = {
-    id?: true
-    img_url?: true
-    _all?: true
-  }
+    id?: true;
+    img_url?: true;
+    _all?: true;
+  };
 
   export type CarouselAggregateArgs = {
     /**
      * Filter which Carousel to aggregate.
      */
-    where?: CarouselWhereInput
+    where?: CarouselWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Carousels to fetch.
      */
-    orderBy?: Enumerable<CarouselOrderByWithRelationInput>
+    orderBy?: Enumerable<CarouselOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
-    cursor?: CarouselWhereUniqueInput
+    cursor?: CarouselWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Carousels from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Carousels.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Carousels
-    **/
-    _count?: true | CarouselCountAggregateInputType
+     **/
+    _count?: true | CarouselCountAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
-    **/
-    _min?: CarouselMinAggregateInputType
+     **/
+    _min?: CarouselMinAggregateInputType;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
-    **/
-    _max?: CarouselMaxAggregateInputType
-  }
+     **/
+    _max?: CarouselMaxAggregateInputType;
+  };
 
   export type GetCarouselAggregateType<T extends CarouselAggregateArgs> = {
-        [P in keyof T & keyof AggregateCarousel]: P extends '_count' | 'count'
+    [P in keyof T & keyof AggregateCarousel]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
         : GetScalarType<T[P], AggregateCarousel[P]>
-      : GetScalarType<T[P], AggregateCarousel[P]>
-  }
-
-
-
+      : GetScalarType<T[P], AggregateCarousel[P]>;
+  };
 
   export type CarouselGroupByArgs = {
-    where?: CarouselWhereInput
-    orderBy?: Enumerable<CarouselOrderByWithAggregationInput>
-    by: CarouselScalarFieldEnum[]
-    having?: CarouselScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CarouselCountAggregateInputType | true
-    _min?: CarouselMinAggregateInputType
-    _max?: CarouselMaxAggregateInputType
-  }
-
+    where?: CarouselWhereInput;
+    orderBy?: Enumerable<CarouselOrderByWithAggregationInput>;
+    by: CarouselScalarFieldEnum[];
+    having?: CarouselScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: CarouselCountAggregateInputType | true;
+    _min?: CarouselMinAggregateInputType;
+    _max?: CarouselMaxAggregateInputType;
+  };
 
   export type CarouselGroupByOutputType = {
-    id: string
-    img_url: string
-    _count: CarouselCountAggregateOutputType | null
-    _min: CarouselMinAggregateOutputType | null
-    _max: CarouselMaxAggregateOutputType | null
-  }
+    id: string;
+    img_url: string;
+    _count: CarouselCountAggregateOutputType | null;
+    _min: CarouselMinAggregateOutputType | null;
+    _max: CarouselMaxAggregateOutputType | null;
+  };
 
   type GetCarouselGroupByPayload<T extends CarouselGroupByArgs> = PrismaPromise<
     Array<
-      PickArray<CarouselGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CarouselGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CarouselGroupByOutputType[P]>
+      PickArray<CarouselGroupByOutputType, T['by']> & {
+        [P in keyof T & keyof CarouselGroupByOutputType]: P extends '_count'
+          ? T[P] extends boolean
+            ? number
             : GetScalarType<T[P], CarouselGroupByOutputType[P]>
-        }
-      >
+          : GetScalarType<T[P], CarouselGroupByOutputType[P]>;
+      }
     >
-
+  >;
 
   export type CarouselSelect = {
-    id?: boolean
-    img_url?: boolean
-  }
+    id?: boolean;
+    img_url?: boolean;
+  };
 
-
-  export type CarouselGetPayload<S extends boolean | null | undefined | CarouselArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? Carousel :
-    S extends undefined ? never :
-    S extends { include: any } & (CarouselArgs | CarouselFindManyArgs)
-    ? Carousel 
+  export type CarouselGetPayload<
+    S extends boolean | null | undefined | CarouselArgs,
+  > = S extends { select: any; include: any }
+    ? 'Please either choose `select` or `include`'
+    : S extends true
+    ? Carousel
+    : S extends undefined
+    ? never
+    : S extends { include: any } & (CarouselArgs | CarouselFindManyArgs)
+    ? Carousel
     : S extends { select: any } & (CarouselArgs | CarouselFindManyArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof Carousel ? Carousel[P] : never
-  } 
-      : Carousel
+    ? {
+        [P in TruthyKeys<S['select']>]: P extends keyof Carousel
+          ? Carousel[P]
+          : never;
+      }
+    : Carousel;
 
+  type CarouselCountArgs = Omit<CarouselFindManyArgs, 'select' | 'include'> & {
+    select?: CarouselCountAggregateInputType | true;
+  };
 
-  type CarouselCountArgs = 
-    Omit<CarouselFindManyArgs, 'select' | 'include'> & {
-      select?: CarouselCountAggregateInputType | true
-    }
-
-  export interface CarouselDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-
+  export interface CarouselDelegate<
+    GlobalRejectSettings extends
+      | Prisma.RejectOnNotFound
+      | Prisma.RejectPerOperation
+      | false
+      | undefined,
+  > {
     /**
      * Find zero or one Carousel that matches the filter.
      * @param {CarouselFindUniqueArgs} args - Arguments to find a Carousel
@@ -7131,13 +7568,25 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findUnique<T extends CarouselFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, CarouselFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Carousel'> extends True ? Prisma__CarouselClient<CarouselGetPayload<T>> : Prisma__CarouselClient<CarouselGetPayload<T> | null, null>
+     **/
+    findUnique<
+      T extends CarouselFindUniqueArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args: SelectSubset<T, CarouselFindUniqueArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findUnique',
+      'Carousel'
+    > extends True
+      ? Prisma__CarouselClient<CarouselGetPayload<T>>
+      : Prisma__CarouselClient<CarouselGetPayload<T> | null, null>;
 
     /**
-     * Find one Carousel that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one Carousel that matches the filter or throw an error  with `error.code='P2025'`
      *     if no matches were found.
      * @param {CarouselFindUniqueOrThrowArgs} args - Arguments to find a Carousel
      * @example
@@ -7147,10 +7596,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findUniqueOrThrow<T extends CarouselFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, CarouselFindUniqueOrThrowArgs>
-    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+      args?: SelectSubset<T, CarouselFindUniqueOrThrowArgs>,
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>;
 
     /**
      * Find the first Carousel that matches the filter.
@@ -7164,10 +7613,22 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
-    findFirst<T extends CarouselFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, CarouselFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Carousel'> extends True ? Prisma__CarouselClient<CarouselGetPayload<T>> : Prisma__CarouselClient<CarouselGetPayload<T> | null, null>
+     **/
+    findFirst<
+      T extends CarouselFindFirstArgs,
+      LocalRejectSettings = T['rejectOnNotFound'] extends RejectOnNotFound
+        ? T['rejectOnNotFound']
+        : undefined,
+    >(
+      args?: SelectSubset<T, CarouselFindFirstArgs>,
+    ): HasReject<
+      GlobalRejectSettings,
+      LocalRejectSettings,
+      'findFirst',
+      'Carousel'
+    > extends True
+      ? Prisma__CarouselClient<CarouselGetPayload<T>>
+      : Prisma__CarouselClient<CarouselGetPayload<T> | null, null>;
 
     /**
      * Find the first Carousel that matches the filter or
@@ -7182,10 +7643,10 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-    **/
+     **/
     findFirstOrThrow<T extends CarouselFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, CarouselFindFirstOrThrowArgs>
-    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+      args?: SelectSubset<T, CarouselFindFirstOrThrowArgs>,
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>;
 
     /**
      * Find zero or more Carousels that matches the filter.
@@ -7195,17 +7656,17 @@ export namespace Prisma {
      * @example
      * // Get all Carousels
      * const carousels = await prisma.carousel.findMany()
-     * 
+     *
      * // Get first 10 Carousels
      * const carousels = await prisma.carousel.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const carouselWithIdOnly = await prisma.carousel.findMany({ select: { id: true } })
-     * 
-    **/
+     *
+     **/
     findMany<T extends CarouselFindManyArgs>(
-      args?: SelectSubset<T, CarouselFindManyArgs>
-    ): PrismaPromise<Array<CarouselGetPayload<T>>>
+      args?: SelectSubset<T, CarouselFindManyArgs>,
+    ): PrismaPromise<Array<CarouselGetPayload<T>>>;
 
     /**
      * Create a Carousel.
@@ -7217,11 +7678,11 @@ export namespace Prisma {
      *     // ... data to create a Carousel
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     create<T extends CarouselCreateArgs>(
-      args: SelectSubset<T, CarouselCreateArgs>
-    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+      args: SelectSubset<T, CarouselCreateArgs>,
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>;
 
     /**
      * Create many Carousels.
@@ -7233,11 +7694,11 @@ export namespace Prisma {
      *         // ... provide data here
      *       }
      *     })
-     *     
-    **/
+     *
+     **/
     createMany<T extends CarouselCreateManyArgs>(
-      args?: SelectSubset<T, CarouselCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, CarouselCreateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Delete a Carousel.
@@ -7249,11 +7710,11 @@ export namespace Prisma {
      *     // ... filter to delete one Carousel
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     delete<T extends CarouselDeleteArgs>(
-      args: SelectSubset<T, CarouselDeleteArgs>
-    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+      args: SelectSubset<T, CarouselDeleteArgs>,
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>;
 
     /**
      * Update one Carousel.
@@ -7268,11 +7729,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     update<T extends CarouselUpdateArgs>(
-      args: SelectSubset<T, CarouselUpdateArgs>
-    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+      args: SelectSubset<T, CarouselUpdateArgs>,
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>;
 
     /**
      * Delete zero or more Carousels.
@@ -7284,11 +7745,11 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     deleteMany<T extends CarouselDeleteManyArgs>(
-      args?: SelectSubset<T, CarouselDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args?: SelectSubset<T, CarouselDeleteManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Update zero or more Carousels.
@@ -7305,11 +7766,11 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
-    **/
+     *
+     **/
     updateMany<T extends CarouselUpdateManyArgs>(
-      args: SelectSubset<T, CarouselUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
+      args: SelectSubset<T, CarouselUpdateManyArgs>,
+    ): PrismaPromise<BatchPayload>;
 
     /**
      * Create or update one Carousel.
@@ -7327,10 +7788,10 @@ export namespace Prisma {
      *     // ... the filter for the Carousel we want to update
      *   }
      * })
-    **/
+     **/
     upsert<T extends CarouselUpsertArgs>(
-      args: SelectSubset<T, CarouselUpsertArgs>
-    ): Prisma__CarouselClient<CarouselGetPayload<T>>
+      args: SelectSubset<T, CarouselUpsertArgs>,
+    ): Prisma__CarouselClient<CarouselGetPayload<T>>;
 
     /**
      * Count the number of Carousels.
@@ -7344,7 +7805,7 @@ export namespace Prisma {
      *     // ... the filter for the Carousels we want to count
      *   }
      * })
-    **/
+     **/
     count<T extends CarouselCountArgs>(
       args?: Subset<T, CarouselCountArgs>,
     ): PrismaPromise<
@@ -7353,7 +7814,7 @@ export namespace Prisma {
           ? number
           : GetScalarType<T['select'], CarouselCountAggregateOutputType>
         : number
-    >
+    >;
 
     /**
      * Allows you to perform aggregations operations on a Carousel.
@@ -7378,8 +7839,10 @@ export namespace Prisma {
      *   },
      *   take: 10,
      * })
-    **/
-    aggregate<T extends CarouselAggregateArgs>(args: Subset<T, CarouselAggregateArgs>): PrismaPromise<GetCarouselAggregateType<T>>
+     **/
+    aggregate<T extends CarouselAggregateArgs>(
+      args: Subset<T, CarouselAggregateArgs>,
+    ): PrismaPromise<GetCarouselAggregateType<T>>;
 
     /**
      * Group by Carousel.
@@ -7397,8 +7860,8 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
-    **/
+     *
+     **/
     groupBy<
       T extends CarouselGroupByArgs,
       HasSelectOrTake extends Or<
@@ -7408,56 +7871,62 @@ export namespace Prisma {
       OrderByArg extends True extends HasSelectOrTake
         ? { orderBy: CarouselGroupByArgs['orderBy'] }
         : { orderBy?: CarouselGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      OrderFields extends ExcludeUnderscoreKeys<
+        Keys<MaybeTupleToUnion<T['orderBy']>>
+      >,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
       HavingFields extends GetHavingFields<T['having']>,
       HavingValid extends Has<ByFields, HavingFields>,
       ByEmpty extends T['by'] extends never[] ? True : False,
       InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CarouselGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCarouselGroupByPayload<T> : PrismaPromise<InputErrors>
-
+        ? `Error: "by" must not be empty.`
+        : HavingValid extends False
+        ? {
+            [P in HavingFields]: P extends ByFields
+              ? never
+              : P extends string
+              ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+              : [
+                  Error,
+                  'Field ',
+                  P,
+                  ` in "having" needs to be provided in "by"`,
+                ];
+          }[HavingFields]
+        : 'take' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "take", you also need to provide "orderBy"'
+        : 'skip' extends Keys<T>
+        ? 'orderBy' extends Keys<T>
+          ? ByValid extends True
+            ? {}
+            : {
+                [P in OrderFields]: P extends ByFields
+                  ? never
+                  : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+              }[OrderFields]
+          : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        : ByValid extends True
+        ? {}
+        : {
+            [P in OrderFields]: P extends ByFields
+              ? never
+              : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+          }[OrderFields],
+    >(
+      args: SubsetIntersection<T, CarouselGroupByArgs, OrderByArg> &
+        InputErrors,
+    ): {} extends InputErrors
+      ? GetCarouselGroupByPayload<T>
+      : PrismaPromise<InputErrors>;
   }
 
   /**
@@ -7466,7 +7935,9 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__CarouselClient<T, Null = never> implements PrismaPromise<T> {
+  export class Prisma__CarouselClient<T, Null = never>
+    implements PrismaPromise<T>
+  {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -7480,9 +7951,19 @@ export namespace Prisma {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    constructor(
+      _dmmf: runtime.DMMFClass,
+      _fetcher: PrismaClientFetcher,
+      _queryType: 'query' | 'mutation',
+      _rootField: string,
+      _clientMethod: string,
+      _args: any,
+      _dataPath: string[],
+      _errorFormat: ErrorFormat,
+      _measurePerformance?: boolean | undefined,
+      _isList?: boolean,
+    );
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
 
     private get _document();
     /**
@@ -7491,13 +7972,27 @@ export namespace Prisma {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    then<TResult1 = T, TResult2 = never>(
+      onfulfilled?:
+        | ((value: T) => TResult1 | PromiseLike<TResult1>)
+        | undefined
+        | null,
+      onrejected?:
+        | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+        | undefined
+        | null,
+    ): Promise<TResult1 | TResult2>;
     /**
      * Attaches a callback for only the rejection of the Promise.
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    catch<TResult = never>(
+      onrejected?:
+        | ((reason: any) => TResult | PromiseLike<TResult>)
+        | undefined
+        | null,
+    ): Promise<T | TResult>;
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
@@ -7506,8 +8001,6 @@ export namespace Prisma {
      */
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
   }
-
-
 
   // Custom InputTypes
 
@@ -7518,24 +8011,23 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
+    select?: CarouselSelect | null;
     /**
      * Filter, which Carousel to fetch.
      */
-    where: CarouselWhereUniqueInput
-  }
+    where: CarouselWhereUniqueInput;
+  };
 
   /**
    * Carousel findUnique
    */
   export interface CarouselFindUniqueArgs extends CarouselFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * Carousel findUniqueOrThrow
@@ -7544,13 +8036,12 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
+    select?: CarouselSelect | null;
     /**
      * Filter, which Carousel to fetch.
      */
-    where: CarouselWhereUniqueInput
-  }
-
+    where: CarouselWhereUniqueInput;
+  };
 
   /**
    * Carousel base type for findFirst actions
@@ -7559,54 +8050,53 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
+    select?: CarouselSelect | null;
     /**
      * Filter, which Carousel to fetch.
      */
-    where?: CarouselWhereInput
+    where?: CarouselWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Carousels to fetch.
      */
-    orderBy?: Enumerable<CarouselOrderByWithRelationInput>
+    orderBy?: Enumerable<CarouselOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Carousels.
      */
-    cursor?: CarouselWhereUniqueInput
+    cursor?: CarouselWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Carousels from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Carousels.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Carousels.
      */
-    distinct?: Enumerable<CarouselScalarFieldEnum>
-  }
+    distinct?: Enumerable<CarouselScalarFieldEnum>;
+  };
 
   /**
    * Carousel findFirst
    */
   export interface CarouselFindFirstArgs extends CarouselFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Throw an Error if query returns no results
+     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+     */
+    rejectOnNotFound?: RejectOnNotFound;
   }
-      
 
   /**
    * Carousel findFirstOrThrow
@@ -7615,43 +8105,42 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
+    select?: CarouselSelect | null;
     /**
      * Filter, which Carousel to fetch.
      */
-    where?: CarouselWhereInput
+    where?: CarouselWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Carousels to fetch.
      */
-    orderBy?: Enumerable<CarouselOrderByWithRelationInput>
+    orderBy?: Enumerable<CarouselOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Carousels.
      */
-    cursor?: CarouselWhereUniqueInput
+    cursor?: CarouselWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Carousels from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Carousels.
      */
-    skip?: number
+    skip?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Carousels.
      */
-    distinct?: Enumerable<CarouselScalarFieldEnum>
-  }
-
+    distinct?: Enumerable<CarouselScalarFieldEnum>;
+  };
 
   /**
    * Carousel findMany
@@ -7660,38 +8149,37 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
+    select?: CarouselSelect | null;
     /**
      * Filter, which Carousels to fetch.
      */
-    where?: CarouselWhereInput
+    where?: CarouselWhereInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Carousels to fetch.
      */
-    orderBy?: Enumerable<CarouselOrderByWithRelationInput>
+    orderBy?: Enumerable<CarouselOrderByWithRelationInput>;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Carousels.
      */
-    cursor?: CarouselWhereUniqueInput
+    cursor?: CarouselWhereUniqueInput;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Carousels from the position of the cursor.
      */
-    take?: number
+    take?: number;
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Carousels.
      */
-    skip?: number
-    distinct?: Enumerable<CarouselScalarFieldEnum>
-  }
-
+    skip?: number;
+    distinct?: Enumerable<CarouselScalarFieldEnum>;
+  };
 
   /**
    * Carousel create
@@ -7700,13 +8188,12 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
+    select?: CarouselSelect | null;
     /**
      * The data needed to create a Carousel.
      */
-    data: XOR<CarouselCreateInput, CarouselUncheckedCreateInput>
-  }
-
+    data: XOR<CarouselCreateInput, CarouselUncheckedCreateInput>;
+  };
 
   /**
    * Carousel createMany
@@ -7715,10 +8202,9 @@ export namespace Prisma {
     /**
      * The data used to create many Carousels.
      */
-    data: Enumerable<CarouselCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
+    data: Enumerable<CarouselCreateManyInput>;
+    skipDuplicates?: boolean;
+  };
 
   /**
    * Carousel update
@@ -7727,17 +8213,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
+    select?: CarouselSelect | null;
     /**
      * The data needed to update a Carousel.
      */
-    data: XOR<CarouselUpdateInput, CarouselUncheckedUpdateInput>
+    data: XOR<CarouselUpdateInput, CarouselUncheckedUpdateInput>;
     /**
      * Choose, which Carousel to update.
      */
-    where: CarouselWhereUniqueInput
-  }
-
+    where: CarouselWhereUniqueInput;
+  };
 
   /**
    * Carousel updateMany
@@ -7746,13 +8231,15 @@ export namespace Prisma {
     /**
      * The data used to update Carousels.
      */
-    data: XOR<CarouselUpdateManyMutationInput, CarouselUncheckedUpdateManyInput>
+    data: XOR<
+      CarouselUpdateManyMutationInput,
+      CarouselUncheckedUpdateManyInput
+    >;
     /**
      * Filter which Carousels to update
      */
-    where?: CarouselWhereInput
-  }
-
+    where?: CarouselWhereInput;
+  };
 
   /**
    * Carousel upsert
@@ -7761,21 +8248,20 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
+    select?: CarouselSelect | null;
     /**
      * The filter to search for the Carousel to update in case it exists.
      */
-    where: CarouselWhereUniqueInput
+    where: CarouselWhereUniqueInput;
     /**
      * In case the Carousel found by the `where` argument doesn't exist, create a new Carousel with this data.
      */
-    create: XOR<CarouselCreateInput, CarouselUncheckedCreateInput>
+    create: XOR<CarouselCreateInput, CarouselUncheckedCreateInput>;
     /**
      * In case the Carousel was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<CarouselUpdateInput, CarouselUncheckedUpdateInput>
-  }
-
+    update: XOR<CarouselUpdateInput, CarouselUncheckedUpdateInput>;
+  };
 
   /**
    * Carousel delete
@@ -7784,13 +8270,12 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
+    select?: CarouselSelect | null;
     /**
      * Filter which Carousel to delete.
      */
-    where: CarouselWhereUniqueInput
-  }
-
+    where: CarouselWhereUniqueInput;
+  };
 
   /**
    * Carousel deleteMany
@@ -7799,9 +8284,8 @@ export namespace Prisma {
     /**
      * Filter which Carousels to delete
      */
-    where?: CarouselWhereInput
-  }
-
+    where?: CarouselWhereInput;
+  };
 
   /**
    * Carousel without action
@@ -7810,10 +8294,8 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Carousel
      */
-    select?: CarouselSelect | null
-  }
-
-
+    select?: CarouselSelect | null;
+  };
 
   /**
    * Enums
@@ -7823,2621 +8305,2896 @@ export namespace Prisma {
   // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 
   export const ArticleScalarFieldEnum: {
-    id: 'id',
-    article_title: 'article_title',
-    article_description: 'article_description',
-    article_content: 'article_content',
-    article_bigCover: 'article_bigCover',
-    article_cover: 'article_cover',
-    author_id: 'author_id',
-    isExist: 'isExist',
-    browse_times: 'browse_times',
-    like_times: 'like_times',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    id: 'id';
+    article_title: 'article_title';
+    article_description: 'article_description';
+    article_content: 'article_content';
+    article_bigCover: 'article_bigCover';
+    article_cover: 'article_cover';
+    author_id: 'author_id';
+    isExist: 'isExist';
+    browse_times: 'browse_times';
+    like_times: 'like_times';
+    createdAt: 'createdAt';
+    updatedAt: 'updatedAt';
   };
 
-  export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
-
+  export type ArticleScalarFieldEnum =
+    (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum];
 
   export const CarouselScalarFieldEnum: {
-    id: 'id',
-    img_url: 'img_url'
+    id: 'id';
+    img_url: 'img_url';
   };
 
-  export type CarouselScalarFieldEnum = (typeof CarouselScalarFieldEnum)[keyof typeof CarouselScalarFieldEnum]
-
+  export type CarouselScalarFieldEnum =
+    (typeof CarouselScalarFieldEnum)[keyof typeof CarouselScalarFieldEnum];
 
   export const CategoryScalarFieldEnum: {
-    id: 'id',
-    cate_name: 'cate_name',
-    background: 'background',
-    cate_pic: 'cate_pic'
+    id: 'id';
+    cate_name: 'cate_name';
+    background: 'background';
+    cate_pic: 'cate_pic';
   };
 
-  export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
-
+  export type CategoryScalarFieldEnum =
+    (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum];
 
   export const CommentScalarFieldEnum: {
-    id: 'id',
-    parent_id: 'parent_id',
-    comment: 'comment',
-    user_id: 'user_id',
-    like_times: 'like_times',
-    dislike_times: 'dislike_times',
-    createdAt: 'createdAt',
-    article_id: 'article_id'
+    id: 'id';
+    parent_id: 'parent_id';
+    comment: 'comment';
+    user_id: 'user_id';
+    like_times: 'like_times';
+    dislike_times: 'dislike_times';
+    createdAt: 'createdAt';
+    article_id: 'article_id';
   };
 
-  export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
-
+  export type CommentScalarFieldEnum =
+    (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum];
 
   export const FocuserMapScalarFieldEnum: {
-    id: 'id',
-    follower_id: 'follower_id'
+    id: 'id';
+    follower_id: 'follower_id';
   };
 
-  export type FocuserMapScalarFieldEnum = (typeof FocuserMapScalarFieldEnum)[keyof typeof FocuserMapScalarFieldEnum]
-
+  export type FocuserMapScalarFieldEnum =
+    (typeof FocuserMapScalarFieldEnum)[keyof typeof FocuserMapScalarFieldEnum];
 
   export const FollowerMapScalarFieldEnum: {
-    id: 'id',
-    master_id: 'master_id'
+    id: 'id';
+    master_id: 'master_id';
   };
 
-  export type FollowerMapScalarFieldEnum = (typeof FollowerMapScalarFieldEnum)[keyof typeof FollowerMapScalarFieldEnum]
-
+  export type FollowerMapScalarFieldEnum =
+    (typeof FollowerMapScalarFieldEnum)[keyof typeof FollowerMapScalarFieldEnum];
 
   export const SortOrder: {
-    asc: 'asc',
-    desc: 'desc'
+    asc: 'asc';
+    desc: 'desc';
   };
 
-  export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
+  export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
 
   export const TransactionIsolationLevel: {
-    ReadUncommitted: 'ReadUncommitted',
-    ReadCommitted: 'ReadCommitted',
-    RepeatableRead: 'RepeatableRead',
-    Serializable: 'Serializable'
+    ReadUncommitted: 'ReadUncommitted';
+    ReadCommitted: 'ReadCommitted';
+    RepeatableRead: 'RepeatableRead';
+    Serializable: 'Serializable';
   };
 
-  export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
-
+  export type TransactionIsolationLevel =
+    (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 
   export const UserScalarFieldEnum: {
-    id: 'id',
-    user_name: 'user_name',
-    avatar: 'avatar',
-    isExist: 'isExist'
+    id: 'id';
+    user_name: 'user_name';
+    avatar: 'avatar';
+    isExist: 'isExist';
   };
 
-  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
+  export type UserScalarFieldEnum =
+    (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
 
   /**
    * Deep Input Types
    */
 
-
   export type ArticleWhereInput = {
-    AND?: Enumerable<ArticleWhereInput>
-    OR?: Enumerable<ArticleWhereInput>
-    NOT?: Enumerable<ArticleWhereInput>
-    id?: StringFilter | string
-    article_title?: StringFilter | string
-    article_description?: StringFilter | string
-    article_content?: StringFilter | string
-    article_bigCover?: StringNullableFilter | string | null
-    article_cover?: StringNullableFilter | string | null
-    category_list?: CategoryListRelationFilter
-    comment_list?: CommentListRelationFilter
-    author?: XOR<UserRelationFilter, UserWhereInput>
-    author_id?: StringFilter | string
-    isExist?: BoolFilter | boolean
-    browse_times?: IntFilter | number
-    like_times?: IntFilter | number
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-  }
+    AND?: Enumerable<ArticleWhereInput>;
+    OR?: Enumerable<ArticleWhereInput>;
+    NOT?: Enumerable<ArticleWhereInput>;
+    id?: StringFilter | string;
+    article_title?: StringFilter | string;
+    article_description?: StringFilter | string;
+    article_content?: StringFilter | string;
+    article_bigCover?: StringNullableFilter | string | null;
+    article_cover?: StringNullableFilter | string | null;
+    category_list?: CategoryListRelationFilter;
+    comment_list?: CommentListRelationFilter;
+    author?: XOR<UserRelationFilter, UserWhereInput>;
+    author_id?: StringFilter | string;
+    isExist?: BoolFilter | boolean;
+    browse_times?: IntFilter | number;
+    like_times?: IntFilter | number;
+    createdAt?: DateTimeFilter | Date | string;
+    updatedAt?: DateTimeFilter | Date | string;
+  };
 
   export type ArticleOrderByWithRelationInput = {
-    id?: SortOrder
-    article_title?: SortOrder
-    article_description?: SortOrder
-    article_content?: SortOrder
-    article_bigCover?: SortOrder
-    article_cover?: SortOrder
-    category_list?: CategoryOrderByRelationAggregateInput
-    comment_list?: CommentOrderByRelationAggregateInput
-    author?: UserOrderByWithRelationInput
-    author_id?: SortOrder
-    isExist?: SortOrder
-    browse_times?: SortOrder
-    like_times?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
+    id?: SortOrder;
+    article_title?: SortOrder;
+    article_description?: SortOrder;
+    article_content?: SortOrder;
+    article_bigCover?: SortOrder;
+    article_cover?: SortOrder;
+    category_list?: CategoryOrderByRelationAggregateInput;
+    comment_list?: CommentOrderByRelationAggregateInput;
+    author?: UserOrderByWithRelationInput;
+    author_id?: SortOrder;
+    isExist?: SortOrder;
+    browse_times?: SortOrder;
+    like_times?: SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+  };
 
   export type ArticleWhereUniqueInput = {
-    id?: string
-    article_title?: string
-  }
+    id?: string;
+    article_title?: string;
+  };
 
   export type ArticleOrderByWithAggregationInput = {
-    id?: SortOrder
-    article_title?: SortOrder
-    article_description?: SortOrder
-    article_content?: SortOrder
-    article_bigCover?: SortOrder
-    article_cover?: SortOrder
-    author_id?: SortOrder
-    isExist?: SortOrder
-    browse_times?: SortOrder
-    like_times?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: ArticleCountOrderByAggregateInput
-    _avg?: ArticleAvgOrderByAggregateInput
-    _max?: ArticleMaxOrderByAggregateInput
-    _min?: ArticleMinOrderByAggregateInput
-    _sum?: ArticleSumOrderByAggregateInput
-  }
+    id?: SortOrder;
+    article_title?: SortOrder;
+    article_description?: SortOrder;
+    article_content?: SortOrder;
+    article_bigCover?: SortOrder;
+    article_cover?: SortOrder;
+    author_id?: SortOrder;
+    isExist?: SortOrder;
+    browse_times?: SortOrder;
+    like_times?: SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+    _count?: ArticleCountOrderByAggregateInput;
+    _avg?: ArticleAvgOrderByAggregateInput;
+    _max?: ArticleMaxOrderByAggregateInput;
+    _min?: ArticleMinOrderByAggregateInput;
+    _sum?: ArticleSumOrderByAggregateInput;
+  };
 
   export type ArticleScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<ArticleScalarWhereWithAggregatesInput>
-    OR?: Enumerable<ArticleScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<ArticleScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    article_title?: StringWithAggregatesFilter | string
-    article_description?: StringWithAggregatesFilter | string
-    article_content?: StringWithAggregatesFilter | string
-    article_bigCover?: StringNullableWithAggregatesFilter | string | null
-    article_cover?: StringNullableWithAggregatesFilter | string | null
-    author_id?: StringWithAggregatesFilter | string
-    isExist?: BoolWithAggregatesFilter | boolean
-    browse_times?: IntWithAggregatesFilter | number
-    like_times?: IntWithAggregatesFilter | number
-    createdAt?: DateTimeWithAggregatesFilter | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter | Date | string
-  }
+    AND?: Enumerable<ArticleScalarWhereWithAggregatesInput>;
+    OR?: Enumerable<ArticleScalarWhereWithAggregatesInput>;
+    NOT?: Enumerable<ArticleScalarWhereWithAggregatesInput>;
+    id?: StringWithAggregatesFilter | string;
+    article_title?: StringWithAggregatesFilter | string;
+    article_description?: StringWithAggregatesFilter | string;
+    article_content?: StringWithAggregatesFilter | string;
+    article_bigCover?: StringNullableWithAggregatesFilter | string | null;
+    article_cover?: StringNullableWithAggregatesFilter | string | null;
+    author_id?: StringWithAggregatesFilter | string;
+    isExist?: BoolWithAggregatesFilter | boolean;
+    browse_times?: IntWithAggregatesFilter | number;
+    like_times?: IntWithAggregatesFilter | number;
+    createdAt?: DateTimeWithAggregatesFilter | Date | string;
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string;
+  };
 
   export type CategoryWhereInput = {
-    AND?: Enumerable<CategoryWhereInput>
-    OR?: Enumerable<CategoryWhereInput>
-    NOT?: Enumerable<CategoryWhereInput>
-    id?: StringFilter | string
-    cate_name?: StringFilter | string
-    background?: StringFilter | string
-    cate_pic?: StringFilter | string
-    article_list?: ArticleListRelationFilter
-  }
+    AND?: Enumerable<CategoryWhereInput>;
+    OR?: Enumerable<CategoryWhereInput>;
+    NOT?: Enumerable<CategoryWhereInput>;
+    id?: StringFilter | string;
+    cate_name?: StringFilter | string;
+    background?: StringFilter | string;
+    cate_pic?: StringFilter | string;
+    article_list?: ArticleListRelationFilter;
+  };
 
   export type CategoryOrderByWithRelationInput = {
-    id?: SortOrder
-    cate_name?: SortOrder
-    background?: SortOrder
-    cate_pic?: SortOrder
-    article_list?: ArticleOrderByRelationAggregateInput
-  }
+    id?: SortOrder;
+    cate_name?: SortOrder;
+    background?: SortOrder;
+    cate_pic?: SortOrder;
+    article_list?: ArticleOrderByRelationAggregateInput;
+  };
 
   export type CategoryWhereUniqueInput = {
-    id?: string
-    cate_name?: string
-  }
+    id?: string;
+    cate_name?: string;
+  };
 
   export type CategoryOrderByWithAggregationInput = {
-    id?: SortOrder
-    cate_name?: SortOrder
-    background?: SortOrder
-    cate_pic?: SortOrder
-    _count?: CategoryCountOrderByAggregateInput
-    _max?: CategoryMaxOrderByAggregateInput
-    _min?: CategoryMinOrderByAggregateInput
-  }
+    id?: SortOrder;
+    cate_name?: SortOrder;
+    background?: SortOrder;
+    cate_pic?: SortOrder;
+    _count?: CategoryCountOrderByAggregateInput;
+    _max?: CategoryMaxOrderByAggregateInput;
+    _min?: CategoryMinOrderByAggregateInput;
+  };
 
   export type CategoryScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<CategoryScalarWhereWithAggregatesInput>
-    OR?: Enumerable<CategoryScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<CategoryScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    cate_name?: StringWithAggregatesFilter | string
-    background?: StringWithAggregatesFilter | string
-    cate_pic?: StringWithAggregatesFilter | string
-  }
+    AND?: Enumerable<CategoryScalarWhereWithAggregatesInput>;
+    OR?: Enumerable<CategoryScalarWhereWithAggregatesInput>;
+    NOT?: Enumerable<CategoryScalarWhereWithAggregatesInput>;
+    id?: StringWithAggregatesFilter | string;
+    cate_name?: StringWithAggregatesFilter | string;
+    background?: StringWithAggregatesFilter | string;
+    cate_pic?: StringWithAggregatesFilter | string;
+  };
 
   export type UserWhereInput = {
-    AND?: Enumerable<UserWhereInput>
-    OR?: Enumerable<UserWhereInput>
-    NOT?: Enumerable<UserWhereInput>
-    id?: StringFilter | string
-    user_name?: StringFilter | string
-    avatar?: StringFilter | string
-    article_list?: ArticleListRelationFilter
-    follower_list?: FollowerMapListRelationFilter
-    focuser_list?: FocuserMapListRelationFilter
-    comment_list?: CommentListRelationFilter
-    isExist?: BoolFilter | boolean
-  }
+    AND?: Enumerable<UserWhereInput>;
+    OR?: Enumerable<UserWhereInput>;
+    NOT?: Enumerable<UserWhereInput>;
+    id?: StringFilter | string;
+    user_name?: StringFilter | string;
+    avatar?: StringFilter | string;
+    article_list?: ArticleListRelationFilter;
+    follower_list?: FollowerMapListRelationFilter;
+    focuser_list?: FocuserMapListRelationFilter;
+    comment_list?: CommentListRelationFilter;
+    isExist?: BoolFilter | boolean;
+  };
 
   export type UserOrderByWithRelationInput = {
-    id?: SortOrder
-    user_name?: SortOrder
-    avatar?: SortOrder
-    article_list?: ArticleOrderByRelationAggregateInput
-    follower_list?: FollowerMapOrderByRelationAggregateInput
-    focuser_list?: FocuserMapOrderByRelationAggregateInput
-    comment_list?: CommentOrderByRelationAggregateInput
-    isExist?: SortOrder
-  }
+    id?: SortOrder;
+    user_name?: SortOrder;
+    avatar?: SortOrder;
+    article_list?: ArticleOrderByRelationAggregateInput;
+    follower_list?: FollowerMapOrderByRelationAggregateInput;
+    focuser_list?: FocuserMapOrderByRelationAggregateInput;
+    comment_list?: CommentOrderByRelationAggregateInput;
+    isExist?: SortOrder;
+  };
 
   export type UserWhereUniqueInput = {
-    id?: string
-    user_name?: string
-  }
+    id?: string;
+    user_name?: string;
+  };
 
   export type UserOrderByWithAggregationInput = {
-    id?: SortOrder
-    user_name?: SortOrder
-    avatar?: SortOrder
-    isExist?: SortOrder
-    _count?: UserCountOrderByAggregateInput
-    _max?: UserMaxOrderByAggregateInput
-    _min?: UserMinOrderByAggregateInput
-  }
+    id?: SortOrder;
+    user_name?: SortOrder;
+    avatar?: SortOrder;
+    isExist?: SortOrder;
+    _count?: UserCountOrderByAggregateInput;
+    _max?: UserMaxOrderByAggregateInput;
+    _min?: UserMinOrderByAggregateInput;
+  };
 
   export type UserScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<UserScalarWhereWithAggregatesInput>
-    OR?: Enumerable<UserScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<UserScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    user_name?: StringWithAggregatesFilter | string
-    avatar?: StringWithAggregatesFilter | string
-    isExist?: BoolWithAggregatesFilter | boolean
-  }
+    AND?: Enumerable<UserScalarWhereWithAggregatesInput>;
+    OR?: Enumerable<UserScalarWhereWithAggregatesInput>;
+    NOT?: Enumerable<UserScalarWhereWithAggregatesInput>;
+    id?: StringWithAggregatesFilter | string;
+    user_name?: StringWithAggregatesFilter | string;
+    avatar?: StringWithAggregatesFilter | string;
+    isExist?: BoolWithAggregatesFilter | boolean;
+  };
 
   export type FollowerMapWhereInput = {
-    AND?: Enumerable<FollowerMapWhereInput>
-    OR?: Enumerable<FollowerMapWhereInput>
-    NOT?: Enumerable<FollowerMapWhereInput>
-    id?: StringFilter | string
-    master?: XOR<UserRelationFilter, UserWhereInput>
-    master_id?: StringFilter | string
-  }
+    AND?: Enumerable<FollowerMapWhereInput>;
+    OR?: Enumerable<FollowerMapWhereInput>;
+    NOT?: Enumerable<FollowerMapWhereInput>;
+    id?: StringFilter | string;
+    master?: XOR<UserRelationFilter, UserWhereInput>;
+    master_id?: StringFilter | string;
+  };
 
   export type FollowerMapOrderByWithRelationInput = {
-    id?: SortOrder
-    master?: UserOrderByWithRelationInput
-    master_id?: SortOrder
-  }
+    id?: SortOrder;
+    master?: UserOrderByWithRelationInput;
+    master_id?: SortOrder;
+  };
 
   export type FollowerMapWhereUniqueInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type FollowerMapOrderByWithAggregationInput = {
-    id?: SortOrder
-    master_id?: SortOrder
-    _count?: FollowerMapCountOrderByAggregateInput
-    _max?: FollowerMapMaxOrderByAggregateInput
-    _min?: FollowerMapMinOrderByAggregateInput
-  }
+    id?: SortOrder;
+    master_id?: SortOrder;
+    _count?: FollowerMapCountOrderByAggregateInput;
+    _max?: FollowerMapMaxOrderByAggregateInput;
+    _min?: FollowerMapMinOrderByAggregateInput;
+  };
 
   export type FollowerMapScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<FollowerMapScalarWhereWithAggregatesInput>
-    OR?: Enumerable<FollowerMapScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<FollowerMapScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    master_id?: StringWithAggregatesFilter | string
-  }
+    AND?: Enumerable<FollowerMapScalarWhereWithAggregatesInput>;
+    OR?: Enumerable<FollowerMapScalarWhereWithAggregatesInput>;
+    NOT?: Enumerable<FollowerMapScalarWhereWithAggregatesInput>;
+    id?: StringWithAggregatesFilter | string;
+    master_id?: StringWithAggregatesFilter | string;
+  };
 
   export type FocuserMapWhereInput = {
-    AND?: Enumerable<FocuserMapWhereInput>
-    OR?: Enumerable<FocuserMapWhereInput>
-    NOT?: Enumerable<FocuserMapWhereInput>
-    id?: StringFilter | string
-    follower?: XOR<UserRelationFilter, UserWhereInput>
-    follower_id?: StringFilter | string
-  }
+    AND?: Enumerable<FocuserMapWhereInput>;
+    OR?: Enumerable<FocuserMapWhereInput>;
+    NOT?: Enumerable<FocuserMapWhereInput>;
+    id?: StringFilter | string;
+    follower?: XOR<UserRelationFilter, UserWhereInput>;
+    follower_id?: StringFilter | string;
+  };
 
   export type FocuserMapOrderByWithRelationInput = {
-    id?: SortOrder
-    follower?: UserOrderByWithRelationInput
-    follower_id?: SortOrder
-  }
+    id?: SortOrder;
+    follower?: UserOrderByWithRelationInput;
+    follower_id?: SortOrder;
+  };
 
   export type FocuserMapWhereUniqueInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type FocuserMapOrderByWithAggregationInput = {
-    id?: SortOrder
-    follower_id?: SortOrder
-    _count?: FocuserMapCountOrderByAggregateInput
-    _max?: FocuserMapMaxOrderByAggregateInput
-    _min?: FocuserMapMinOrderByAggregateInput
-  }
+    id?: SortOrder;
+    follower_id?: SortOrder;
+    _count?: FocuserMapCountOrderByAggregateInput;
+    _max?: FocuserMapMaxOrderByAggregateInput;
+    _min?: FocuserMapMinOrderByAggregateInput;
+  };
 
   export type FocuserMapScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<FocuserMapScalarWhereWithAggregatesInput>
-    OR?: Enumerable<FocuserMapScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<FocuserMapScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    follower_id?: StringWithAggregatesFilter | string
-  }
+    AND?: Enumerable<FocuserMapScalarWhereWithAggregatesInput>;
+    OR?: Enumerable<FocuserMapScalarWhereWithAggregatesInput>;
+    NOT?: Enumerable<FocuserMapScalarWhereWithAggregatesInput>;
+    id?: StringWithAggregatesFilter | string;
+    follower_id?: StringWithAggregatesFilter | string;
+  };
 
   export type CommentWhereInput = {
-    AND?: Enumerable<CommentWhereInput>
-    OR?: Enumerable<CommentWhereInput>
-    NOT?: Enumerable<CommentWhereInput>
-    id?: StringFilter | string
-    parent_id?: StringFilter | string
-    comment?: StringFilter | string
-    commentBy?: XOR<UserRelationFilter, UserWhereInput>
-    user_id?: StringFilter | string
-    like_times?: IntFilter | number
-    dislike_times?: IntFilter | number
-    createdAt?: DateTimeFilter | Date | string
-    article?: XOR<ArticleRelationFilter, ArticleWhereInput>
-    article_id?: StringFilter | string
-  }
+    AND?: Enumerable<CommentWhereInput>;
+    OR?: Enumerable<CommentWhereInput>;
+    NOT?: Enumerable<CommentWhereInput>;
+    id?: StringFilter | string;
+    parent_id?: StringFilter | string;
+    comment?: StringFilter | string;
+    commentBy?: XOR<UserRelationFilter, UserWhereInput>;
+    user_id?: StringFilter | string;
+    like_times?: IntFilter | number;
+    dislike_times?: IntFilter | number;
+    createdAt?: DateTimeFilter | Date | string;
+    article?: XOR<ArticleRelationFilter, ArticleWhereInput>;
+    article_id?: StringFilter | string;
+  };
 
   export type CommentOrderByWithRelationInput = {
-    id?: SortOrder
-    parent_id?: SortOrder
-    comment?: SortOrder
-    commentBy?: UserOrderByWithRelationInput
-    user_id?: SortOrder
-    like_times?: SortOrder
-    dislike_times?: SortOrder
-    createdAt?: SortOrder
-    article?: ArticleOrderByWithRelationInput
-    article_id?: SortOrder
-  }
+    id?: SortOrder;
+    parent_id?: SortOrder;
+    comment?: SortOrder;
+    commentBy?: UserOrderByWithRelationInput;
+    user_id?: SortOrder;
+    like_times?: SortOrder;
+    dislike_times?: SortOrder;
+    createdAt?: SortOrder;
+    article?: ArticleOrderByWithRelationInput;
+    article_id?: SortOrder;
+  };
 
   export type CommentWhereUniqueInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type CommentOrderByWithAggregationInput = {
-    id?: SortOrder
-    parent_id?: SortOrder
-    comment?: SortOrder
-    user_id?: SortOrder
-    like_times?: SortOrder
-    dislike_times?: SortOrder
-    createdAt?: SortOrder
-    article_id?: SortOrder
-    _count?: CommentCountOrderByAggregateInput
-    _avg?: CommentAvgOrderByAggregateInput
-    _max?: CommentMaxOrderByAggregateInput
-    _min?: CommentMinOrderByAggregateInput
-    _sum?: CommentSumOrderByAggregateInput
-  }
+    id?: SortOrder;
+    parent_id?: SortOrder;
+    comment?: SortOrder;
+    user_id?: SortOrder;
+    like_times?: SortOrder;
+    dislike_times?: SortOrder;
+    createdAt?: SortOrder;
+    article_id?: SortOrder;
+    _count?: CommentCountOrderByAggregateInput;
+    _avg?: CommentAvgOrderByAggregateInput;
+    _max?: CommentMaxOrderByAggregateInput;
+    _min?: CommentMinOrderByAggregateInput;
+    _sum?: CommentSumOrderByAggregateInput;
+  };
 
   export type CommentScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<CommentScalarWhereWithAggregatesInput>
-    OR?: Enumerable<CommentScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<CommentScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    parent_id?: StringWithAggregatesFilter | string
-    comment?: StringWithAggregatesFilter | string
-    user_id?: StringWithAggregatesFilter | string
-    like_times?: IntWithAggregatesFilter | number
-    dislike_times?: IntWithAggregatesFilter | number
-    createdAt?: DateTimeWithAggregatesFilter | Date | string
-    article_id?: StringWithAggregatesFilter | string
-  }
+    AND?: Enumerable<CommentScalarWhereWithAggregatesInput>;
+    OR?: Enumerable<CommentScalarWhereWithAggregatesInput>;
+    NOT?: Enumerable<CommentScalarWhereWithAggregatesInput>;
+    id?: StringWithAggregatesFilter | string;
+    parent_id?: StringWithAggregatesFilter | string;
+    comment?: StringWithAggregatesFilter | string;
+    user_id?: StringWithAggregatesFilter | string;
+    like_times?: IntWithAggregatesFilter | number;
+    dislike_times?: IntWithAggregatesFilter | number;
+    createdAt?: DateTimeWithAggregatesFilter | Date | string;
+    article_id?: StringWithAggregatesFilter | string;
+  };
 
   export type CarouselWhereInput = {
-    AND?: Enumerable<CarouselWhereInput>
-    OR?: Enumerable<CarouselWhereInput>
-    NOT?: Enumerable<CarouselWhereInput>
-    id?: StringFilter | string
-    img_url?: StringFilter | string
-  }
+    AND?: Enumerable<CarouselWhereInput>;
+    OR?: Enumerable<CarouselWhereInput>;
+    NOT?: Enumerable<CarouselWhereInput>;
+    id?: StringFilter | string;
+    img_url?: StringFilter | string;
+  };
 
   export type CarouselOrderByWithRelationInput = {
-    id?: SortOrder
-    img_url?: SortOrder
-  }
+    id?: SortOrder;
+    img_url?: SortOrder;
+  };
 
   export type CarouselWhereUniqueInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type CarouselOrderByWithAggregationInput = {
-    id?: SortOrder
-    img_url?: SortOrder
-    _count?: CarouselCountOrderByAggregateInput
-    _max?: CarouselMaxOrderByAggregateInput
-    _min?: CarouselMinOrderByAggregateInput
-  }
+    id?: SortOrder;
+    img_url?: SortOrder;
+    _count?: CarouselCountOrderByAggregateInput;
+    _max?: CarouselMaxOrderByAggregateInput;
+    _min?: CarouselMinOrderByAggregateInput;
+  };
 
   export type CarouselScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<CarouselScalarWhereWithAggregatesInput>
-    OR?: Enumerable<CarouselScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<CarouselScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    img_url?: StringWithAggregatesFilter | string
-  }
+    AND?: Enumerable<CarouselScalarWhereWithAggregatesInput>;
+    OR?: Enumerable<CarouselScalarWhereWithAggregatesInput>;
+    NOT?: Enumerable<CarouselScalarWhereWithAggregatesInput>;
+    id?: StringWithAggregatesFilter | string;
+    img_url?: StringWithAggregatesFilter | string;
+  };
 
   export type ArticleCreateInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    category_list?: CategoryCreateNestedManyWithoutArticle_listInput
-    comment_list?: CommentCreateNestedManyWithoutArticleInput
-    author: UserCreateNestedOneWithoutArticle_listInput
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    category_list?: CategoryCreateNestedManyWithoutArticle_listInput;
+    comment_list?: CommentCreateNestedManyWithoutArticleInput;
+    author: UserCreateNestedOneWithoutArticle_listInput;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type ArticleUncheckedCreateInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    category_list?: CategoryUncheckedCreateNestedManyWithoutArticle_listInput
-    comment_list?: CommentUncheckedCreateNestedManyWithoutArticleInput
-    author_id: string
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    category_list?: CategoryUncheckedCreateNestedManyWithoutArticle_listInput;
+    comment_list?: CommentUncheckedCreateNestedManyWithoutArticleInput;
+    author_id: string;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type ArticleUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    category_list?: CategoryUpdateManyWithoutArticle_listNestedInput
-    comment_list?: CommentUpdateManyWithoutArticleNestedInput
-    author?: UserUpdateOneRequiredWithoutArticle_listNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    category_list?: CategoryUpdateManyWithoutArticle_listNestedInput;
+    comment_list?: CommentUpdateManyWithoutArticleNestedInput;
+    author?: UserUpdateOneRequiredWithoutArticle_listNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type ArticleUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    category_list?: CategoryUncheckedUpdateManyWithoutArticle_listNestedInput
-    comment_list?: CommentUncheckedUpdateManyWithoutArticleNestedInput
-    author_id?: StringFieldUpdateOperationsInput | string
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    category_list?: CategoryUncheckedUpdateManyWithoutArticle_listNestedInput;
+    comment_list?: CommentUncheckedUpdateManyWithoutArticleNestedInput;
+    author_id?: StringFieldUpdateOperationsInput | string;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type ArticleCreateManyInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    author_id: string
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    author_id: string;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type ArticleUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type ArticleUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    author_id?: StringFieldUpdateOperationsInput | string
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    author_id?: StringFieldUpdateOperationsInput | string;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type CategoryCreateInput = {
-    id?: string
-    cate_name: string
-    background: string
-    cate_pic: string
-    article_list?: ArticleCreateNestedManyWithoutCategory_listInput
-  }
+    id?: string;
+    cate_name: string;
+    background: string;
+    cate_pic: string;
+    article_list?: ArticleCreateNestedManyWithoutCategory_listInput;
+  };
 
   export type CategoryUncheckedCreateInput = {
-    id?: string
-    cate_name: string
-    background: string
-    cate_pic: string
-    article_list?: ArticleUncheckedCreateNestedManyWithoutCategory_listInput
-  }
+    id?: string;
+    cate_name: string;
+    background: string;
+    cate_pic: string;
+    article_list?: ArticleUncheckedCreateNestedManyWithoutCategory_listInput;
+  };
 
   export type CategoryUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cate_name?: StringFieldUpdateOperationsInput | string
-    background?: StringFieldUpdateOperationsInput | string
-    cate_pic?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUpdateManyWithoutCategory_listNestedInput
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    cate_name?: StringFieldUpdateOperationsInput | string;
+    background?: StringFieldUpdateOperationsInput | string;
+    cate_pic?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUpdateManyWithoutCategory_listNestedInput;
+  };
 
   export type CategoryUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cate_name?: StringFieldUpdateOperationsInput | string
-    background?: StringFieldUpdateOperationsInput | string
-    cate_pic?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUncheckedUpdateManyWithoutCategory_listNestedInput
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    cate_name?: StringFieldUpdateOperationsInput | string;
+    background?: StringFieldUpdateOperationsInput | string;
+    cate_pic?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUncheckedUpdateManyWithoutCategory_listNestedInput;
+  };
 
   export type CategoryCreateManyInput = {
-    id?: string
-    cate_name: string
-    background: string
-    cate_pic: string
-  }
+    id?: string;
+    cate_name: string;
+    background: string;
+    cate_pic: string;
+  };
 
   export type CategoryUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cate_name?: StringFieldUpdateOperationsInput | string
-    background?: StringFieldUpdateOperationsInput | string
-    cate_pic?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    cate_name?: StringFieldUpdateOperationsInput | string;
+    background?: StringFieldUpdateOperationsInput | string;
+    cate_pic?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CategoryUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cate_name?: StringFieldUpdateOperationsInput | string
-    background?: StringFieldUpdateOperationsInput | string
-    cate_pic?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    cate_name?: StringFieldUpdateOperationsInput | string;
+    background?: StringFieldUpdateOperationsInput | string;
+    cate_pic?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type UserCreateInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    article_list?: ArticleCreateNestedManyWithoutAuthorInput
-    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput
-    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput
-    comment_list?: CommentCreateNestedManyWithoutCommentByInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    article_list?: ArticleCreateNestedManyWithoutAuthorInput;
+    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput;
+    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput;
+    comment_list?: CommentCreateNestedManyWithoutCommentByInput;
+    isExist?: boolean;
+  };
 
   export type UserUncheckedCreateInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput
-    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput
-    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput;
+    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput;
+    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput;
+    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput;
+    isExist?: boolean;
+  };
 
   export type UserUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUpdateManyWithoutAuthorNestedInput
-    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput
-    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput
-    comment_list?: CommentUpdateManyWithoutCommentByNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUpdateManyWithoutAuthorNestedInput;
+    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput;
+    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput;
+    comment_list?: CommentUpdateManyWithoutCommentByNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput
-    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput
-    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput;
+    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput;
+    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput;
+    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserCreateManyInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    isExist?: boolean;
+  };
 
   export type UserUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type FollowerMapCreateInput = {
-    id?: string
-    master: UserCreateNestedOneWithoutFollower_listInput
-  }
+    id?: string;
+    master: UserCreateNestedOneWithoutFollower_listInput;
+  };
 
   export type FollowerMapUncheckedCreateInput = {
-    id?: string
-    master_id: string
-  }
+    id?: string;
+    master_id: string;
+  };
 
   export type FollowerMapUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    master?: UserUpdateOneRequiredWithoutFollower_listNestedInput
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    master?: UserUpdateOneRequiredWithoutFollower_listNestedInput;
+  };
 
   export type FollowerMapUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    master_id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    master_id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FollowerMapCreateManyInput = {
-    id?: string
-    master_id: string
-  }
+    id?: string;
+    master_id: string;
+  };
 
   export type FollowerMapUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FollowerMapUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    master_id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    master_id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FocuserMapCreateInput = {
-    id?: string
-    follower: UserCreateNestedOneWithoutFocuser_listInput
-  }
+    id?: string;
+    follower: UserCreateNestedOneWithoutFocuser_listInput;
+  };
 
   export type FocuserMapUncheckedCreateInput = {
-    id?: string
-    follower_id: string
-  }
+    id?: string;
+    follower_id: string;
+  };
 
   export type FocuserMapUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    follower?: UserUpdateOneRequiredWithoutFocuser_listNestedInput
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    follower?: UserUpdateOneRequiredWithoutFocuser_listNestedInput;
+  };
 
   export type FocuserMapUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    follower_id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    follower_id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FocuserMapCreateManyInput = {
-    id?: string
-    follower_id: string
-  }
+    id?: string;
+    follower_id: string;
+  };
 
   export type FocuserMapUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FocuserMapUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    follower_id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    follower_id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CommentCreateInput = {
-    id?: string
-    parent_id?: string
-    comment: string
-    commentBy: UserCreateNestedOneWithoutComment_listInput
-    like_times?: number
-    dislike_times?: number
-    createdAt?: Date | string
-    article: ArticleCreateNestedOneWithoutComment_listInput
-  }
+    id?: string;
+    parent_id?: string;
+    comment: string;
+    commentBy: UserCreateNestedOneWithoutComment_listInput;
+    like_times?: number;
+    dislike_times?: number;
+    createdAt?: Date | string;
+    article: ArticleCreateNestedOneWithoutComment_listInput;
+  };
 
   export type CommentUncheckedCreateInput = {
-    id?: string
-    parent_id?: string
-    comment: string
-    user_id: string
-    like_times?: number
-    dislike_times?: number
-    createdAt?: Date | string
-    article_id: string
-  }
+    id?: string;
+    parent_id?: string;
+    comment: string;
+    user_id: string;
+    like_times?: number;
+    dislike_times?: number;
+    createdAt?: Date | string;
+    article_id: string;
+  };
 
   export type CommentUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    parent_id?: StringFieldUpdateOperationsInput | string
-    comment?: StringFieldUpdateOperationsInput | string
-    commentBy?: UserUpdateOneRequiredWithoutComment_listNestedInput
-    like_times?: IntFieldUpdateOperationsInput | number
-    dislike_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    article?: ArticleUpdateOneRequiredWithoutComment_listNestedInput
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    parent_id?: StringFieldUpdateOperationsInput | string;
+    comment?: StringFieldUpdateOperationsInput | string;
+    commentBy?: UserUpdateOneRequiredWithoutComment_listNestedInput;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    dislike_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    article?: ArticleUpdateOneRequiredWithoutComment_listNestedInput;
+  };
 
   export type CommentUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    parent_id?: StringFieldUpdateOperationsInput | string
-    comment?: StringFieldUpdateOperationsInput | string
-    user_id?: StringFieldUpdateOperationsInput | string
-    like_times?: IntFieldUpdateOperationsInput | number
-    dislike_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    article_id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    parent_id?: StringFieldUpdateOperationsInput | string;
+    comment?: StringFieldUpdateOperationsInput | string;
+    user_id?: StringFieldUpdateOperationsInput | string;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    dislike_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    article_id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CommentCreateManyInput = {
-    id?: string
-    parent_id?: string
-    comment: string
-    user_id: string
-    like_times?: number
-    dislike_times?: number
-    createdAt?: Date | string
-    article_id: string
-  }
+    id?: string;
+    parent_id?: string;
+    comment: string;
+    user_id: string;
+    like_times?: number;
+    dislike_times?: number;
+    createdAt?: Date | string;
+    article_id: string;
+  };
 
   export type CommentUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    parent_id?: StringFieldUpdateOperationsInput | string
-    comment?: StringFieldUpdateOperationsInput | string
-    like_times?: IntFieldUpdateOperationsInput | number
-    dislike_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    parent_id?: StringFieldUpdateOperationsInput | string;
+    comment?: StringFieldUpdateOperationsInput | string;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    dislike_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type CommentUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    parent_id?: StringFieldUpdateOperationsInput | string
-    comment?: StringFieldUpdateOperationsInput | string
-    user_id?: StringFieldUpdateOperationsInput | string
-    like_times?: IntFieldUpdateOperationsInput | number
-    dislike_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    article_id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    parent_id?: StringFieldUpdateOperationsInput | string;
+    comment?: StringFieldUpdateOperationsInput | string;
+    user_id?: StringFieldUpdateOperationsInput | string;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    dislike_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    article_id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CarouselCreateInput = {
-    id?: string
-    img_url: string
-  }
+    id?: string;
+    img_url: string;
+  };
 
   export type CarouselUncheckedCreateInput = {
-    id?: string
-    img_url: string
-  }
+    id?: string;
+    img_url: string;
+  };
 
   export type CarouselUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    img_url?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    img_url?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CarouselUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    img_url?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    img_url?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CarouselCreateManyInput = {
-    id?: string
-    img_url: string
-  }
+    id?: string;
+    img_url: string;
+  };
 
   export type CarouselUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    img_url?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    img_url?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CarouselUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    img_url?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    img_url?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type StringFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringFilter | string
-  }
+    equals?: string;
+    in?: Enumerable<string>;
+    notIn?: Enumerable<string>;
+    lt?: string;
+    lte?: string;
+    gt?: string;
+    gte?: string;
+    contains?: string;
+    startsWith?: string;
+    endsWith?: string;
+    not?: NestedStringFilter | string;
+  };
 
   export type StringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableFilter | string | null
-  }
+    equals?: string | null;
+    in?: Enumerable<string> | null;
+    notIn?: Enumerable<string> | null;
+    lt?: string;
+    lte?: string;
+    gt?: string;
+    gte?: string;
+    contains?: string;
+    startsWith?: string;
+    endsWith?: string;
+    not?: NestedStringNullableFilter | string | null;
+  };
 
   export type CategoryListRelationFilter = {
-    every?: CategoryWhereInput
-    some?: CategoryWhereInput
-    none?: CategoryWhereInput
-  }
+    every?: CategoryWhereInput;
+    some?: CategoryWhereInput;
+    none?: CategoryWhereInput;
+  };
 
   export type CommentListRelationFilter = {
-    every?: CommentWhereInput
-    some?: CommentWhereInput
-    none?: CommentWhereInput
-  }
+    every?: CommentWhereInput;
+    some?: CommentWhereInput;
+    none?: CommentWhereInput;
+  };
 
   export type UserRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
+    is?: UserWhereInput;
+    isNot?: UserWhereInput;
+  };
 
   export type BoolFilter = {
-    equals?: boolean
-    not?: NestedBoolFilter | boolean
-  }
+    equals?: boolean;
+    not?: NestedBoolFilter | boolean;
+  };
 
   export type IntFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntFilter | number
-  }
+    equals?: number;
+    in?: Enumerable<number>;
+    notIn?: Enumerable<number>;
+    lt?: number;
+    lte?: number;
+    gt?: number;
+    gte?: number;
+    not?: NestedIntFilter | number;
+  };
 
   export type DateTimeFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeFilter | Date | string
-  }
+    equals?: Date | string;
+    in?: Enumerable<Date> | Enumerable<string>;
+    notIn?: Enumerable<Date> | Enumerable<string>;
+    lt?: Date | string;
+    lte?: Date | string;
+    gt?: Date | string;
+    gte?: Date | string;
+    not?: NestedDateTimeFilter | Date | string;
+  };
 
   export type CategoryOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
+    _count?: SortOrder;
+  };
 
   export type CommentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
+    _count?: SortOrder;
+  };
 
   export type ArticleCountOrderByAggregateInput = {
-    id?: SortOrder
-    article_title?: SortOrder
-    article_description?: SortOrder
-    article_content?: SortOrder
-    article_bigCover?: SortOrder
-    article_cover?: SortOrder
-    author_id?: SortOrder
-    isExist?: SortOrder
-    browse_times?: SortOrder
-    like_times?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
+    id?: SortOrder;
+    article_title?: SortOrder;
+    article_description?: SortOrder;
+    article_content?: SortOrder;
+    article_bigCover?: SortOrder;
+    article_cover?: SortOrder;
+    author_id?: SortOrder;
+    isExist?: SortOrder;
+    browse_times?: SortOrder;
+    like_times?: SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+  };
 
   export type ArticleAvgOrderByAggregateInput = {
-    browse_times?: SortOrder
-    like_times?: SortOrder
-  }
+    browse_times?: SortOrder;
+    like_times?: SortOrder;
+  };
 
   export type ArticleMaxOrderByAggregateInput = {
-    id?: SortOrder
-    article_title?: SortOrder
-    article_description?: SortOrder
-    article_content?: SortOrder
-    article_bigCover?: SortOrder
-    article_cover?: SortOrder
-    author_id?: SortOrder
-    isExist?: SortOrder
-    browse_times?: SortOrder
-    like_times?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
+    id?: SortOrder;
+    article_title?: SortOrder;
+    article_description?: SortOrder;
+    article_content?: SortOrder;
+    article_bigCover?: SortOrder;
+    article_cover?: SortOrder;
+    author_id?: SortOrder;
+    isExist?: SortOrder;
+    browse_times?: SortOrder;
+    like_times?: SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+  };
 
   export type ArticleMinOrderByAggregateInput = {
-    id?: SortOrder
-    article_title?: SortOrder
-    article_description?: SortOrder
-    article_content?: SortOrder
-    article_bigCover?: SortOrder
-    article_cover?: SortOrder
-    author_id?: SortOrder
-    isExist?: SortOrder
-    browse_times?: SortOrder
-    like_times?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
+    id?: SortOrder;
+    article_title?: SortOrder;
+    article_description?: SortOrder;
+    article_content?: SortOrder;
+    article_bigCover?: SortOrder;
+    article_cover?: SortOrder;
+    author_id?: SortOrder;
+    isExist?: SortOrder;
+    browse_times?: SortOrder;
+    like_times?: SortOrder;
+    createdAt?: SortOrder;
+    updatedAt?: SortOrder;
+  };
 
   export type ArticleSumOrderByAggregateInput = {
-    browse_times?: SortOrder
-    like_times?: SortOrder
-  }
+    browse_times?: SortOrder;
+    like_times?: SortOrder;
+  };
 
   export type StringWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
-  }
+    equals?: string;
+    in?: Enumerable<string>;
+    notIn?: Enumerable<string>;
+    lt?: string;
+    lte?: string;
+    gt?: string;
+    gte?: string;
+    contains?: string;
+    startsWith?: string;
+    endsWith?: string;
+    not?: NestedStringWithAggregatesFilter | string;
+    _count?: NestedIntFilter;
+    _min?: NestedStringFilter;
+    _max?: NestedStringFilter;
+  };
 
   export type StringNullableWithAggregatesFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableWithAggregatesFilter | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedStringNullableFilter
-    _max?: NestedStringNullableFilter
-  }
+    equals?: string | null;
+    in?: Enumerable<string> | null;
+    notIn?: Enumerable<string> | null;
+    lt?: string;
+    lte?: string;
+    gt?: string;
+    gte?: string;
+    contains?: string;
+    startsWith?: string;
+    endsWith?: string;
+    not?: NestedStringNullableWithAggregatesFilter | string | null;
+    _count?: NestedIntNullableFilter;
+    _min?: NestedStringNullableFilter;
+    _max?: NestedStringNullableFilter;
+  };
 
   export type BoolWithAggregatesFilter = {
-    equals?: boolean
-    not?: NestedBoolWithAggregatesFilter | boolean
-    _count?: NestedIntFilter
-    _min?: NestedBoolFilter
-    _max?: NestedBoolFilter
-  }
+    equals?: boolean;
+    not?: NestedBoolWithAggregatesFilter | boolean;
+    _count?: NestedIntFilter;
+    _min?: NestedBoolFilter;
+    _max?: NestedBoolFilter;
+  };
 
   export type IntWithAggregatesFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntWithAggregatesFilter | number
-    _count?: NestedIntFilter
-    _avg?: NestedFloatFilter
-    _sum?: NestedIntFilter
-    _min?: NestedIntFilter
-    _max?: NestedIntFilter
-  }
+    equals?: number;
+    in?: Enumerable<number>;
+    notIn?: Enumerable<number>;
+    lt?: number;
+    lte?: number;
+    gt?: number;
+    gte?: number;
+    not?: NestedIntWithAggregatesFilter | number;
+    _count?: NestedIntFilter;
+    _avg?: NestedFloatFilter;
+    _sum?: NestedIntFilter;
+    _min?: NestedIntFilter;
+    _max?: NestedIntFilter;
+  };
 
   export type DateTimeWithAggregatesFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeWithAggregatesFilter | Date | string
-    _count?: NestedIntFilter
-    _min?: NestedDateTimeFilter
-    _max?: NestedDateTimeFilter
-  }
+    equals?: Date | string;
+    in?: Enumerable<Date> | Enumerable<string>;
+    notIn?: Enumerable<Date> | Enumerable<string>;
+    lt?: Date | string;
+    lte?: Date | string;
+    gt?: Date | string;
+    gte?: Date | string;
+    not?: NestedDateTimeWithAggregatesFilter | Date | string;
+    _count?: NestedIntFilter;
+    _min?: NestedDateTimeFilter;
+    _max?: NestedDateTimeFilter;
+  };
 
   export type ArticleListRelationFilter = {
-    every?: ArticleWhereInput
-    some?: ArticleWhereInput
-    none?: ArticleWhereInput
-  }
+    every?: ArticleWhereInput;
+    some?: ArticleWhereInput;
+    none?: ArticleWhereInput;
+  };
 
   export type ArticleOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
+    _count?: SortOrder;
+  };
 
   export type CategoryCountOrderByAggregateInput = {
-    id?: SortOrder
-    cate_name?: SortOrder
-    background?: SortOrder
-    cate_pic?: SortOrder
-  }
+    id?: SortOrder;
+    cate_name?: SortOrder;
+    background?: SortOrder;
+    cate_pic?: SortOrder;
+  };
 
   export type CategoryMaxOrderByAggregateInput = {
-    id?: SortOrder
-    cate_name?: SortOrder
-    background?: SortOrder
-    cate_pic?: SortOrder
-  }
+    id?: SortOrder;
+    cate_name?: SortOrder;
+    background?: SortOrder;
+    cate_pic?: SortOrder;
+  };
 
   export type CategoryMinOrderByAggregateInput = {
-    id?: SortOrder
-    cate_name?: SortOrder
-    background?: SortOrder
-    cate_pic?: SortOrder
-  }
+    id?: SortOrder;
+    cate_name?: SortOrder;
+    background?: SortOrder;
+    cate_pic?: SortOrder;
+  };
 
   export type FollowerMapListRelationFilter = {
-    every?: FollowerMapWhereInput
-    some?: FollowerMapWhereInput
-    none?: FollowerMapWhereInput
-  }
+    every?: FollowerMapWhereInput;
+    some?: FollowerMapWhereInput;
+    none?: FollowerMapWhereInput;
+  };
 
   export type FocuserMapListRelationFilter = {
-    every?: FocuserMapWhereInput
-    some?: FocuserMapWhereInput
-    none?: FocuserMapWhereInput
-  }
+    every?: FocuserMapWhereInput;
+    some?: FocuserMapWhereInput;
+    none?: FocuserMapWhereInput;
+  };
 
   export type FollowerMapOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
+    _count?: SortOrder;
+  };
 
   export type FocuserMapOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
+    _count?: SortOrder;
+  };
 
   export type UserCountOrderByAggregateInput = {
-    id?: SortOrder
-    user_name?: SortOrder
-    avatar?: SortOrder
-    isExist?: SortOrder
-  }
+    id?: SortOrder;
+    user_name?: SortOrder;
+    avatar?: SortOrder;
+    isExist?: SortOrder;
+  };
 
   export type UserMaxOrderByAggregateInput = {
-    id?: SortOrder
-    user_name?: SortOrder
-    avatar?: SortOrder
-    isExist?: SortOrder
-  }
+    id?: SortOrder;
+    user_name?: SortOrder;
+    avatar?: SortOrder;
+    isExist?: SortOrder;
+  };
 
   export type UserMinOrderByAggregateInput = {
-    id?: SortOrder
-    user_name?: SortOrder
-    avatar?: SortOrder
-    isExist?: SortOrder
-  }
+    id?: SortOrder;
+    user_name?: SortOrder;
+    avatar?: SortOrder;
+    isExist?: SortOrder;
+  };
 
   export type FollowerMapCountOrderByAggregateInput = {
-    id?: SortOrder
-    master_id?: SortOrder
-  }
+    id?: SortOrder;
+    master_id?: SortOrder;
+  };
 
   export type FollowerMapMaxOrderByAggregateInput = {
-    id?: SortOrder
-    master_id?: SortOrder
-  }
+    id?: SortOrder;
+    master_id?: SortOrder;
+  };
 
   export type FollowerMapMinOrderByAggregateInput = {
-    id?: SortOrder
-    master_id?: SortOrder
-  }
+    id?: SortOrder;
+    master_id?: SortOrder;
+  };
 
   export type FocuserMapCountOrderByAggregateInput = {
-    id?: SortOrder
-    follower_id?: SortOrder
-  }
+    id?: SortOrder;
+    follower_id?: SortOrder;
+  };
 
   export type FocuserMapMaxOrderByAggregateInput = {
-    id?: SortOrder
-    follower_id?: SortOrder
-  }
+    id?: SortOrder;
+    follower_id?: SortOrder;
+  };
 
   export type FocuserMapMinOrderByAggregateInput = {
-    id?: SortOrder
-    follower_id?: SortOrder
-  }
+    id?: SortOrder;
+    follower_id?: SortOrder;
+  };
 
   export type ArticleRelationFilter = {
-    is?: ArticleWhereInput
-    isNot?: ArticleWhereInput
-  }
+    is?: ArticleWhereInput;
+    isNot?: ArticleWhereInput;
+  };
 
   export type CommentCountOrderByAggregateInput = {
-    id?: SortOrder
-    parent_id?: SortOrder
-    comment?: SortOrder
-    user_id?: SortOrder
-    like_times?: SortOrder
-    dislike_times?: SortOrder
-    createdAt?: SortOrder
-    article_id?: SortOrder
-  }
+    id?: SortOrder;
+    parent_id?: SortOrder;
+    comment?: SortOrder;
+    user_id?: SortOrder;
+    like_times?: SortOrder;
+    dislike_times?: SortOrder;
+    createdAt?: SortOrder;
+    article_id?: SortOrder;
+  };
 
   export type CommentAvgOrderByAggregateInput = {
-    like_times?: SortOrder
-    dislike_times?: SortOrder
-  }
+    like_times?: SortOrder;
+    dislike_times?: SortOrder;
+  };
 
   export type CommentMaxOrderByAggregateInput = {
-    id?: SortOrder
-    parent_id?: SortOrder
-    comment?: SortOrder
-    user_id?: SortOrder
-    like_times?: SortOrder
-    dislike_times?: SortOrder
-    createdAt?: SortOrder
-    article_id?: SortOrder
-  }
+    id?: SortOrder;
+    parent_id?: SortOrder;
+    comment?: SortOrder;
+    user_id?: SortOrder;
+    like_times?: SortOrder;
+    dislike_times?: SortOrder;
+    createdAt?: SortOrder;
+    article_id?: SortOrder;
+  };
 
   export type CommentMinOrderByAggregateInput = {
-    id?: SortOrder
-    parent_id?: SortOrder
-    comment?: SortOrder
-    user_id?: SortOrder
-    like_times?: SortOrder
-    dislike_times?: SortOrder
-    createdAt?: SortOrder
-    article_id?: SortOrder
-  }
+    id?: SortOrder;
+    parent_id?: SortOrder;
+    comment?: SortOrder;
+    user_id?: SortOrder;
+    like_times?: SortOrder;
+    dislike_times?: SortOrder;
+    createdAt?: SortOrder;
+    article_id?: SortOrder;
+  };
 
   export type CommentSumOrderByAggregateInput = {
-    like_times?: SortOrder
-    dislike_times?: SortOrder
-  }
+    like_times?: SortOrder;
+    dislike_times?: SortOrder;
+  };
 
   export type CarouselCountOrderByAggregateInput = {
-    id?: SortOrder
-    img_url?: SortOrder
-  }
+    id?: SortOrder;
+    img_url?: SortOrder;
+  };
 
   export type CarouselMaxOrderByAggregateInput = {
-    id?: SortOrder
-    img_url?: SortOrder
-  }
+    id?: SortOrder;
+    img_url?: SortOrder;
+  };
 
   export type CarouselMinOrderByAggregateInput = {
-    id?: SortOrder
-    img_url?: SortOrder
-  }
+    id?: SortOrder;
+    img_url?: SortOrder;
+  };
 
   export type CategoryCreateNestedManyWithoutArticle_listInput = {
-    create?: XOR<Enumerable<CategoryCreateWithoutArticle_listInput>, Enumerable<CategoryUncheckedCreateWithoutArticle_listInput>>
-    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutArticle_listInput>
-    connect?: Enumerable<CategoryWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<CategoryCreateWithoutArticle_listInput>,
+      Enumerable<CategoryUncheckedCreateWithoutArticle_listInput>
+    >;
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutArticle_listInput>;
+    connect?: Enumerable<CategoryWhereUniqueInput>;
+  };
 
   export type CommentCreateNestedManyWithoutArticleInput = {
-    create?: XOR<Enumerable<CommentCreateWithoutArticleInput>, Enumerable<CommentUncheckedCreateWithoutArticleInput>>
-    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>
-    createMany?: CommentCreateManyArticleInputEnvelope
-    connect?: Enumerable<CommentWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<CommentCreateWithoutArticleInput>,
+      Enumerable<CommentUncheckedCreateWithoutArticleInput>
+    >;
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>;
+    createMany?: CommentCreateManyArticleInputEnvelope;
+    connect?: Enumerable<CommentWhereUniqueInput>;
+  };
 
   export type UserCreateNestedOneWithoutArticle_listInput = {
-    create?: XOR<UserCreateWithoutArticle_listInput, UserUncheckedCreateWithoutArticle_listInput>
-    connectOrCreate?: UserCreateOrConnectWithoutArticle_listInput
-    connect?: UserWhereUniqueInput
-  }
+    create?: XOR<
+      UserCreateWithoutArticle_listInput,
+      UserUncheckedCreateWithoutArticle_listInput
+    >;
+    connectOrCreate?: UserCreateOrConnectWithoutArticle_listInput;
+    connect?: UserWhereUniqueInput;
+  };
 
   export type CategoryUncheckedCreateNestedManyWithoutArticle_listInput = {
-    create?: XOR<Enumerable<CategoryCreateWithoutArticle_listInput>, Enumerable<CategoryUncheckedCreateWithoutArticle_listInput>>
-    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutArticle_listInput>
-    connect?: Enumerable<CategoryWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<CategoryCreateWithoutArticle_listInput>,
+      Enumerable<CategoryUncheckedCreateWithoutArticle_listInput>
+    >;
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutArticle_listInput>;
+    connect?: Enumerable<CategoryWhereUniqueInput>;
+  };
 
   export type CommentUncheckedCreateNestedManyWithoutArticleInput = {
-    create?: XOR<Enumerable<CommentCreateWithoutArticleInput>, Enumerable<CommentUncheckedCreateWithoutArticleInput>>
-    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>
-    createMany?: CommentCreateManyArticleInputEnvelope
-    connect?: Enumerable<CommentWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<CommentCreateWithoutArticleInput>,
+      Enumerable<CommentUncheckedCreateWithoutArticleInput>
+    >;
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>;
+    createMany?: CommentCreateManyArticleInputEnvelope;
+    connect?: Enumerable<CommentWhereUniqueInput>;
+  };
 
   export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
+    set?: string;
+  };
 
   export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
+    set?: string | null;
+  };
 
   export type CategoryUpdateManyWithoutArticle_listNestedInput = {
-    create?: XOR<Enumerable<CategoryCreateWithoutArticle_listInput>, Enumerable<CategoryUncheckedCreateWithoutArticle_listInput>>
-    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutArticle_listInput>
-    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutArticle_listInput>
-    set?: Enumerable<CategoryWhereUniqueInput>
-    disconnect?: Enumerable<CategoryWhereUniqueInput>
-    delete?: Enumerable<CategoryWhereUniqueInput>
-    connect?: Enumerable<CategoryWhereUniqueInput>
-    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutArticle_listInput>
-    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutArticle_listInput>
-    deleteMany?: Enumerable<CategoryScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<CategoryCreateWithoutArticle_listInput>,
+      Enumerable<CategoryUncheckedCreateWithoutArticle_listInput>
+    >;
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutArticle_listInput>;
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutArticle_listInput>;
+    set?: Enumerable<CategoryWhereUniqueInput>;
+    disconnect?: Enumerable<CategoryWhereUniqueInput>;
+    delete?: Enumerable<CategoryWhereUniqueInput>;
+    connect?: Enumerable<CategoryWhereUniqueInput>;
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutArticle_listInput>;
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutArticle_listInput>;
+    deleteMany?: Enumerable<CategoryScalarWhereInput>;
+  };
 
   export type CommentUpdateManyWithoutArticleNestedInput = {
-    create?: XOR<Enumerable<CommentCreateWithoutArticleInput>, Enumerable<CommentUncheckedCreateWithoutArticleInput>>
-    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>
-    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutArticleInput>
-    createMany?: CommentCreateManyArticleInputEnvelope
-    set?: Enumerable<CommentWhereUniqueInput>
-    disconnect?: Enumerable<CommentWhereUniqueInput>
-    delete?: Enumerable<CommentWhereUniqueInput>
-    connect?: Enumerable<CommentWhereUniqueInput>
-    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutArticleInput>
-    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutArticleInput>
-    deleteMany?: Enumerable<CommentScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<CommentCreateWithoutArticleInput>,
+      Enumerable<CommentUncheckedCreateWithoutArticleInput>
+    >;
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>;
+    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutArticleInput>;
+    createMany?: CommentCreateManyArticleInputEnvelope;
+    set?: Enumerable<CommentWhereUniqueInput>;
+    disconnect?: Enumerable<CommentWhereUniqueInput>;
+    delete?: Enumerable<CommentWhereUniqueInput>;
+    connect?: Enumerable<CommentWhereUniqueInput>;
+    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutArticleInput>;
+    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutArticleInput>;
+    deleteMany?: Enumerable<CommentScalarWhereInput>;
+  };
 
   export type UserUpdateOneRequiredWithoutArticle_listNestedInput = {
-    create?: XOR<UserCreateWithoutArticle_listInput, UserUncheckedCreateWithoutArticle_listInput>
-    connectOrCreate?: UserCreateOrConnectWithoutArticle_listInput
-    upsert?: UserUpsertWithoutArticle_listInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutArticle_listInput, UserUncheckedUpdateWithoutArticle_listInput>
-  }
+    create?: XOR<
+      UserCreateWithoutArticle_listInput,
+      UserUncheckedCreateWithoutArticle_listInput
+    >;
+    connectOrCreate?: UserCreateOrConnectWithoutArticle_listInput;
+    upsert?: UserUpsertWithoutArticle_listInput;
+    connect?: UserWhereUniqueInput;
+    update?: XOR<
+      UserUpdateWithoutArticle_listInput,
+      UserUncheckedUpdateWithoutArticle_listInput
+    >;
+  };
 
   export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
+    set?: boolean;
+  };
 
   export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
+    set?: number;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+  };
 
   export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
+    set?: Date | string;
+  };
 
   export type CategoryUncheckedUpdateManyWithoutArticle_listNestedInput = {
-    create?: XOR<Enumerable<CategoryCreateWithoutArticle_listInput>, Enumerable<CategoryUncheckedCreateWithoutArticle_listInput>>
-    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutArticle_listInput>
-    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutArticle_listInput>
-    set?: Enumerable<CategoryWhereUniqueInput>
-    disconnect?: Enumerable<CategoryWhereUniqueInput>
-    delete?: Enumerable<CategoryWhereUniqueInput>
-    connect?: Enumerable<CategoryWhereUniqueInput>
-    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutArticle_listInput>
-    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutArticle_listInput>
-    deleteMany?: Enumerable<CategoryScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<CategoryCreateWithoutArticle_listInput>,
+      Enumerable<CategoryUncheckedCreateWithoutArticle_listInput>
+    >;
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutArticle_listInput>;
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutArticle_listInput>;
+    set?: Enumerable<CategoryWhereUniqueInput>;
+    disconnect?: Enumerable<CategoryWhereUniqueInput>;
+    delete?: Enumerable<CategoryWhereUniqueInput>;
+    connect?: Enumerable<CategoryWhereUniqueInput>;
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutArticle_listInput>;
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutArticle_listInput>;
+    deleteMany?: Enumerable<CategoryScalarWhereInput>;
+  };
 
   export type CommentUncheckedUpdateManyWithoutArticleNestedInput = {
-    create?: XOR<Enumerable<CommentCreateWithoutArticleInput>, Enumerable<CommentUncheckedCreateWithoutArticleInput>>
-    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>
-    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutArticleInput>
-    createMany?: CommentCreateManyArticleInputEnvelope
-    set?: Enumerable<CommentWhereUniqueInput>
-    disconnect?: Enumerable<CommentWhereUniqueInput>
-    delete?: Enumerable<CommentWhereUniqueInput>
-    connect?: Enumerable<CommentWhereUniqueInput>
-    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutArticleInput>
-    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutArticleInput>
-    deleteMany?: Enumerable<CommentScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<CommentCreateWithoutArticleInput>,
+      Enumerable<CommentUncheckedCreateWithoutArticleInput>
+    >;
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>;
+    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutArticleInput>;
+    createMany?: CommentCreateManyArticleInputEnvelope;
+    set?: Enumerable<CommentWhereUniqueInput>;
+    disconnect?: Enumerable<CommentWhereUniqueInput>;
+    delete?: Enumerable<CommentWhereUniqueInput>;
+    connect?: Enumerable<CommentWhereUniqueInput>;
+    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutArticleInput>;
+    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutArticleInput>;
+    deleteMany?: Enumerable<CommentScalarWhereInput>;
+  };
 
   export type ArticleCreateNestedManyWithoutCategory_listInput = {
-    create?: XOR<Enumerable<ArticleCreateWithoutCategory_listInput>, Enumerable<ArticleUncheckedCreateWithoutCategory_listInput>>
-    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutCategory_listInput>
-    connect?: Enumerable<ArticleWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<ArticleCreateWithoutCategory_listInput>,
+      Enumerable<ArticleUncheckedCreateWithoutCategory_listInput>
+    >;
+    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutCategory_listInput>;
+    connect?: Enumerable<ArticleWhereUniqueInput>;
+  };
 
   export type ArticleUncheckedCreateNestedManyWithoutCategory_listInput = {
-    create?: XOR<Enumerable<ArticleCreateWithoutCategory_listInput>, Enumerable<ArticleUncheckedCreateWithoutCategory_listInput>>
-    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutCategory_listInput>
-    connect?: Enumerable<ArticleWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<ArticleCreateWithoutCategory_listInput>,
+      Enumerable<ArticleUncheckedCreateWithoutCategory_listInput>
+    >;
+    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutCategory_listInput>;
+    connect?: Enumerable<ArticleWhereUniqueInput>;
+  };
 
   export type ArticleUpdateManyWithoutCategory_listNestedInput = {
-    create?: XOR<Enumerable<ArticleCreateWithoutCategory_listInput>, Enumerable<ArticleUncheckedCreateWithoutCategory_listInput>>
-    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutCategory_listInput>
-    upsert?: Enumerable<ArticleUpsertWithWhereUniqueWithoutCategory_listInput>
-    set?: Enumerable<ArticleWhereUniqueInput>
-    disconnect?: Enumerable<ArticleWhereUniqueInput>
-    delete?: Enumerable<ArticleWhereUniqueInput>
-    connect?: Enumerable<ArticleWhereUniqueInput>
-    update?: Enumerable<ArticleUpdateWithWhereUniqueWithoutCategory_listInput>
-    updateMany?: Enumerable<ArticleUpdateManyWithWhereWithoutCategory_listInput>
-    deleteMany?: Enumerable<ArticleScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<ArticleCreateWithoutCategory_listInput>,
+      Enumerable<ArticleUncheckedCreateWithoutCategory_listInput>
+    >;
+    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutCategory_listInput>;
+    upsert?: Enumerable<ArticleUpsertWithWhereUniqueWithoutCategory_listInput>;
+    set?: Enumerable<ArticleWhereUniqueInput>;
+    disconnect?: Enumerable<ArticleWhereUniqueInput>;
+    delete?: Enumerable<ArticleWhereUniqueInput>;
+    connect?: Enumerable<ArticleWhereUniqueInput>;
+    update?: Enumerable<ArticleUpdateWithWhereUniqueWithoutCategory_listInput>;
+    updateMany?: Enumerable<ArticleUpdateManyWithWhereWithoutCategory_listInput>;
+    deleteMany?: Enumerable<ArticleScalarWhereInput>;
+  };
 
   export type ArticleUncheckedUpdateManyWithoutCategory_listNestedInput = {
-    create?: XOR<Enumerable<ArticleCreateWithoutCategory_listInput>, Enumerable<ArticleUncheckedCreateWithoutCategory_listInput>>
-    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutCategory_listInput>
-    upsert?: Enumerable<ArticleUpsertWithWhereUniqueWithoutCategory_listInput>
-    set?: Enumerable<ArticleWhereUniqueInput>
-    disconnect?: Enumerable<ArticleWhereUniqueInput>
-    delete?: Enumerable<ArticleWhereUniqueInput>
-    connect?: Enumerable<ArticleWhereUniqueInput>
-    update?: Enumerable<ArticleUpdateWithWhereUniqueWithoutCategory_listInput>
-    updateMany?: Enumerable<ArticleUpdateManyWithWhereWithoutCategory_listInput>
-    deleteMany?: Enumerable<ArticleScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<ArticleCreateWithoutCategory_listInput>,
+      Enumerable<ArticleUncheckedCreateWithoutCategory_listInput>
+    >;
+    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutCategory_listInput>;
+    upsert?: Enumerable<ArticleUpsertWithWhereUniqueWithoutCategory_listInput>;
+    set?: Enumerable<ArticleWhereUniqueInput>;
+    disconnect?: Enumerable<ArticleWhereUniqueInput>;
+    delete?: Enumerable<ArticleWhereUniqueInput>;
+    connect?: Enumerable<ArticleWhereUniqueInput>;
+    update?: Enumerable<ArticleUpdateWithWhereUniqueWithoutCategory_listInput>;
+    updateMany?: Enumerable<ArticleUpdateManyWithWhereWithoutCategory_listInput>;
+    deleteMany?: Enumerable<ArticleScalarWhereInput>;
+  };
 
   export type ArticleCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<Enumerable<ArticleCreateWithoutAuthorInput>, Enumerable<ArticleUncheckedCreateWithoutAuthorInput>>
-    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutAuthorInput>
-    createMany?: ArticleCreateManyAuthorInputEnvelope
-    connect?: Enumerable<ArticleWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<ArticleCreateWithoutAuthorInput>,
+      Enumerable<ArticleUncheckedCreateWithoutAuthorInput>
+    >;
+    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutAuthorInput>;
+    createMany?: ArticleCreateManyAuthorInputEnvelope;
+    connect?: Enumerable<ArticleWhereUniqueInput>;
+  };
 
   export type FollowerMapCreateNestedManyWithoutMasterInput = {
-    create?: XOR<Enumerable<FollowerMapCreateWithoutMasterInput>, Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>>
-    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>
-    createMany?: FollowerMapCreateManyMasterInputEnvelope
-    connect?: Enumerable<FollowerMapWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<FollowerMapCreateWithoutMasterInput>,
+      Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>
+    >;
+    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>;
+    createMany?: FollowerMapCreateManyMasterInputEnvelope;
+    connect?: Enumerable<FollowerMapWhereUniqueInput>;
+  };
 
   export type FocuserMapCreateNestedManyWithoutFollowerInput = {
-    create?: XOR<Enumerable<FocuserMapCreateWithoutFollowerInput>, Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>>
-    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>
-    createMany?: FocuserMapCreateManyFollowerInputEnvelope
-    connect?: Enumerable<FocuserMapWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<FocuserMapCreateWithoutFollowerInput>,
+      Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>
+    >;
+    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>;
+    createMany?: FocuserMapCreateManyFollowerInputEnvelope;
+    connect?: Enumerable<FocuserMapWhereUniqueInput>;
+  };
 
   export type CommentCreateNestedManyWithoutCommentByInput = {
-    create?: XOR<Enumerable<CommentCreateWithoutCommentByInput>, Enumerable<CommentUncheckedCreateWithoutCommentByInput>>
-    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>
-    createMany?: CommentCreateManyCommentByInputEnvelope
-    connect?: Enumerable<CommentWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<CommentCreateWithoutCommentByInput>,
+      Enumerable<CommentUncheckedCreateWithoutCommentByInput>
+    >;
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>;
+    createMany?: CommentCreateManyCommentByInputEnvelope;
+    connect?: Enumerable<CommentWhereUniqueInput>;
+  };
 
   export type ArticleUncheckedCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<Enumerable<ArticleCreateWithoutAuthorInput>, Enumerable<ArticleUncheckedCreateWithoutAuthorInput>>
-    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutAuthorInput>
-    createMany?: ArticleCreateManyAuthorInputEnvelope
-    connect?: Enumerable<ArticleWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<ArticleCreateWithoutAuthorInput>,
+      Enumerable<ArticleUncheckedCreateWithoutAuthorInput>
+    >;
+    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutAuthorInput>;
+    createMany?: ArticleCreateManyAuthorInputEnvelope;
+    connect?: Enumerable<ArticleWhereUniqueInput>;
+  };
 
   export type FollowerMapUncheckedCreateNestedManyWithoutMasterInput = {
-    create?: XOR<Enumerable<FollowerMapCreateWithoutMasterInput>, Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>>
-    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>
-    createMany?: FollowerMapCreateManyMasterInputEnvelope
-    connect?: Enumerable<FollowerMapWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<FollowerMapCreateWithoutMasterInput>,
+      Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>
+    >;
+    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>;
+    createMany?: FollowerMapCreateManyMasterInputEnvelope;
+    connect?: Enumerable<FollowerMapWhereUniqueInput>;
+  };
 
   export type FocuserMapUncheckedCreateNestedManyWithoutFollowerInput = {
-    create?: XOR<Enumerable<FocuserMapCreateWithoutFollowerInput>, Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>>
-    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>
-    createMany?: FocuserMapCreateManyFollowerInputEnvelope
-    connect?: Enumerable<FocuserMapWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<FocuserMapCreateWithoutFollowerInput>,
+      Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>
+    >;
+    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>;
+    createMany?: FocuserMapCreateManyFollowerInputEnvelope;
+    connect?: Enumerable<FocuserMapWhereUniqueInput>;
+  };
 
   export type CommentUncheckedCreateNestedManyWithoutCommentByInput = {
-    create?: XOR<Enumerable<CommentCreateWithoutCommentByInput>, Enumerable<CommentUncheckedCreateWithoutCommentByInput>>
-    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>
-    createMany?: CommentCreateManyCommentByInputEnvelope
-    connect?: Enumerable<CommentWhereUniqueInput>
-  }
+    create?: XOR<
+      Enumerable<CommentCreateWithoutCommentByInput>,
+      Enumerable<CommentUncheckedCreateWithoutCommentByInput>
+    >;
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>;
+    createMany?: CommentCreateManyCommentByInputEnvelope;
+    connect?: Enumerable<CommentWhereUniqueInput>;
+  };
 
   export type ArticleUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<Enumerable<ArticleCreateWithoutAuthorInput>, Enumerable<ArticleUncheckedCreateWithoutAuthorInput>>
-    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutAuthorInput>
-    upsert?: Enumerable<ArticleUpsertWithWhereUniqueWithoutAuthorInput>
-    createMany?: ArticleCreateManyAuthorInputEnvelope
-    set?: Enumerable<ArticleWhereUniqueInput>
-    disconnect?: Enumerable<ArticleWhereUniqueInput>
-    delete?: Enumerable<ArticleWhereUniqueInput>
-    connect?: Enumerable<ArticleWhereUniqueInput>
-    update?: Enumerable<ArticleUpdateWithWhereUniqueWithoutAuthorInput>
-    updateMany?: Enumerable<ArticleUpdateManyWithWhereWithoutAuthorInput>
-    deleteMany?: Enumerable<ArticleScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<ArticleCreateWithoutAuthorInput>,
+      Enumerable<ArticleUncheckedCreateWithoutAuthorInput>
+    >;
+    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutAuthorInput>;
+    upsert?: Enumerable<ArticleUpsertWithWhereUniqueWithoutAuthorInput>;
+    createMany?: ArticleCreateManyAuthorInputEnvelope;
+    set?: Enumerable<ArticleWhereUniqueInput>;
+    disconnect?: Enumerable<ArticleWhereUniqueInput>;
+    delete?: Enumerable<ArticleWhereUniqueInput>;
+    connect?: Enumerable<ArticleWhereUniqueInput>;
+    update?: Enumerable<ArticleUpdateWithWhereUniqueWithoutAuthorInput>;
+    updateMany?: Enumerable<ArticleUpdateManyWithWhereWithoutAuthorInput>;
+    deleteMany?: Enumerable<ArticleScalarWhereInput>;
+  };
 
   export type FollowerMapUpdateManyWithoutMasterNestedInput = {
-    create?: XOR<Enumerable<FollowerMapCreateWithoutMasterInput>, Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>>
-    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>
-    upsert?: Enumerable<FollowerMapUpsertWithWhereUniqueWithoutMasterInput>
-    createMany?: FollowerMapCreateManyMasterInputEnvelope
-    set?: Enumerable<FollowerMapWhereUniqueInput>
-    disconnect?: Enumerable<FollowerMapWhereUniqueInput>
-    delete?: Enumerable<FollowerMapWhereUniqueInput>
-    connect?: Enumerable<FollowerMapWhereUniqueInput>
-    update?: Enumerable<FollowerMapUpdateWithWhereUniqueWithoutMasterInput>
-    updateMany?: Enumerable<FollowerMapUpdateManyWithWhereWithoutMasterInput>
-    deleteMany?: Enumerable<FollowerMapScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<FollowerMapCreateWithoutMasterInput>,
+      Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>
+    >;
+    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>;
+    upsert?: Enumerable<FollowerMapUpsertWithWhereUniqueWithoutMasterInput>;
+    createMany?: FollowerMapCreateManyMasterInputEnvelope;
+    set?: Enumerable<FollowerMapWhereUniqueInput>;
+    disconnect?: Enumerable<FollowerMapWhereUniqueInput>;
+    delete?: Enumerable<FollowerMapWhereUniqueInput>;
+    connect?: Enumerable<FollowerMapWhereUniqueInput>;
+    update?: Enumerable<FollowerMapUpdateWithWhereUniqueWithoutMasterInput>;
+    updateMany?: Enumerable<FollowerMapUpdateManyWithWhereWithoutMasterInput>;
+    deleteMany?: Enumerable<FollowerMapScalarWhereInput>;
+  };
 
   export type FocuserMapUpdateManyWithoutFollowerNestedInput = {
-    create?: XOR<Enumerable<FocuserMapCreateWithoutFollowerInput>, Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>>
-    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>
-    upsert?: Enumerable<FocuserMapUpsertWithWhereUniqueWithoutFollowerInput>
-    createMany?: FocuserMapCreateManyFollowerInputEnvelope
-    set?: Enumerable<FocuserMapWhereUniqueInput>
-    disconnect?: Enumerable<FocuserMapWhereUniqueInput>
-    delete?: Enumerable<FocuserMapWhereUniqueInput>
-    connect?: Enumerable<FocuserMapWhereUniqueInput>
-    update?: Enumerable<FocuserMapUpdateWithWhereUniqueWithoutFollowerInput>
-    updateMany?: Enumerable<FocuserMapUpdateManyWithWhereWithoutFollowerInput>
-    deleteMany?: Enumerable<FocuserMapScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<FocuserMapCreateWithoutFollowerInput>,
+      Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>
+    >;
+    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>;
+    upsert?: Enumerable<FocuserMapUpsertWithWhereUniqueWithoutFollowerInput>;
+    createMany?: FocuserMapCreateManyFollowerInputEnvelope;
+    set?: Enumerable<FocuserMapWhereUniqueInput>;
+    disconnect?: Enumerable<FocuserMapWhereUniqueInput>;
+    delete?: Enumerable<FocuserMapWhereUniqueInput>;
+    connect?: Enumerable<FocuserMapWhereUniqueInput>;
+    update?: Enumerable<FocuserMapUpdateWithWhereUniqueWithoutFollowerInput>;
+    updateMany?: Enumerable<FocuserMapUpdateManyWithWhereWithoutFollowerInput>;
+    deleteMany?: Enumerable<FocuserMapScalarWhereInput>;
+  };
 
   export type CommentUpdateManyWithoutCommentByNestedInput = {
-    create?: XOR<Enumerable<CommentCreateWithoutCommentByInput>, Enumerable<CommentUncheckedCreateWithoutCommentByInput>>
-    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>
-    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutCommentByInput>
-    createMany?: CommentCreateManyCommentByInputEnvelope
-    set?: Enumerable<CommentWhereUniqueInput>
-    disconnect?: Enumerable<CommentWhereUniqueInput>
-    delete?: Enumerable<CommentWhereUniqueInput>
-    connect?: Enumerable<CommentWhereUniqueInput>
-    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutCommentByInput>
-    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutCommentByInput>
-    deleteMany?: Enumerable<CommentScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<CommentCreateWithoutCommentByInput>,
+      Enumerable<CommentUncheckedCreateWithoutCommentByInput>
+    >;
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>;
+    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutCommentByInput>;
+    createMany?: CommentCreateManyCommentByInputEnvelope;
+    set?: Enumerable<CommentWhereUniqueInput>;
+    disconnect?: Enumerable<CommentWhereUniqueInput>;
+    delete?: Enumerable<CommentWhereUniqueInput>;
+    connect?: Enumerable<CommentWhereUniqueInput>;
+    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutCommentByInput>;
+    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutCommentByInput>;
+    deleteMany?: Enumerable<CommentScalarWhereInput>;
+  };
 
   export type ArticleUncheckedUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<Enumerable<ArticleCreateWithoutAuthorInput>, Enumerable<ArticleUncheckedCreateWithoutAuthorInput>>
-    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutAuthorInput>
-    upsert?: Enumerable<ArticleUpsertWithWhereUniqueWithoutAuthorInput>
-    createMany?: ArticleCreateManyAuthorInputEnvelope
-    set?: Enumerable<ArticleWhereUniqueInput>
-    disconnect?: Enumerable<ArticleWhereUniqueInput>
-    delete?: Enumerable<ArticleWhereUniqueInput>
-    connect?: Enumerable<ArticleWhereUniqueInput>
-    update?: Enumerable<ArticleUpdateWithWhereUniqueWithoutAuthorInput>
-    updateMany?: Enumerable<ArticleUpdateManyWithWhereWithoutAuthorInput>
-    deleteMany?: Enumerable<ArticleScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<ArticleCreateWithoutAuthorInput>,
+      Enumerable<ArticleUncheckedCreateWithoutAuthorInput>
+    >;
+    connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutAuthorInput>;
+    upsert?: Enumerable<ArticleUpsertWithWhereUniqueWithoutAuthorInput>;
+    createMany?: ArticleCreateManyAuthorInputEnvelope;
+    set?: Enumerable<ArticleWhereUniqueInput>;
+    disconnect?: Enumerable<ArticleWhereUniqueInput>;
+    delete?: Enumerable<ArticleWhereUniqueInput>;
+    connect?: Enumerable<ArticleWhereUniqueInput>;
+    update?: Enumerable<ArticleUpdateWithWhereUniqueWithoutAuthorInput>;
+    updateMany?: Enumerable<ArticleUpdateManyWithWhereWithoutAuthorInput>;
+    deleteMany?: Enumerable<ArticleScalarWhereInput>;
+  };
 
   export type FollowerMapUncheckedUpdateManyWithoutMasterNestedInput = {
-    create?: XOR<Enumerable<FollowerMapCreateWithoutMasterInput>, Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>>
-    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>
-    upsert?: Enumerable<FollowerMapUpsertWithWhereUniqueWithoutMasterInput>
-    createMany?: FollowerMapCreateManyMasterInputEnvelope
-    set?: Enumerable<FollowerMapWhereUniqueInput>
-    disconnect?: Enumerable<FollowerMapWhereUniqueInput>
-    delete?: Enumerable<FollowerMapWhereUniqueInput>
-    connect?: Enumerable<FollowerMapWhereUniqueInput>
-    update?: Enumerable<FollowerMapUpdateWithWhereUniqueWithoutMasterInput>
-    updateMany?: Enumerable<FollowerMapUpdateManyWithWhereWithoutMasterInput>
-    deleteMany?: Enumerable<FollowerMapScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<FollowerMapCreateWithoutMasterInput>,
+      Enumerable<FollowerMapUncheckedCreateWithoutMasterInput>
+    >;
+    connectOrCreate?: Enumerable<FollowerMapCreateOrConnectWithoutMasterInput>;
+    upsert?: Enumerable<FollowerMapUpsertWithWhereUniqueWithoutMasterInput>;
+    createMany?: FollowerMapCreateManyMasterInputEnvelope;
+    set?: Enumerable<FollowerMapWhereUniqueInput>;
+    disconnect?: Enumerable<FollowerMapWhereUniqueInput>;
+    delete?: Enumerable<FollowerMapWhereUniqueInput>;
+    connect?: Enumerable<FollowerMapWhereUniqueInput>;
+    update?: Enumerable<FollowerMapUpdateWithWhereUniqueWithoutMasterInput>;
+    updateMany?: Enumerable<FollowerMapUpdateManyWithWhereWithoutMasterInput>;
+    deleteMany?: Enumerable<FollowerMapScalarWhereInput>;
+  };
 
   export type FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput = {
-    create?: XOR<Enumerable<FocuserMapCreateWithoutFollowerInput>, Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>>
-    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>
-    upsert?: Enumerable<FocuserMapUpsertWithWhereUniqueWithoutFollowerInput>
-    createMany?: FocuserMapCreateManyFollowerInputEnvelope
-    set?: Enumerable<FocuserMapWhereUniqueInput>
-    disconnect?: Enumerable<FocuserMapWhereUniqueInput>
-    delete?: Enumerable<FocuserMapWhereUniqueInput>
-    connect?: Enumerable<FocuserMapWhereUniqueInput>
-    update?: Enumerable<FocuserMapUpdateWithWhereUniqueWithoutFollowerInput>
-    updateMany?: Enumerable<FocuserMapUpdateManyWithWhereWithoutFollowerInput>
-    deleteMany?: Enumerable<FocuserMapScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<FocuserMapCreateWithoutFollowerInput>,
+      Enumerable<FocuserMapUncheckedCreateWithoutFollowerInput>
+    >;
+    connectOrCreate?: Enumerable<FocuserMapCreateOrConnectWithoutFollowerInput>;
+    upsert?: Enumerable<FocuserMapUpsertWithWhereUniqueWithoutFollowerInput>;
+    createMany?: FocuserMapCreateManyFollowerInputEnvelope;
+    set?: Enumerable<FocuserMapWhereUniqueInput>;
+    disconnect?: Enumerable<FocuserMapWhereUniqueInput>;
+    delete?: Enumerable<FocuserMapWhereUniqueInput>;
+    connect?: Enumerable<FocuserMapWhereUniqueInput>;
+    update?: Enumerable<FocuserMapUpdateWithWhereUniqueWithoutFollowerInput>;
+    updateMany?: Enumerable<FocuserMapUpdateManyWithWhereWithoutFollowerInput>;
+    deleteMany?: Enumerable<FocuserMapScalarWhereInput>;
+  };
 
   export type CommentUncheckedUpdateManyWithoutCommentByNestedInput = {
-    create?: XOR<Enumerable<CommentCreateWithoutCommentByInput>, Enumerable<CommentUncheckedCreateWithoutCommentByInput>>
-    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>
-    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutCommentByInput>
-    createMany?: CommentCreateManyCommentByInputEnvelope
-    set?: Enumerable<CommentWhereUniqueInput>
-    disconnect?: Enumerable<CommentWhereUniqueInput>
-    delete?: Enumerable<CommentWhereUniqueInput>
-    connect?: Enumerable<CommentWhereUniqueInput>
-    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutCommentByInput>
-    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutCommentByInput>
-    deleteMany?: Enumerable<CommentScalarWhereInput>
-  }
+    create?: XOR<
+      Enumerable<CommentCreateWithoutCommentByInput>,
+      Enumerable<CommentUncheckedCreateWithoutCommentByInput>
+    >;
+    connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutCommentByInput>;
+    upsert?: Enumerable<CommentUpsertWithWhereUniqueWithoutCommentByInput>;
+    createMany?: CommentCreateManyCommentByInputEnvelope;
+    set?: Enumerable<CommentWhereUniqueInput>;
+    disconnect?: Enumerable<CommentWhereUniqueInput>;
+    delete?: Enumerable<CommentWhereUniqueInput>;
+    connect?: Enumerable<CommentWhereUniqueInput>;
+    update?: Enumerable<CommentUpdateWithWhereUniqueWithoutCommentByInput>;
+    updateMany?: Enumerable<CommentUpdateManyWithWhereWithoutCommentByInput>;
+    deleteMany?: Enumerable<CommentScalarWhereInput>;
+  };
 
   export type UserCreateNestedOneWithoutFollower_listInput = {
-    create?: XOR<UserCreateWithoutFollower_listInput, UserUncheckedCreateWithoutFollower_listInput>
-    connectOrCreate?: UserCreateOrConnectWithoutFollower_listInput
-    connect?: UserWhereUniqueInput
-  }
+    create?: XOR<
+      UserCreateWithoutFollower_listInput,
+      UserUncheckedCreateWithoutFollower_listInput
+    >;
+    connectOrCreate?: UserCreateOrConnectWithoutFollower_listInput;
+    connect?: UserWhereUniqueInput;
+  };
 
   export type UserUpdateOneRequiredWithoutFollower_listNestedInput = {
-    create?: XOR<UserCreateWithoutFollower_listInput, UserUncheckedCreateWithoutFollower_listInput>
-    connectOrCreate?: UserCreateOrConnectWithoutFollower_listInput
-    upsert?: UserUpsertWithoutFollower_listInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutFollower_listInput, UserUncheckedUpdateWithoutFollower_listInput>
-  }
+    create?: XOR<
+      UserCreateWithoutFollower_listInput,
+      UserUncheckedCreateWithoutFollower_listInput
+    >;
+    connectOrCreate?: UserCreateOrConnectWithoutFollower_listInput;
+    upsert?: UserUpsertWithoutFollower_listInput;
+    connect?: UserWhereUniqueInput;
+    update?: XOR<
+      UserUpdateWithoutFollower_listInput,
+      UserUncheckedUpdateWithoutFollower_listInput
+    >;
+  };
 
   export type UserCreateNestedOneWithoutFocuser_listInput = {
-    create?: XOR<UserCreateWithoutFocuser_listInput, UserUncheckedCreateWithoutFocuser_listInput>
-    connectOrCreate?: UserCreateOrConnectWithoutFocuser_listInput
-    connect?: UserWhereUniqueInput
-  }
+    create?: XOR<
+      UserCreateWithoutFocuser_listInput,
+      UserUncheckedCreateWithoutFocuser_listInput
+    >;
+    connectOrCreate?: UserCreateOrConnectWithoutFocuser_listInput;
+    connect?: UserWhereUniqueInput;
+  };
 
   export type UserUpdateOneRequiredWithoutFocuser_listNestedInput = {
-    create?: XOR<UserCreateWithoutFocuser_listInput, UserUncheckedCreateWithoutFocuser_listInput>
-    connectOrCreate?: UserCreateOrConnectWithoutFocuser_listInput
-    upsert?: UserUpsertWithoutFocuser_listInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutFocuser_listInput, UserUncheckedUpdateWithoutFocuser_listInput>
-  }
+    create?: XOR<
+      UserCreateWithoutFocuser_listInput,
+      UserUncheckedCreateWithoutFocuser_listInput
+    >;
+    connectOrCreate?: UserCreateOrConnectWithoutFocuser_listInput;
+    upsert?: UserUpsertWithoutFocuser_listInput;
+    connect?: UserWhereUniqueInput;
+    update?: XOR<
+      UserUpdateWithoutFocuser_listInput,
+      UserUncheckedUpdateWithoutFocuser_listInput
+    >;
+  };
 
   export type UserCreateNestedOneWithoutComment_listInput = {
-    create?: XOR<UserCreateWithoutComment_listInput, UserUncheckedCreateWithoutComment_listInput>
-    connectOrCreate?: UserCreateOrConnectWithoutComment_listInput
-    connect?: UserWhereUniqueInput
-  }
+    create?: XOR<
+      UserCreateWithoutComment_listInput,
+      UserUncheckedCreateWithoutComment_listInput
+    >;
+    connectOrCreate?: UserCreateOrConnectWithoutComment_listInput;
+    connect?: UserWhereUniqueInput;
+  };
 
   export type ArticleCreateNestedOneWithoutComment_listInput = {
-    create?: XOR<ArticleCreateWithoutComment_listInput, ArticleUncheckedCreateWithoutComment_listInput>
-    connectOrCreate?: ArticleCreateOrConnectWithoutComment_listInput
-    connect?: ArticleWhereUniqueInput
-  }
+    create?: XOR<
+      ArticleCreateWithoutComment_listInput,
+      ArticleUncheckedCreateWithoutComment_listInput
+    >;
+    connectOrCreate?: ArticleCreateOrConnectWithoutComment_listInput;
+    connect?: ArticleWhereUniqueInput;
+  };
 
   export type UserUpdateOneRequiredWithoutComment_listNestedInput = {
-    create?: XOR<UserCreateWithoutComment_listInput, UserUncheckedCreateWithoutComment_listInput>
-    connectOrCreate?: UserCreateOrConnectWithoutComment_listInput
-    upsert?: UserUpsertWithoutComment_listInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutComment_listInput, UserUncheckedUpdateWithoutComment_listInput>
-  }
+    create?: XOR<
+      UserCreateWithoutComment_listInput,
+      UserUncheckedCreateWithoutComment_listInput
+    >;
+    connectOrCreate?: UserCreateOrConnectWithoutComment_listInput;
+    upsert?: UserUpsertWithoutComment_listInput;
+    connect?: UserWhereUniqueInput;
+    update?: XOR<
+      UserUpdateWithoutComment_listInput,
+      UserUncheckedUpdateWithoutComment_listInput
+    >;
+  };
 
   export type ArticleUpdateOneRequiredWithoutComment_listNestedInput = {
-    create?: XOR<ArticleCreateWithoutComment_listInput, ArticleUncheckedCreateWithoutComment_listInput>
-    connectOrCreate?: ArticleCreateOrConnectWithoutComment_listInput
-    upsert?: ArticleUpsertWithoutComment_listInput
-    connect?: ArticleWhereUniqueInput
-    update?: XOR<ArticleUpdateWithoutComment_listInput, ArticleUncheckedUpdateWithoutComment_listInput>
-  }
+    create?: XOR<
+      ArticleCreateWithoutComment_listInput,
+      ArticleUncheckedCreateWithoutComment_listInput
+    >;
+    connectOrCreate?: ArticleCreateOrConnectWithoutComment_listInput;
+    upsert?: ArticleUpsertWithoutComment_listInput;
+    connect?: ArticleWhereUniqueInput;
+    update?: XOR<
+      ArticleUpdateWithoutComment_listInput,
+      ArticleUncheckedUpdateWithoutComment_listInput
+    >;
+  };
 
   export type NestedStringFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringFilter | string
-  }
+    equals?: string;
+    in?: Enumerable<string>;
+    notIn?: Enumerable<string>;
+    lt?: string;
+    lte?: string;
+    gt?: string;
+    gte?: string;
+    contains?: string;
+    startsWith?: string;
+    endsWith?: string;
+    not?: NestedStringFilter | string;
+  };
 
   export type NestedStringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableFilter | string | null
-  }
+    equals?: string | null;
+    in?: Enumerable<string> | null;
+    notIn?: Enumerable<string> | null;
+    lt?: string;
+    lte?: string;
+    gt?: string;
+    gte?: string;
+    contains?: string;
+    startsWith?: string;
+    endsWith?: string;
+    not?: NestedStringNullableFilter | string | null;
+  };
 
   export type NestedBoolFilter = {
-    equals?: boolean
-    not?: NestedBoolFilter | boolean
-  }
+    equals?: boolean;
+    not?: NestedBoolFilter | boolean;
+  };
 
   export type NestedIntFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntFilter | number
-  }
+    equals?: number;
+    in?: Enumerable<number>;
+    notIn?: Enumerable<number>;
+    lt?: number;
+    lte?: number;
+    gt?: number;
+    gte?: number;
+    not?: NestedIntFilter | number;
+  };
 
   export type NestedDateTimeFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeFilter | Date | string
-  }
+    equals?: Date | string;
+    in?: Enumerable<Date> | Enumerable<string>;
+    notIn?: Enumerable<Date> | Enumerable<string>;
+    lt?: Date | string;
+    lte?: Date | string;
+    gt?: Date | string;
+    gte?: Date | string;
+    not?: NestedDateTimeFilter | Date | string;
+  };
 
   export type NestedStringWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
-  }
+    equals?: string;
+    in?: Enumerable<string>;
+    notIn?: Enumerable<string>;
+    lt?: string;
+    lte?: string;
+    gt?: string;
+    gte?: string;
+    contains?: string;
+    startsWith?: string;
+    endsWith?: string;
+    not?: NestedStringWithAggregatesFilter | string;
+    _count?: NestedIntFilter;
+    _min?: NestedStringFilter;
+    _max?: NestedStringFilter;
+  };
 
   export type NestedStringNullableWithAggregatesFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableWithAggregatesFilter | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedStringNullableFilter
-    _max?: NestedStringNullableFilter
-  }
+    equals?: string | null;
+    in?: Enumerable<string> | null;
+    notIn?: Enumerable<string> | null;
+    lt?: string;
+    lte?: string;
+    gt?: string;
+    gte?: string;
+    contains?: string;
+    startsWith?: string;
+    endsWith?: string;
+    not?: NestedStringNullableWithAggregatesFilter | string | null;
+    _count?: NestedIntNullableFilter;
+    _min?: NestedStringNullableFilter;
+    _max?: NestedStringNullableFilter;
+  };
 
   export type NestedIntNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableFilter | number | null
-  }
+    equals?: number | null;
+    in?: Enumerable<number> | null;
+    notIn?: Enumerable<number> | null;
+    lt?: number;
+    lte?: number;
+    gt?: number;
+    gte?: number;
+    not?: NestedIntNullableFilter | number | null;
+  };
 
   export type NestedBoolWithAggregatesFilter = {
-    equals?: boolean
-    not?: NestedBoolWithAggregatesFilter | boolean
-    _count?: NestedIntFilter
-    _min?: NestedBoolFilter
-    _max?: NestedBoolFilter
-  }
+    equals?: boolean;
+    not?: NestedBoolWithAggregatesFilter | boolean;
+    _count?: NestedIntFilter;
+    _min?: NestedBoolFilter;
+    _max?: NestedBoolFilter;
+  };
 
   export type NestedIntWithAggregatesFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntWithAggregatesFilter | number
-    _count?: NestedIntFilter
-    _avg?: NestedFloatFilter
-    _sum?: NestedIntFilter
-    _min?: NestedIntFilter
-    _max?: NestedIntFilter
-  }
+    equals?: number;
+    in?: Enumerable<number>;
+    notIn?: Enumerable<number>;
+    lt?: number;
+    lte?: number;
+    gt?: number;
+    gte?: number;
+    not?: NestedIntWithAggregatesFilter | number;
+    _count?: NestedIntFilter;
+    _avg?: NestedFloatFilter;
+    _sum?: NestedIntFilter;
+    _min?: NestedIntFilter;
+    _max?: NestedIntFilter;
+  };
 
   export type NestedFloatFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedFloatFilter | number
-  }
+    equals?: number;
+    in?: Enumerable<number>;
+    notIn?: Enumerable<number>;
+    lt?: number;
+    lte?: number;
+    gt?: number;
+    gte?: number;
+    not?: NestedFloatFilter | number;
+  };
 
   export type NestedDateTimeWithAggregatesFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeWithAggregatesFilter | Date | string
-    _count?: NestedIntFilter
-    _min?: NestedDateTimeFilter
-    _max?: NestedDateTimeFilter
-  }
+    equals?: Date | string;
+    in?: Enumerable<Date> | Enumerable<string>;
+    notIn?: Enumerable<Date> | Enumerable<string>;
+    lt?: Date | string;
+    lte?: Date | string;
+    gt?: Date | string;
+    gte?: Date | string;
+    not?: NestedDateTimeWithAggregatesFilter | Date | string;
+    _count?: NestedIntFilter;
+    _min?: NestedDateTimeFilter;
+    _max?: NestedDateTimeFilter;
+  };
 
   export type CategoryCreateWithoutArticle_listInput = {
-    id?: string
-    cate_name: string
-    background: string
-    cate_pic: string
-  }
+    id?: string;
+    cate_name: string;
+    background: string;
+    cate_pic: string;
+  };
 
   export type CategoryUncheckedCreateWithoutArticle_listInput = {
-    id?: string
-    cate_name: string
-    background: string
-    cate_pic: string
-  }
+    id?: string;
+    cate_name: string;
+    background: string;
+    cate_pic: string;
+  };
 
   export type CategoryCreateOrConnectWithoutArticle_listInput = {
-    where: CategoryWhereUniqueInput
-    create: XOR<CategoryCreateWithoutArticle_listInput, CategoryUncheckedCreateWithoutArticle_listInput>
-  }
+    where: CategoryWhereUniqueInput;
+    create: XOR<
+      CategoryCreateWithoutArticle_listInput,
+      CategoryUncheckedCreateWithoutArticle_listInput
+    >;
+  };
 
   export type CommentCreateWithoutArticleInput = {
-    id?: string
-    parent_id?: string
-    comment: string
-    commentBy: UserCreateNestedOneWithoutComment_listInput
-    like_times?: number
-    dislike_times?: number
-    createdAt?: Date | string
-  }
+    id?: string;
+    parent_id?: string;
+    comment: string;
+    commentBy: UserCreateNestedOneWithoutComment_listInput;
+    like_times?: number;
+    dislike_times?: number;
+    createdAt?: Date | string;
+  };
 
   export type CommentUncheckedCreateWithoutArticleInput = {
-    id?: string
-    parent_id?: string
-    comment: string
-    user_id: string
-    like_times?: number
-    dislike_times?: number
-    createdAt?: Date | string
-  }
+    id?: string;
+    parent_id?: string;
+    comment: string;
+    user_id: string;
+    like_times?: number;
+    dislike_times?: number;
+    createdAt?: Date | string;
+  };
 
   export type CommentCreateOrConnectWithoutArticleInput = {
-    where: CommentWhereUniqueInput
-    create: XOR<CommentCreateWithoutArticleInput, CommentUncheckedCreateWithoutArticleInput>
-  }
+    where: CommentWhereUniqueInput;
+    create: XOR<
+      CommentCreateWithoutArticleInput,
+      CommentUncheckedCreateWithoutArticleInput
+    >;
+  };
 
   export type CommentCreateManyArticleInputEnvelope = {
-    data: Enumerable<CommentCreateManyArticleInput>
-    skipDuplicates?: boolean
-  }
+    data: Enumerable<CommentCreateManyArticleInput>;
+    skipDuplicates?: boolean;
+  };
 
   export type UserCreateWithoutArticle_listInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput
-    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput
-    comment_list?: CommentCreateNestedManyWithoutCommentByInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput;
+    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput;
+    comment_list?: CommentCreateNestedManyWithoutCommentByInput;
+    isExist?: boolean;
+  };
 
   export type UserUncheckedCreateWithoutArticle_listInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput
-    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput
-    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput;
+    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput;
+    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput;
+    isExist?: boolean;
+  };
 
   export type UserCreateOrConnectWithoutArticle_listInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutArticle_listInput, UserUncheckedCreateWithoutArticle_listInput>
-  }
+    where: UserWhereUniqueInput;
+    create: XOR<
+      UserCreateWithoutArticle_listInput,
+      UserUncheckedCreateWithoutArticle_listInput
+    >;
+  };
 
   export type CategoryUpsertWithWhereUniqueWithoutArticle_listInput = {
-    where: CategoryWhereUniqueInput
-    update: XOR<CategoryUpdateWithoutArticle_listInput, CategoryUncheckedUpdateWithoutArticle_listInput>
-    create: XOR<CategoryCreateWithoutArticle_listInput, CategoryUncheckedCreateWithoutArticle_listInput>
-  }
+    where: CategoryWhereUniqueInput;
+    update: XOR<
+      CategoryUpdateWithoutArticle_listInput,
+      CategoryUncheckedUpdateWithoutArticle_listInput
+    >;
+    create: XOR<
+      CategoryCreateWithoutArticle_listInput,
+      CategoryUncheckedCreateWithoutArticle_listInput
+    >;
+  };
 
   export type CategoryUpdateWithWhereUniqueWithoutArticle_listInput = {
-    where: CategoryWhereUniqueInput
-    data: XOR<CategoryUpdateWithoutArticle_listInput, CategoryUncheckedUpdateWithoutArticle_listInput>
-  }
+    where: CategoryWhereUniqueInput;
+    data: XOR<
+      CategoryUpdateWithoutArticle_listInput,
+      CategoryUncheckedUpdateWithoutArticle_listInput
+    >;
+  };
 
   export type CategoryUpdateManyWithWhereWithoutArticle_listInput = {
-    where: CategoryScalarWhereInput
-    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutCategory_listInput>
-  }
+    where: CategoryScalarWhereInput;
+    data: XOR<
+      CategoryUpdateManyMutationInput,
+      CategoryUncheckedUpdateManyWithoutCategory_listInput
+    >;
+  };
 
   export type CategoryScalarWhereInput = {
-    AND?: Enumerable<CategoryScalarWhereInput>
-    OR?: Enumerable<CategoryScalarWhereInput>
-    NOT?: Enumerable<CategoryScalarWhereInput>
-    id?: StringFilter | string
-    cate_name?: StringFilter | string
-    background?: StringFilter | string
-    cate_pic?: StringFilter | string
-  }
+    AND?: Enumerable<CategoryScalarWhereInput>;
+    OR?: Enumerable<CategoryScalarWhereInput>;
+    NOT?: Enumerable<CategoryScalarWhereInput>;
+    id?: StringFilter | string;
+    cate_name?: StringFilter | string;
+    background?: StringFilter | string;
+    cate_pic?: StringFilter | string;
+  };
 
   export type CommentUpsertWithWhereUniqueWithoutArticleInput = {
-    where: CommentWhereUniqueInput
-    update: XOR<CommentUpdateWithoutArticleInput, CommentUncheckedUpdateWithoutArticleInput>
-    create: XOR<CommentCreateWithoutArticleInput, CommentUncheckedCreateWithoutArticleInput>
-  }
+    where: CommentWhereUniqueInput;
+    update: XOR<
+      CommentUpdateWithoutArticleInput,
+      CommentUncheckedUpdateWithoutArticleInput
+    >;
+    create: XOR<
+      CommentCreateWithoutArticleInput,
+      CommentUncheckedCreateWithoutArticleInput
+    >;
+  };
 
   export type CommentUpdateWithWhereUniqueWithoutArticleInput = {
-    where: CommentWhereUniqueInput
-    data: XOR<CommentUpdateWithoutArticleInput, CommentUncheckedUpdateWithoutArticleInput>
-  }
+    where: CommentWhereUniqueInput;
+    data: XOR<
+      CommentUpdateWithoutArticleInput,
+      CommentUncheckedUpdateWithoutArticleInput
+    >;
+  };
 
   export type CommentUpdateManyWithWhereWithoutArticleInput = {
-    where: CommentScalarWhereInput
-    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutComment_listInput>
-  }
+    where: CommentScalarWhereInput;
+    data: XOR<
+      CommentUpdateManyMutationInput,
+      CommentUncheckedUpdateManyWithoutComment_listInput
+    >;
+  };
 
   export type CommentScalarWhereInput = {
-    AND?: Enumerable<CommentScalarWhereInput>
-    OR?: Enumerable<CommentScalarWhereInput>
-    NOT?: Enumerable<CommentScalarWhereInput>
-    id?: StringFilter | string
-    parent_id?: StringFilter | string
-    comment?: StringFilter | string
-    user_id?: StringFilter | string
-    like_times?: IntFilter | number
-    dislike_times?: IntFilter | number
-    createdAt?: DateTimeFilter | Date | string
-    article_id?: StringFilter | string
-  }
+    AND?: Enumerable<CommentScalarWhereInput>;
+    OR?: Enumerable<CommentScalarWhereInput>;
+    NOT?: Enumerable<CommentScalarWhereInput>;
+    id?: StringFilter | string;
+    parent_id?: StringFilter | string;
+    comment?: StringFilter | string;
+    user_id?: StringFilter | string;
+    like_times?: IntFilter | number;
+    dislike_times?: IntFilter | number;
+    createdAt?: DateTimeFilter | Date | string;
+    article_id?: StringFilter | string;
+  };
 
   export type UserUpsertWithoutArticle_listInput = {
-    update: XOR<UserUpdateWithoutArticle_listInput, UserUncheckedUpdateWithoutArticle_listInput>
-    create: XOR<UserCreateWithoutArticle_listInput, UserUncheckedCreateWithoutArticle_listInput>
-  }
+    update: XOR<
+      UserUpdateWithoutArticle_listInput,
+      UserUncheckedUpdateWithoutArticle_listInput
+    >;
+    create: XOR<
+      UserCreateWithoutArticle_listInput,
+      UserUncheckedCreateWithoutArticle_listInput
+    >;
+  };
 
   export type UserUpdateWithoutArticle_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput
-    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput
-    comment_list?: CommentUpdateManyWithoutCommentByNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput;
+    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput;
+    comment_list?: CommentUpdateManyWithoutCommentByNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserUncheckedUpdateWithoutArticle_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput
-    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput
-    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput;
+    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput;
+    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type ArticleCreateWithoutCategory_listInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    comment_list?: CommentCreateNestedManyWithoutArticleInput
-    author: UserCreateNestedOneWithoutArticle_listInput
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    comment_list?: CommentCreateNestedManyWithoutArticleInput;
+    author: UserCreateNestedOneWithoutArticle_listInput;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type ArticleUncheckedCreateWithoutCategory_listInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    comment_list?: CommentUncheckedCreateNestedManyWithoutArticleInput
-    author_id: string
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    comment_list?: CommentUncheckedCreateNestedManyWithoutArticleInput;
+    author_id: string;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type ArticleCreateOrConnectWithoutCategory_listInput = {
-    where: ArticleWhereUniqueInput
-    create: XOR<ArticleCreateWithoutCategory_listInput, ArticleUncheckedCreateWithoutCategory_listInput>
-  }
+    where: ArticleWhereUniqueInput;
+    create: XOR<
+      ArticleCreateWithoutCategory_listInput,
+      ArticleUncheckedCreateWithoutCategory_listInput
+    >;
+  };
 
   export type ArticleUpsertWithWhereUniqueWithoutCategory_listInput = {
-    where: ArticleWhereUniqueInput
-    update: XOR<ArticleUpdateWithoutCategory_listInput, ArticleUncheckedUpdateWithoutCategory_listInput>
-    create: XOR<ArticleCreateWithoutCategory_listInput, ArticleUncheckedCreateWithoutCategory_listInput>
-  }
+    where: ArticleWhereUniqueInput;
+    update: XOR<
+      ArticleUpdateWithoutCategory_listInput,
+      ArticleUncheckedUpdateWithoutCategory_listInput
+    >;
+    create: XOR<
+      ArticleCreateWithoutCategory_listInput,
+      ArticleUncheckedCreateWithoutCategory_listInput
+    >;
+  };
 
   export type ArticleUpdateWithWhereUniqueWithoutCategory_listInput = {
-    where: ArticleWhereUniqueInput
-    data: XOR<ArticleUpdateWithoutCategory_listInput, ArticleUncheckedUpdateWithoutCategory_listInput>
-  }
+    where: ArticleWhereUniqueInput;
+    data: XOR<
+      ArticleUpdateWithoutCategory_listInput,
+      ArticleUncheckedUpdateWithoutCategory_listInput
+    >;
+  };
 
   export type ArticleUpdateManyWithWhereWithoutCategory_listInput = {
-    where: ArticleScalarWhereInput
-    data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyWithoutArticle_listInput>
-  }
+    where: ArticleScalarWhereInput;
+    data: XOR<
+      ArticleUpdateManyMutationInput,
+      ArticleUncheckedUpdateManyWithoutArticle_listInput
+    >;
+  };
 
   export type ArticleScalarWhereInput = {
-    AND?: Enumerable<ArticleScalarWhereInput>
-    OR?: Enumerable<ArticleScalarWhereInput>
-    NOT?: Enumerable<ArticleScalarWhereInput>
-    id?: StringFilter | string
-    article_title?: StringFilter | string
-    article_description?: StringFilter | string
-    article_content?: StringFilter | string
-    article_bigCover?: StringNullableFilter | string | null
-    article_cover?: StringNullableFilter | string | null
-    author_id?: StringFilter | string
-    isExist?: BoolFilter | boolean
-    browse_times?: IntFilter | number
-    like_times?: IntFilter | number
-    createdAt?: DateTimeFilter | Date | string
-    updatedAt?: DateTimeFilter | Date | string
-  }
+    AND?: Enumerable<ArticleScalarWhereInput>;
+    OR?: Enumerable<ArticleScalarWhereInput>;
+    NOT?: Enumerable<ArticleScalarWhereInput>;
+    id?: StringFilter | string;
+    article_title?: StringFilter | string;
+    article_description?: StringFilter | string;
+    article_content?: StringFilter | string;
+    article_bigCover?: StringNullableFilter | string | null;
+    article_cover?: StringNullableFilter | string | null;
+    author_id?: StringFilter | string;
+    isExist?: BoolFilter | boolean;
+    browse_times?: IntFilter | number;
+    like_times?: IntFilter | number;
+    createdAt?: DateTimeFilter | Date | string;
+    updatedAt?: DateTimeFilter | Date | string;
+  };
 
   export type ArticleCreateWithoutAuthorInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    category_list?: CategoryCreateNestedManyWithoutArticle_listInput
-    comment_list?: CommentCreateNestedManyWithoutArticleInput
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    category_list?: CategoryCreateNestedManyWithoutArticle_listInput;
+    comment_list?: CommentCreateNestedManyWithoutArticleInput;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type ArticleUncheckedCreateWithoutAuthorInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    category_list?: CategoryUncheckedCreateNestedManyWithoutArticle_listInput
-    comment_list?: CommentUncheckedCreateNestedManyWithoutArticleInput
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    category_list?: CategoryUncheckedCreateNestedManyWithoutArticle_listInput;
+    comment_list?: CommentUncheckedCreateNestedManyWithoutArticleInput;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type ArticleCreateOrConnectWithoutAuthorInput = {
-    where: ArticleWhereUniqueInput
-    create: XOR<ArticleCreateWithoutAuthorInput, ArticleUncheckedCreateWithoutAuthorInput>
-  }
+    where: ArticleWhereUniqueInput;
+    create: XOR<
+      ArticleCreateWithoutAuthorInput,
+      ArticleUncheckedCreateWithoutAuthorInput
+    >;
+  };
 
   export type ArticleCreateManyAuthorInputEnvelope = {
-    data: Enumerable<ArticleCreateManyAuthorInput>
-    skipDuplicates?: boolean
-  }
+    data: Enumerable<ArticleCreateManyAuthorInput>;
+    skipDuplicates?: boolean;
+  };
 
   export type FollowerMapCreateWithoutMasterInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type FollowerMapUncheckedCreateWithoutMasterInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type FollowerMapCreateOrConnectWithoutMasterInput = {
-    where: FollowerMapWhereUniqueInput
-    create: XOR<FollowerMapCreateWithoutMasterInput, FollowerMapUncheckedCreateWithoutMasterInput>
-  }
+    where: FollowerMapWhereUniqueInput;
+    create: XOR<
+      FollowerMapCreateWithoutMasterInput,
+      FollowerMapUncheckedCreateWithoutMasterInput
+    >;
+  };
 
   export type FollowerMapCreateManyMasterInputEnvelope = {
-    data: Enumerable<FollowerMapCreateManyMasterInput>
-    skipDuplicates?: boolean
-  }
+    data: Enumerable<FollowerMapCreateManyMasterInput>;
+    skipDuplicates?: boolean;
+  };
 
   export type FocuserMapCreateWithoutFollowerInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type FocuserMapUncheckedCreateWithoutFollowerInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type FocuserMapCreateOrConnectWithoutFollowerInput = {
-    where: FocuserMapWhereUniqueInput
-    create: XOR<FocuserMapCreateWithoutFollowerInput, FocuserMapUncheckedCreateWithoutFollowerInput>
-  }
+    where: FocuserMapWhereUniqueInput;
+    create: XOR<
+      FocuserMapCreateWithoutFollowerInput,
+      FocuserMapUncheckedCreateWithoutFollowerInput
+    >;
+  };
 
   export type FocuserMapCreateManyFollowerInputEnvelope = {
-    data: Enumerable<FocuserMapCreateManyFollowerInput>
-    skipDuplicates?: boolean
-  }
+    data: Enumerable<FocuserMapCreateManyFollowerInput>;
+    skipDuplicates?: boolean;
+  };
 
   export type CommentCreateWithoutCommentByInput = {
-    id?: string
-    parent_id?: string
-    comment: string
-    like_times?: number
-    dislike_times?: number
-    createdAt?: Date | string
-    article: ArticleCreateNestedOneWithoutComment_listInput
-  }
+    id?: string;
+    parent_id?: string;
+    comment: string;
+    like_times?: number;
+    dislike_times?: number;
+    createdAt?: Date | string;
+    article: ArticleCreateNestedOneWithoutComment_listInput;
+  };
 
   export type CommentUncheckedCreateWithoutCommentByInput = {
-    id?: string
-    parent_id?: string
-    comment: string
-    like_times?: number
-    dislike_times?: number
-    createdAt?: Date | string
-    article_id: string
-  }
+    id?: string;
+    parent_id?: string;
+    comment: string;
+    like_times?: number;
+    dislike_times?: number;
+    createdAt?: Date | string;
+    article_id: string;
+  };
 
   export type CommentCreateOrConnectWithoutCommentByInput = {
-    where: CommentWhereUniqueInput
-    create: XOR<CommentCreateWithoutCommentByInput, CommentUncheckedCreateWithoutCommentByInput>
-  }
+    where: CommentWhereUniqueInput;
+    create: XOR<
+      CommentCreateWithoutCommentByInput,
+      CommentUncheckedCreateWithoutCommentByInput
+    >;
+  };
 
   export type CommentCreateManyCommentByInputEnvelope = {
-    data: Enumerable<CommentCreateManyCommentByInput>
-    skipDuplicates?: boolean
-  }
+    data: Enumerable<CommentCreateManyCommentByInput>;
+    skipDuplicates?: boolean;
+  };
 
   export type ArticleUpsertWithWhereUniqueWithoutAuthorInput = {
-    where: ArticleWhereUniqueInput
-    update: XOR<ArticleUpdateWithoutAuthorInput, ArticleUncheckedUpdateWithoutAuthorInput>
-    create: XOR<ArticleCreateWithoutAuthorInput, ArticleUncheckedCreateWithoutAuthorInput>
-  }
+    where: ArticleWhereUniqueInput;
+    update: XOR<
+      ArticleUpdateWithoutAuthorInput,
+      ArticleUncheckedUpdateWithoutAuthorInput
+    >;
+    create: XOR<
+      ArticleCreateWithoutAuthorInput,
+      ArticleUncheckedCreateWithoutAuthorInput
+    >;
+  };
 
   export type ArticleUpdateWithWhereUniqueWithoutAuthorInput = {
-    where: ArticleWhereUniqueInput
-    data: XOR<ArticleUpdateWithoutAuthorInput, ArticleUncheckedUpdateWithoutAuthorInput>
-  }
+    where: ArticleWhereUniqueInput;
+    data: XOR<
+      ArticleUpdateWithoutAuthorInput,
+      ArticleUncheckedUpdateWithoutAuthorInput
+    >;
+  };
 
   export type ArticleUpdateManyWithWhereWithoutAuthorInput = {
-    where: ArticleScalarWhereInput
-    data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyWithoutArticle_listInput>
-  }
+    where: ArticleScalarWhereInput;
+    data: XOR<
+      ArticleUpdateManyMutationInput,
+      ArticleUncheckedUpdateManyWithoutArticle_listInput
+    >;
+  };
 
   export type FollowerMapUpsertWithWhereUniqueWithoutMasterInput = {
-    where: FollowerMapWhereUniqueInput
-    update: XOR<FollowerMapUpdateWithoutMasterInput, FollowerMapUncheckedUpdateWithoutMasterInput>
-    create: XOR<FollowerMapCreateWithoutMasterInput, FollowerMapUncheckedCreateWithoutMasterInput>
-  }
+    where: FollowerMapWhereUniqueInput;
+    update: XOR<
+      FollowerMapUpdateWithoutMasterInput,
+      FollowerMapUncheckedUpdateWithoutMasterInput
+    >;
+    create: XOR<
+      FollowerMapCreateWithoutMasterInput,
+      FollowerMapUncheckedCreateWithoutMasterInput
+    >;
+  };
 
   export type FollowerMapUpdateWithWhereUniqueWithoutMasterInput = {
-    where: FollowerMapWhereUniqueInput
-    data: XOR<FollowerMapUpdateWithoutMasterInput, FollowerMapUncheckedUpdateWithoutMasterInput>
-  }
+    where: FollowerMapWhereUniqueInput;
+    data: XOR<
+      FollowerMapUpdateWithoutMasterInput,
+      FollowerMapUncheckedUpdateWithoutMasterInput
+    >;
+  };
 
   export type FollowerMapUpdateManyWithWhereWithoutMasterInput = {
-    where: FollowerMapScalarWhereInput
-    data: XOR<FollowerMapUpdateManyMutationInput, FollowerMapUncheckedUpdateManyWithoutFollower_listInput>
-  }
+    where: FollowerMapScalarWhereInput;
+    data: XOR<
+      FollowerMapUpdateManyMutationInput,
+      FollowerMapUncheckedUpdateManyWithoutFollower_listInput
+    >;
+  };
 
   export type FollowerMapScalarWhereInput = {
-    AND?: Enumerable<FollowerMapScalarWhereInput>
-    OR?: Enumerable<FollowerMapScalarWhereInput>
-    NOT?: Enumerable<FollowerMapScalarWhereInput>
-    id?: StringFilter | string
-    master_id?: StringFilter | string
-  }
+    AND?: Enumerable<FollowerMapScalarWhereInput>;
+    OR?: Enumerable<FollowerMapScalarWhereInput>;
+    NOT?: Enumerable<FollowerMapScalarWhereInput>;
+    id?: StringFilter | string;
+    master_id?: StringFilter | string;
+  };
 
   export type FocuserMapUpsertWithWhereUniqueWithoutFollowerInput = {
-    where: FocuserMapWhereUniqueInput
-    update: XOR<FocuserMapUpdateWithoutFollowerInput, FocuserMapUncheckedUpdateWithoutFollowerInput>
-    create: XOR<FocuserMapCreateWithoutFollowerInput, FocuserMapUncheckedCreateWithoutFollowerInput>
-  }
+    where: FocuserMapWhereUniqueInput;
+    update: XOR<
+      FocuserMapUpdateWithoutFollowerInput,
+      FocuserMapUncheckedUpdateWithoutFollowerInput
+    >;
+    create: XOR<
+      FocuserMapCreateWithoutFollowerInput,
+      FocuserMapUncheckedCreateWithoutFollowerInput
+    >;
+  };
 
   export type FocuserMapUpdateWithWhereUniqueWithoutFollowerInput = {
-    where: FocuserMapWhereUniqueInput
-    data: XOR<FocuserMapUpdateWithoutFollowerInput, FocuserMapUncheckedUpdateWithoutFollowerInput>
-  }
+    where: FocuserMapWhereUniqueInput;
+    data: XOR<
+      FocuserMapUpdateWithoutFollowerInput,
+      FocuserMapUncheckedUpdateWithoutFollowerInput
+    >;
+  };
 
   export type FocuserMapUpdateManyWithWhereWithoutFollowerInput = {
-    where: FocuserMapScalarWhereInput
-    data: XOR<FocuserMapUpdateManyMutationInput, FocuserMapUncheckedUpdateManyWithoutFocuser_listInput>
-  }
+    where: FocuserMapScalarWhereInput;
+    data: XOR<
+      FocuserMapUpdateManyMutationInput,
+      FocuserMapUncheckedUpdateManyWithoutFocuser_listInput
+    >;
+  };
 
   export type FocuserMapScalarWhereInput = {
-    AND?: Enumerable<FocuserMapScalarWhereInput>
-    OR?: Enumerable<FocuserMapScalarWhereInput>
-    NOT?: Enumerable<FocuserMapScalarWhereInput>
-    id?: StringFilter | string
-    follower_id?: StringFilter | string
-  }
+    AND?: Enumerable<FocuserMapScalarWhereInput>;
+    OR?: Enumerable<FocuserMapScalarWhereInput>;
+    NOT?: Enumerable<FocuserMapScalarWhereInput>;
+    id?: StringFilter | string;
+    follower_id?: StringFilter | string;
+  };
 
   export type CommentUpsertWithWhereUniqueWithoutCommentByInput = {
-    where: CommentWhereUniqueInput
-    update: XOR<CommentUpdateWithoutCommentByInput, CommentUncheckedUpdateWithoutCommentByInput>
-    create: XOR<CommentCreateWithoutCommentByInput, CommentUncheckedCreateWithoutCommentByInput>
-  }
+    where: CommentWhereUniqueInput;
+    update: XOR<
+      CommentUpdateWithoutCommentByInput,
+      CommentUncheckedUpdateWithoutCommentByInput
+    >;
+    create: XOR<
+      CommentCreateWithoutCommentByInput,
+      CommentUncheckedCreateWithoutCommentByInput
+    >;
+  };
 
   export type CommentUpdateWithWhereUniqueWithoutCommentByInput = {
-    where: CommentWhereUniqueInput
-    data: XOR<CommentUpdateWithoutCommentByInput, CommentUncheckedUpdateWithoutCommentByInput>
-  }
+    where: CommentWhereUniqueInput;
+    data: XOR<
+      CommentUpdateWithoutCommentByInput,
+      CommentUncheckedUpdateWithoutCommentByInput
+    >;
+  };
 
   export type CommentUpdateManyWithWhereWithoutCommentByInput = {
-    where: CommentScalarWhereInput
-    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutComment_listInput>
-  }
+    where: CommentScalarWhereInput;
+    data: XOR<
+      CommentUpdateManyMutationInput,
+      CommentUncheckedUpdateManyWithoutComment_listInput
+    >;
+  };
 
   export type UserCreateWithoutFollower_listInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    article_list?: ArticleCreateNestedManyWithoutAuthorInput
-    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput
-    comment_list?: CommentCreateNestedManyWithoutCommentByInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    article_list?: ArticleCreateNestedManyWithoutAuthorInput;
+    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput;
+    comment_list?: CommentCreateNestedManyWithoutCommentByInput;
+    isExist?: boolean;
+  };
 
   export type UserUncheckedCreateWithoutFollower_listInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput
-    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput;
+    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput;
+    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput;
+    isExist?: boolean;
+  };
 
   export type UserCreateOrConnectWithoutFollower_listInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutFollower_listInput, UserUncheckedCreateWithoutFollower_listInput>
-  }
+    where: UserWhereUniqueInput;
+    create: XOR<
+      UserCreateWithoutFollower_listInput,
+      UserUncheckedCreateWithoutFollower_listInput
+    >;
+  };
 
   export type UserUpsertWithoutFollower_listInput = {
-    update: XOR<UserUpdateWithoutFollower_listInput, UserUncheckedUpdateWithoutFollower_listInput>
-    create: XOR<UserCreateWithoutFollower_listInput, UserUncheckedCreateWithoutFollower_listInput>
-  }
+    update: XOR<
+      UserUpdateWithoutFollower_listInput,
+      UserUncheckedUpdateWithoutFollower_listInput
+    >;
+    create: XOR<
+      UserCreateWithoutFollower_listInput,
+      UserUncheckedCreateWithoutFollower_listInput
+    >;
+  };
 
   export type UserUpdateWithoutFollower_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUpdateManyWithoutAuthorNestedInput
-    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput
-    comment_list?: CommentUpdateManyWithoutCommentByNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUpdateManyWithoutAuthorNestedInput;
+    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput;
+    comment_list?: CommentUpdateManyWithoutCommentByNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserUncheckedUpdateWithoutFollower_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput
-    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput;
+    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput;
+    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserCreateWithoutFocuser_listInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    article_list?: ArticleCreateNestedManyWithoutAuthorInput
-    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput
-    comment_list?: CommentCreateNestedManyWithoutCommentByInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    article_list?: ArticleCreateNestedManyWithoutAuthorInput;
+    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput;
+    comment_list?: CommentCreateNestedManyWithoutCommentByInput;
+    isExist?: boolean;
+  };
 
   export type UserUncheckedCreateWithoutFocuser_listInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput
-    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput;
+    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput;
+    comment_list?: CommentUncheckedCreateNestedManyWithoutCommentByInput;
+    isExist?: boolean;
+  };
 
   export type UserCreateOrConnectWithoutFocuser_listInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutFocuser_listInput, UserUncheckedCreateWithoutFocuser_listInput>
-  }
+    where: UserWhereUniqueInput;
+    create: XOR<
+      UserCreateWithoutFocuser_listInput,
+      UserUncheckedCreateWithoutFocuser_listInput
+    >;
+  };
 
   export type UserUpsertWithoutFocuser_listInput = {
-    update: XOR<UserUpdateWithoutFocuser_listInput, UserUncheckedUpdateWithoutFocuser_listInput>
-    create: XOR<UserCreateWithoutFocuser_listInput, UserUncheckedCreateWithoutFocuser_listInput>
-  }
+    update: XOR<
+      UserUpdateWithoutFocuser_listInput,
+      UserUncheckedUpdateWithoutFocuser_listInput
+    >;
+    create: XOR<
+      UserCreateWithoutFocuser_listInput,
+      UserUncheckedCreateWithoutFocuser_listInput
+    >;
+  };
 
   export type UserUpdateWithoutFocuser_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUpdateManyWithoutAuthorNestedInput
-    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput
-    comment_list?: CommentUpdateManyWithoutCommentByNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUpdateManyWithoutAuthorNestedInput;
+    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput;
+    comment_list?: CommentUpdateManyWithoutCommentByNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserUncheckedUpdateWithoutFocuser_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput
-    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput;
+    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput;
+    comment_list?: CommentUncheckedUpdateManyWithoutCommentByNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserCreateWithoutComment_listInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    article_list?: ArticleCreateNestedManyWithoutAuthorInput
-    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput
-    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    article_list?: ArticleCreateNestedManyWithoutAuthorInput;
+    follower_list?: FollowerMapCreateNestedManyWithoutMasterInput;
+    focuser_list?: FocuserMapCreateNestedManyWithoutFollowerInput;
+    isExist?: boolean;
+  };
 
   export type UserUncheckedCreateWithoutComment_listInput = {
-    id?: string
-    user_name: string
-    avatar: string
-    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput
-    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput
-    isExist?: boolean
-  }
+    id?: string;
+    user_name: string;
+    avatar: string;
+    article_list?: ArticleUncheckedCreateNestedManyWithoutAuthorInput;
+    follower_list?: FollowerMapUncheckedCreateNestedManyWithoutMasterInput;
+    focuser_list?: FocuserMapUncheckedCreateNestedManyWithoutFollowerInput;
+    isExist?: boolean;
+  };
 
   export type UserCreateOrConnectWithoutComment_listInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutComment_listInput, UserUncheckedCreateWithoutComment_listInput>
-  }
+    where: UserWhereUniqueInput;
+    create: XOR<
+      UserCreateWithoutComment_listInput,
+      UserUncheckedCreateWithoutComment_listInput
+    >;
+  };
 
   export type ArticleCreateWithoutComment_listInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    category_list?: CategoryCreateNestedManyWithoutArticle_listInput
-    author: UserCreateNestedOneWithoutArticle_listInput
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    category_list?: CategoryCreateNestedManyWithoutArticle_listInput;
+    author: UserCreateNestedOneWithoutArticle_listInput;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type ArticleUncheckedCreateWithoutComment_listInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    category_list?: CategoryUncheckedCreateNestedManyWithoutArticle_listInput
-    author_id: string
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    category_list?: CategoryUncheckedCreateNestedManyWithoutArticle_listInput;
+    author_id: string;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type ArticleCreateOrConnectWithoutComment_listInput = {
-    where: ArticleWhereUniqueInput
-    create: XOR<ArticleCreateWithoutComment_listInput, ArticleUncheckedCreateWithoutComment_listInput>
-  }
+    where: ArticleWhereUniqueInput;
+    create: XOR<
+      ArticleCreateWithoutComment_listInput,
+      ArticleUncheckedCreateWithoutComment_listInput
+    >;
+  };
 
   export type UserUpsertWithoutComment_listInput = {
-    update: XOR<UserUpdateWithoutComment_listInput, UserUncheckedUpdateWithoutComment_listInput>
-    create: XOR<UserCreateWithoutComment_listInput, UserUncheckedCreateWithoutComment_listInput>
-  }
+    update: XOR<
+      UserUpdateWithoutComment_listInput,
+      UserUncheckedUpdateWithoutComment_listInput
+    >;
+    create: XOR<
+      UserCreateWithoutComment_listInput,
+      UserUncheckedCreateWithoutComment_listInput
+    >;
+  };
 
   export type UserUpdateWithoutComment_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUpdateManyWithoutAuthorNestedInput
-    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput
-    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUpdateManyWithoutAuthorNestedInput;
+    follower_list?: FollowerMapUpdateManyWithoutMasterNestedInput;
+    focuser_list?: FocuserMapUpdateManyWithoutFollowerNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type UserUncheckedUpdateWithoutComment_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_name?: StringFieldUpdateOperationsInput | string
-    avatar?: StringFieldUpdateOperationsInput | string
-    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput
-    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    user_name?: StringFieldUpdateOperationsInput | string;
+    avatar?: StringFieldUpdateOperationsInput | string;
+    article_list?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput;
+    follower_list?: FollowerMapUncheckedUpdateManyWithoutMasterNestedInput;
+    focuser_list?: FocuserMapUncheckedUpdateManyWithoutFollowerNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+  };
 
   export type ArticleUpsertWithoutComment_listInput = {
-    update: XOR<ArticleUpdateWithoutComment_listInput, ArticleUncheckedUpdateWithoutComment_listInput>
-    create: XOR<ArticleCreateWithoutComment_listInput, ArticleUncheckedCreateWithoutComment_listInput>
-  }
+    update: XOR<
+      ArticleUpdateWithoutComment_listInput,
+      ArticleUncheckedUpdateWithoutComment_listInput
+    >;
+    create: XOR<
+      ArticleCreateWithoutComment_listInput,
+      ArticleUncheckedCreateWithoutComment_listInput
+    >;
+  };
 
   export type ArticleUpdateWithoutComment_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    category_list?: CategoryUpdateManyWithoutArticle_listNestedInput
-    author?: UserUpdateOneRequiredWithoutArticle_listNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    category_list?: CategoryUpdateManyWithoutArticle_listNestedInput;
+    author?: UserUpdateOneRequiredWithoutArticle_listNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type ArticleUncheckedUpdateWithoutComment_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    category_list?: CategoryUncheckedUpdateManyWithoutArticle_listNestedInput
-    author_id?: StringFieldUpdateOperationsInput | string
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    category_list?: CategoryUncheckedUpdateManyWithoutArticle_listNestedInput;
+    author_id?: StringFieldUpdateOperationsInput | string;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type CommentCreateManyArticleInput = {
-    id?: string
-    parent_id?: string
-    comment: string
-    user_id: string
-    like_times?: number
-    dislike_times?: number
-    createdAt?: Date | string
-  }
+    id?: string;
+    parent_id?: string;
+    comment: string;
+    user_id: string;
+    like_times?: number;
+    dislike_times?: number;
+    createdAt?: Date | string;
+  };
 
   export type CategoryUpdateWithoutArticle_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cate_name?: StringFieldUpdateOperationsInput | string
-    background?: StringFieldUpdateOperationsInput | string
-    cate_pic?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    cate_name?: StringFieldUpdateOperationsInput | string;
+    background?: StringFieldUpdateOperationsInput | string;
+    cate_pic?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CategoryUncheckedUpdateWithoutArticle_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cate_name?: StringFieldUpdateOperationsInput | string
-    background?: StringFieldUpdateOperationsInput | string
-    cate_pic?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    cate_name?: StringFieldUpdateOperationsInput | string;
+    background?: StringFieldUpdateOperationsInput | string;
+    cate_pic?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CategoryUncheckedUpdateManyWithoutCategory_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cate_name?: StringFieldUpdateOperationsInput | string
-    background?: StringFieldUpdateOperationsInput | string
-    cate_pic?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    cate_name?: StringFieldUpdateOperationsInput | string;
+    background?: StringFieldUpdateOperationsInput | string;
+    cate_pic?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CommentUpdateWithoutArticleInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    parent_id?: StringFieldUpdateOperationsInput | string
-    comment?: StringFieldUpdateOperationsInput | string
-    commentBy?: UserUpdateOneRequiredWithoutComment_listNestedInput
-    like_times?: IntFieldUpdateOperationsInput | number
-    dislike_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    parent_id?: StringFieldUpdateOperationsInput | string;
+    comment?: StringFieldUpdateOperationsInput | string;
+    commentBy?: UserUpdateOneRequiredWithoutComment_listNestedInput;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    dislike_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type CommentUncheckedUpdateWithoutArticleInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    parent_id?: StringFieldUpdateOperationsInput | string
-    comment?: StringFieldUpdateOperationsInput | string
-    user_id?: StringFieldUpdateOperationsInput | string
-    like_times?: IntFieldUpdateOperationsInput | number
-    dislike_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    parent_id?: StringFieldUpdateOperationsInput | string;
+    comment?: StringFieldUpdateOperationsInput | string;
+    user_id?: StringFieldUpdateOperationsInput | string;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    dislike_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type CommentUncheckedUpdateManyWithoutComment_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    parent_id?: StringFieldUpdateOperationsInput | string
-    comment?: StringFieldUpdateOperationsInput | string
-    user_id?: StringFieldUpdateOperationsInput | string
-    like_times?: IntFieldUpdateOperationsInput | number
-    dislike_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    parent_id?: StringFieldUpdateOperationsInput | string;
+    comment?: StringFieldUpdateOperationsInput | string;
+    user_id?: StringFieldUpdateOperationsInput | string;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    dislike_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type ArticleUpdateWithoutCategory_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    comment_list?: CommentUpdateManyWithoutArticleNestedInput
-    author?: UserUpdateOneRequiredWithoutArticle_listNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    comment_list?: CommentUpdateManyWithoutArticleNestedInput;
+    author?: UserUpdateOneRequiredWithoutArticle_listNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type ArticleUncheckedUpdateWithoutCategory_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    comment_list?: CommentUncheckedUpdateManyWithoutArticleNestedInput
-    author_id?: StringFieldUpdateOperationsInput | string
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    comment_list?: CommentUncheckedUpdateManyWithoutArticleNestedInput;
+    author_id?: StringFieldUpdateOperationsInput | string;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type ArticleUncheckedUpdateManyWithoutArticle_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    author_id?: StringFieldUpdateOperationsInput | string
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    author_id?: StringFieldUpdateOperationsInput | string;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type ArticleCreateManyAuthorInput = {
-    id?: string
-    article_title: string
-    article_description: string
-    article_content: string
-    article_bigCover?: string | null
-    article_cover?: string | null
-    isExist?: boolean
-    browse_times?: number
-    like_times?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
+    id?: string;
+    article_title: string;
+    article_description: string;
+    article_content: string;
+    article_bigCover?: string | null;
+    article_cover?: string | null;
+    isExist?: boolean;
+    browse_times?: number;
+    like_times?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+  };
 
   export type FollowerMapCreateManyMasterInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type FocuserMapCreateManyFollowerInput = {
-    id?: string
-  }
+    id?: string;
+  };
 
   export type CommentCreateManyCommentByInput = {
-    id?: string
-    parent_id?: string
-    comment: string
-    like_times?: number
-    dislike_times?: number
-    createdAt?: Date | string
-    article_id: string
-  }
+    id?: string;
+    parent_id?: string;
+    comment: string;
+    like_times?: number;
+    dislike_times?: number;
+    createdAt?: Date | string;
+    article_id: string;
+  };
 
   export type ArticleUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    category_list?: CategoryUpdateManyWithoutArticle_listNestedInput
-    comment_list?: CommentUpdateManyWithoutArticleNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    category_list?: CategoryUpdateManyWithoutArticle_listNestedInput;
+    comment_list?: CommentUpdateManyWithoutArticleNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type ArticleUncheckedUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    article_title?: StringFieldUpdateOperationsInput | string
-    article_description?: StringFieldUpdateOperationsInput | string
-    article_content?: StringFieldUpdateOperationsInput | string
-    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null
-    article_cover?: NullableStringFieldUpdateOperationsInput | string | null
-    category_list?: CategoryUncheckedUpdateManyWithoutArticle_listNestedInput
-    comment_list?: CommentUncheckedUpdateManyWithoutArticleNestedInput
-    isExist?: BoolFieldUpdateOperationsInput | boolean
-    browse_times?: IntFieldUpdateOperationsInput | number
-    like_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    article_title?: StringFieldUpdateOperationsInput | string;
+    article_description?: StringFieldUpdateOperationsInput | string;
+    article_content?: StringFieldUpdateOperationsInput | string;
+    article_bigCover?: NullableStringFieldUpdateOperationsInput | string | null;
+    article_cover?: NullableStringFieldUpdateOperationsInput | string | null;
+    category_list?: CategoryUncheckedUpdateManyWithoutArticle_listNestedInput;
+    comment_list?: CommentUncheckedUpdateManyWithoutArticleNestedInput;
+    isExist?: BoolFieldUpdateOperationsInput | boolean;
+    browse_times?: IntFieldUpdateOperationsInput | number;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+  };
 
   export type FollowerMapUpdateWithoutMasterInput = {
-    id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FollowerMapUncheckedUpdateWithoutMasterInput = {
-    id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FollowerMapUncheckedUpdateManyWithoutFollower_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FocuserMapUpdateWithoutFollowerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FocuserMapUncheckedUpdateWithoutFollowerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type FocuserMapUncheckedUpdateManyWithoutFocuser_listInput = {
-    id?: StringFieldUpdateOperationsInput | string
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+  };
 
   export type CommentUpdateWithoutCommentByInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    parent_id?: StringFieldUpdateOperationsInput | string
-    comment?: StringFieldUpdateOperationsInput | string
-    like_times?: IntFieldUpdateOperationsInput | number
-    dislike_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    article?: ArticleUpdateOneRequiredWithoutComment_listNestedInput
-  }
+    id?: StringFieldUpdateOperationsInput | string;
+    parent_id?: StringFieldUpdateOperationsInput | string;
+    comment?: StringFieldUpdateOperationsInput | string;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    dislike_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    article?: ArticleUpdateOneRequiredWithoutComment_listNestedInput;
+  };
 
   export type CommentUncheckedUpdateWithoutCommentByInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    parent_id?: StringFieldUpdateOperationsInput | string
-    comment?: StringFieldUpdateOperationsInput | string
-    like_times?: IntFieldUpdateOperationsInput | number
-    dislike_times?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    article_id?: StringFieldUpdateOperationsInput | string
-  }
-
-
+    id?: StringFieldUpdateOperationsInput | string;
+    parent_id?: StringFieldUpdateOperationsInput | string;
+    comment?: StringFieldUpdateOperationsInput | string;
+    like_times?: IntFieldUpdateOperationsInput | number;
+    dislike_times?: IntFieldUpdateOperationsInput | number;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    article_id?: StringFieldUpdateOperationsInput | string;
+  };
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
    */
 
   export type BatchPayload = {
-    count: number
-  }
+    count: number;
+  };
 
   /**
    * DMMF
    */
-  export const dmmf: runtime.BaseDMMF
+  export const dmmf: runtime.BaseDMMF;
 }

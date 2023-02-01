@@ -11,6 +11,8 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+#Prisma Client
+src/generated
 # OS
 .DS_Store
 

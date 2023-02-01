@@ -67,7 +67,7 @@ export class ArticleService {
         },
       });
       response = Object.assign(
-        { data: res as any },
+        { data: res } as any,
         res.id
           ? {
               success: true,

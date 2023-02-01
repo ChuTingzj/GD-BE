@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Req } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Query } from '@nestjs/common';
+import { ApiTags, ApiQuery, ApiOperation } from '@nestjs/swagger';
+import { AuthorizeDto } from '@/dto';
 import { AuthorizeService } from './authorize.service';
 
 @Controller('authorize')
@@ -7,7 +8,9 @@ import { AuthorizeService } from './authorize.service';
 export class AuthorizeController {
   constructor(private readonly authorizeService: AuthorizeService) {}
   @Get()
-  getCode(@Param() path, @Req() req) {
-    console.log(path, req);
+  @ApiOperation({ summary: 'Github 授权登录' })
+  @ApiQuery({ type: AuthorizeDto })
+  getToken(@Query('code') code) {
+    this.authorizeService.getToken(code);
   }
 }

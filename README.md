@@ -25,7 +25,8 @@
 ## Description
 
 an application built on the top of [Nest](https://github.com/nestjs/nest)、[Prisma](https://www.prisma.io/).
-
+## FrontEnd
+[https://github.com/ChuTingzj/GD-FE](https://github.com/ChuTingzj/GD-FE)
 ## Installation
 
 ```bash

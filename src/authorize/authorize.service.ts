@@ -10,6 +10,9 @@ export class AuthorizeService {
   constructor(private readonly prismaService: PrismaService) {}
   async getToken(code: string, res: Response) {
     try {
+      const acceptHeaders = new Headers({
+        Accept: 'application/json',
+      });
       const res_token = await fetch(
         `https://github.com/login/oauth/access_token`,
         {
@@ -19,12 +22,14 @@ export class AuthorizeService {
             client_secret: '7a20564d4c78a7bb055f8cde2b1b25a07d5a5a32',
             code,
           },
+          headers: acceptHeaders,
         },
       );
-      const text = await res_token.text();
-      const textArr = text.split('&');
+      const json = await res_token.json();
+      console.log(json);
+      const token = json.access_token;
       const headers = new Headers({
-        Authorization: `Bearer ${textArr[0]}`,
+        Authorization: `Bearer ${token}`,
       });
       const res_userInfo = await fetch(`https://api.github.com/user`, {
         headers,

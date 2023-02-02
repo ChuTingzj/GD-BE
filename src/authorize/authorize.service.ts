@@ -9,24 +9,18 @@ import type { GithubUserInfo } from '@/types';
 export class AuthorizeService {
   constructor(private readonly prismaService: PrismaService) {}
   async getToken(code: string, res: Response) {
-    const acceptHeaders = new Headers({
-      Accept: 'application/json',
-    });
     try {
       const res_token = await fetch(
-        `https://github.com/login/oauth/access_token`,
+        `https://github.com/login/oauth/access_token? 
+            client_id=983cf4b3feff31bba087& 
+            client_secret=7a20564d4c78a7bb055f8cde2b1b25a07d5a5a32& 
+            code=${code}`,
         {
           method: 'POST',
-          body: JSON.stringify({
-            client_id: '983cf4b3feff31bba087',
-            client_secret: '7a20564d4c78a7bb055f8cde2b1b25a07d5a5a32',
-            code,
-          }),
-          headers: acceptHeaders,
         },
       );
-      // const json = await res_token.json();
-      console.log(29, res_token);
+      const json = await res_token.text();
+      console.log(29, json);
       // const token = json.access_token;
       // const headers = new Headers({
       //   Authorization: `Bearer ${token}`,

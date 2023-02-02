@@ -25,7 +25,7 @@ export class UserService {
       });
       response = res.id
         ? {
-            data: res as UserEntity,
+            data: res as any,
             success: true,
             message: '操作成功',
           }

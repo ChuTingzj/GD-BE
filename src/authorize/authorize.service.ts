@@ -9,15 +9,10 @@ import type { GithubUserInfo } from '@/types';
 export class AuthorizeService {
   constructor(private readonly prismaService: PrismaService) {}
   async getToken(code: string, res: Response) {
-    console.log(code, res);
     try {
       const res_token = await fetch(
-        `https://github.com/login/oauth/access_token? 
-            client_id=983cf4b3feff31bba087& 
-            client_secret=7a20564d4c78a7bb055f8cde2b1b25a07d5a5a32& 
-            code=${code}`,
+        `https://github.com/login/oauth/access_token?client_id=983cf4b3feff31bba087&client_secret=7a20564d4c78a7bb055f8cde2b1b25a07d5a5a32&code=${code}`,
       );
-      console.log(20, res_token);
       const data = await res_token.text();
       console.log(29, data);
       // const token = json.access_token;

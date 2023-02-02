@@ -17,3 +17,4 @@ export class CreateResponse {
   message: string;
 }
 export class DeleteResponse extends CreateResponse {}
+export class UpdateResponse extends CreateResponse {}

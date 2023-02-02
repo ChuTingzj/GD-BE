@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { ApiTags, ApiQuery, ApiOperation } from '@nestjs/swagger';
+import type { Response } from 'express';
 import { AuthorizeDto } from '@/dto';
 import { AuthorizeService } from './authorize.service';
 
@@ -10,7 +11,7 @@ export class AuthorizeController {
   @Get()
   @ApiOperation({ summary: 'Github 授权登录' })
   @ApiQuery({ type: AuthorizeDto })
-  getToken(@Query('code') code) {
-    this.authorizeService.getToken(code);
+  getToken(@Query('code') code, @Res() res: Response) {
+    this.authorizeService.getToken(code, res);
   }
 }

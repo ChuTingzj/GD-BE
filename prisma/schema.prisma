@@ -13,7 +13,9 @@ datasource db {
   url      = "mysql://root:10cb6333b8dfae21@124.223.56.117:3306/gd-db"
 }
 
-
+enum Authorization{
+  Github
+}
 
 model Article {
   id                    String         @id @default(uuid())
@@ -45,6 +47,11 @@ model User {
     id                  String         @id @default(uuid())
     user_name           String         @unique
     avatar              String
+    authorized          Boolean        @default(false)
+    authToken           String?
+    authorizedBy        Authorization?
+    account             String?
+    password            String?
     article_list        Article[]
     follower_list       FollowerMap[]
     focuser_list        FocuserMap[]

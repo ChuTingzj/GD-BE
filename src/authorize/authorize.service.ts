@@ -15,12 +15,9 @@ export class AuthorizeService {
             client_id=983cf4b3feff31bba087& 
             client_secret=7a20564d4c78a7bb055f8cde2b1b25a07d5a5a32& 
             code=${code}`,
-        {
-          method: 'POST',
-        },
       );
-      const json = await res_token.text();
-      console.log(29, json);
+      const text = await res_token.text();
+      console.log(29, text);
       // const token = json.access_token;
       // const headers = new Headers({
       //   Authorization: `Bearer ${token}`,

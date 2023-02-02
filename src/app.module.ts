@@ -7,6 +7,7 @@ import { ArticleModule } from './article/article.module';
 import { CategoryModule } from './category/category.module';
 import { CarouselModule } from './carousel/carousel.module';
 import { AuthorizeModule } from './authorize/authorize.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ListModule,
@@ -15,6 +16,7 @@ import { AuthorizeModule } from './authorize/authorize.module';
     CategoryModule,
     CarouselModule,
     AuthorizeModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

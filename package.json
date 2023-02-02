@@ -14,7 +14,7 @@
     "start:build-wp": "rimraf ./dist && nest build --webpack --webpackPath=./webpack.config.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --files ./prisma/index.ts",
     "generate": "pnpx prisma generate",
-    "db-prod:migrate": "pnpx prisma migrate dev --name \"carousel\"",
+    "db-prod:migrate": "pnpx prisma migrate dev --name \"authorize\"",
     "db-dev:push": "pnpx prisma db push",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -27,6 +27,7 @@
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/jwt": "^10.0.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.1.4",

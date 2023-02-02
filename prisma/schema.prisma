@@ -47,9 +47,7 @@ model User {
     id                  String         @id @default(uuid())
     user_name           String         @unique
     avatar              String
-    authorized          Boolean        @default(false)
-    authToken           String?
-    authorizedBy        Authorization?
+    authorization       Authorize[]
     account             String?
     password            String?
     article_list        Article[]
@@ -57,6 +55,13 @@ model User {
     focuser_list        FocuserMap[]
     comment_list        Comment[]
     isExist             Boolean        @default(true)
+}
+
+model Authorize{
+    id                  String        @id @default(uuid())
+    authToken           String
+    authorizedBy        Authorization
+    authorized          User[]
 }
 
 model FollowerMap {

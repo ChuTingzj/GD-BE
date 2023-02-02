@@ -38,7 +38,7 @@ export class AuthorizeService {
             ],
           },
         },
-        select: { id },
+        select: { id: true },
       });
       if (res.id) {
         re.redirect(301, `http://124.223.56.117?auth_token=${token}`);

@@ -25,6 +25,17 @@ export class AuthorizeService {
       });
       const json_userInfo: GithubUserInfo = await res_userInfo.json();
       const { login, avatar_url } = json_userInfo;
+      const res_find = await this.prismaService.user.findUnique({
+        where: { user_name: login },
+        select: { id: true },
+      });
+      if (res_find.id) {
+        response = {
+          success: false,
+          message: '用户名已被占用!',
+        };
+        return response;
+      }
       const res = await this.prismaService.user.create({
         data: {
           user_name: login,

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@/generated/client';
+import { User, Authorization } from '@/generated/client';
 export class UserEntity implements User {
   @ApiProperty()
   avatar: string;
@@ -9,4 +9,14 @@ export class UserEntity implements User {
   isExist: boolean;
   @ApiProperty()
   user_name: string;
+  @ApiProperty({ nullable: true })
+  account: string | null;
+  @ApiProperty({ nullable: true })
+  authToken: string | null;
+  @ApiProperty()
+  authorized: boolean;
+  @ApiProperty({ nullable: true, enum: Authorization })
+  authorizedBy: Authorization | null;
+  @ApiProperty({ nullable: true })
+  password: string | null;
 }

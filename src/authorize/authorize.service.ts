@@ -25,8 +25,8 @@ export class AuthorizeService {
           headers: acceptHeaders,
         },
       );
-      const json = await res_token.json();
-      console.log(29, json);
+      // const json = await res_token.json();
+      console.log(29, res_token);
       // const token = json.access_token;
       // const headers = new Headers({
       //   Authorization: `Bearer ${token}`,

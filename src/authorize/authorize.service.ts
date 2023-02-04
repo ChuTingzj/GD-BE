@@ -2,14 +2,14 @@ import fetch from 'node-fetch';
 import { Headers } from 'node-fetch';
 import { Injectable } from '@nestjs/common';
 import type { Response } from 'express';
+import { compareSync, hashSync } from 'bcryptjs';
 import { PrismaService } from '@/prisma/prisma.service';
 import type { GithubUserInfo } from '@/types';
-import { CreateResponse } from '@/entities';
-
+import { CreateResponse, ByPasswordResponse } from '@/entities';
 @Injectable()
 export class AuthorizeService {
   constructor(private readonly prismaService: PrismaService) {}
-  async getToken(code: string, re: Response) {
+  async getGithubToken(code: string, re: Response) {
     let response: CreateResponse;
     try {
       const res_token = await fetch(
@@ -70,5 +70,60 @@ export class AuthorizeService {
       };
     }
     return response;
+  }
+  async signInOrLoginByPassword(account: string, password: string) {
+    let responseErr: CreateResponse;
+    let responseSuc: ByPasswordResponse;
+    try {
+      const res = await this.prismaService.user.findUnique({
+        where: { user_name: account },
+        select: { id: true, password: true },
+      });
+      if (res.id) {
+        const isOk = compareSync(password, res.password);
+        if (!isOk) {
+          responseErr = {
+            success: false,
+            message: '密码错误！',
+          };
+        } else {
+          responseSuc = {
+            success: true,
+            message: '操作成功',
+            data: res.id,
+          };
+        }
+      } else {
+        const hashPassword = hashSync(password, 10);
+        const res_create = await this.prismaService.user.create({
+          data: {
+            user_name: account,
+            account,
+            password: hashPassword,
+            avatar:
+              'https://www.npmjs.com/npm-avatar/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdmF0YXJVUkwiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci8wY2M4MmZmNDMzNjI2NmNiYWQ5YTU2YWNkMjdlOTNkMj9zaXplPTQ5NiZkZWZhdWx0PXJldHJvIn0.ZTywxgTVN0OOoqCn6rhBZvyG_nophJOdpLwtHNMWbYQ',
+          },
+          select: { id: true },
+        });
+        if (res_create.id) {
+          responseSuc = {
+            success: true,
+            message: '操作成功',
+            data: res.id,
+          };
+        } else {
+          responseErr = {
+            success: false,
+            message: '注册用户失败',
+          };
+        }
+      }
+    } catch (e) {
+      responseErr = {
+        success: false,
+        message: e.message,
+      };
+    }
+    return responseErr ? responseErr : responseSuc;
   }
 }

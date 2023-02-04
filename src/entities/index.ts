@@ -5,6 +5,7 @@ export * from './category';
 export * from './comment';
 export * from './user';
 export * from './carousel';
+export * from './authorize';
 export abstract class NormalEntity<T> {
   success: boolean;
   message: string;

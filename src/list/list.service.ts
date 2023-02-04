@@ -26,7 +26,7 @@ export class ListService {
           where: { cate_name: filters.cate_name },
           select: { id: true },
         });
-        res.id && (targetCateId = res.id);
+        Reflect.has(res, 'id') && (targetCateId = res.id);
       } catch (e) {
         response = {
           success: false,

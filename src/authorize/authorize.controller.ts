@@ -8,7 +8,7 @@ import {
 } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { AuthorizeDto, CreateUserOrLoginByPasswordDto } from '@/dto';
-import { CreateResponse } from '@/entities';
+import { CreateResponse, ByPasswordResponse } from '@/entities';
 import { AuthorizeService } from './authorize.service';
 
 @Controller('authorize')
@@ -25,6 +25,7 @@ export class AuthorizeController {
   @Post('/password')
   @ApiOperation({ summary: '密码注册登录' })
   @ApiBody({ type: CreateUserOrLoginByPasswordDto })
+  @ApiOkResponse({ type: ByPasswordResponse })
   signInOrLoginByPassword(@Body() body: CreateUserOrLoginByPasswordDto) {
     const { account, password } = body;
     return this.authorizeService.signInOrLoginByPassword(account, password);

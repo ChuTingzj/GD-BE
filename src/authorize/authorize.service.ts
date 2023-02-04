@@ -29,7 +29,7 @@ export class AuthorizeService {
         where: { user_name: login },
         select: { id: true },
       });
-      if (res_find.id) {
+      if (res_find !== null) {
         response = {
           success: false,
           message: '用户名已被占用!',
@@ -51,7 +51,7 @@ export class AuthorizeService {
         },
         select: { id: true },
       });
-      if (res.id) {
+      if (res !== null) {
         re.redirect(301, `http://124.223.56.117?id=${res.id}`);
         response = {
           success: true,
@@ -79,7 +79,7 @@ export class AuthorizeService {
         where: { user_name: account },
         select: { id: true, password: true },
       });
-      if (res.id) {
+      if (res !== null) {
         const isOk = compareSync(password, res.password);
         if (!isOk) {
           responseErr = {
@@ -101,15 +101,15 @@ export class AuthorizeService {
             account,
             password: hashPassword,
             avatar:
-              'https://www.npmjs.com/npm-avatar/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdmF0YXJVUkwiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci8wY2M4MmZmNDMzNjI2NmNiYWQ5YTU2YWNkMjdlOTNkMj9zaXplPTQ5NiZkZWZhdWx0PXJldHJvIn0.ZTywxgTVN0OOoqCn6rhBZvyG_nophJOdpLwtHNMWbYQ',
+              'https://p3-passport.byteimg.com/img/mosaic-legacy/3796/2975850990~100x100.awebp',
           },
           select: { id: true },
         });
-        if (res_create.id) {
+        if (res_create !== null) {
           responseSuc = {
             success: true,
             message: '操作成功',
-            data: res.id,
+            data: res_create.id,
           };
         } else {
           responseErr = {

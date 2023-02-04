@@ -23,7 +23,7 @@ export class ArticleService {
           where: { cate_name: item },
           select: { id: true },
         });
-        res.id && req_cateList.push(res);
+        res !== null && req_cateList.push(res);
       } catch (e) {
         response = {
           success: false,
@@ -100,7 +100,7 @@ export class ArticleService {
             where: { cate_name: item },
             select: { id: true },
           });
-          res.id && cateList.push(res);
+         res !== null && cateList.push(res);
         } catch (e) {
           response = {
             success: false,

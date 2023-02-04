@@ -2,7 +2,6 @@ import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserResponse, DeleteResponse, UpdateResponse } from '@/entities';
-import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 @ApiTags('用户')
@@ -19,7 +18,7 @@ export class UserController {
   @Patch(':id')
   @ApiOperation({ summary: '更改用户信息' })
   @ApiOkResponse({ type: UpdateResponse })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id') id: string, @Body() updateUserDto: any) {
     return this.userService.update(+id, updateUserDto);
   }
 

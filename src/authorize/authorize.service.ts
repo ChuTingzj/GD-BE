@@ -1,14 +1,21 @@
 import fetch from 'node-fetch';
 import { Headers } from 'node-fetch';
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import type { Response } from 'express';
 import { compareSync, hashSync } from 'bcryptjs';
 import { PrismaService } from '@/prisma/prisma.service';
 import type { GithubUserInfo } from '@/types';
-import { CreateResponse, ByPasswordResponse } from '@/entities';
+import { CreateResponse, ByPasswordResponse, UserEntity } from '@/entities';
 @Injectable()
 export class AuthorizeService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
+  createToken(user: Partial<UserEntity>) {
+    return this.jwtService.sign(user);
+  }
   async getGithubToken(code: string, re: Response) {
     let response: CreateResponse;
     try {
@@ -77,7 +84,7 @@ export class AuthorizeService {
     try {
       const res = await this.prismaService.user.findUnique({
         where: { user_name: account },
-        select: { id: true, password: true },
+        select: { id: true, password: true, avatar: true },
       });
       if (res !== null) {
         const isOk = compareSync(password, res.password);
@@ -87,6 +94,11 @@ export class AuthorizeService {
             message: '密码错误！',
           };
         } else {
+          const token = this.createToken({
+            user_name: account,
+            id: res.id,
+            avatar: res.avatar,
+          });
           responseSuc = {
             success: true,
             message: '操作成功',

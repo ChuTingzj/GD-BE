@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -11,6 +12,7 @@ async function bootstrap() {
     .setVersion('1')
     .build();
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // app.useGlobalPipes(new ValidationPipe());
   const document = SwaggerModule.createDocument(app, options, {
     extraModels: [UserEntity, CommentEntity, CategoryEntity],
   });

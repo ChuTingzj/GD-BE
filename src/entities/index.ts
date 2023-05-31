@@ -19,3 +19,4 @@ export class CreateResponse {
 }
 export class DeleteResponse extends CreateResponse {}
 export class UpdateResponse extends CreateResponse {}
+export class ReadResponse extends CreateResponse {}

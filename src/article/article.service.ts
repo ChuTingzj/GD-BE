@@ -100,7 +100,7 @@ export class ArticleService {
             where: { cate_name: item },
             select: { id: true },
           });
-         res !== null && cateList.push(res);
+          res !== null && cateList.push(res);
         } catch (e) {
           response = {
             success: false,

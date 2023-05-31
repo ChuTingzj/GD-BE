@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-
+import { isNotEmpty } from 'class-validator';
 export class CreateArticleDto {
   @ApiProperty({ nullable: true, required: true })
   article_bigCover?: string | null;
@@ -13,6 +13,6 @@ export class CreateArticleDto {
   article_title: string;
   @ApiProperty({ required: true })
   author_id: string;
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true, isArray: true })
   cate_name: Array<string>;
 }

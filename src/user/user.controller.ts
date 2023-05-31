@@ -1,5 +1,18 @@
-import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Headers,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiOkResponse,
+  ApiHeaders,
+} from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserResponse, DeleteResponse, UpdateResponse } from '@/entities';
 
